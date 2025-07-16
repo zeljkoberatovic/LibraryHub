@@ -1,0 +1,33 @@
+:host ::ng-deep .app-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 71px;
+  z-index: 1000;   
+}
+
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 71px;             
+  padding: 0 30px;
+  background-color: #4558BE; 
+  color: white;
+  z-index: 10;
+}
+
+
+/* .app-header .logo-font {
+  background-color: #3F51B5;
+  padding: 18px 30px;
+} */
+
+
+.app-header i.fas,
+.app-header i.far {
+  font-size: 1.25rem; 
+  color: white;
+}

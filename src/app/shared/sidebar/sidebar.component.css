@@ -1,0 +1,94 @@
+:host ::ng-deep .app-sidebar {
+  position: fixed;
+  top: 71px;                                  
+  left: 0;
+  width: 250px;                                
+  height: calc(100vh - 71px);                  
+  overflow-y: auto;
+  transition: width 0.3s;
+  z-index: 900;                                
+}
+
+:host ::ng-deep .app-sidebar.collapsed {
+  width: 60px;                                 
+}
+
+
+nav {
+  width: 250px;
+  transition: width 0.3s;
+}
+nav.collapsed {
+  width: 60px;
+}
+
+.app-sidebar {
+  width: 250px;
+  background-color: #EFF3F6; 
+  height: 100vh;
+  overflow-y: auto;
+  transition: width 0.3s;
+}
+
+.app-sidebar.collapsed {
+  width: 60px;
+}
+
+
+.app-sidebar .hamburger {
+  padding: 28px 30px;
+  cursor: pointer;
+  color: #707070;
+}
+
+
+.app-sidebar .menu {
+  list-style: none;
+  padding: 0;
+  margin: 30px 0 0;
+}
+
+.app-sidebar .menu li {
+  margin-bottom: 4px;
+}
+
+.app-sidebar .menu a {
+  display: flex;
+  align-items: center;
+  padding: 14px 30px;
+  color: #2D3B48;
+  text-decoration: none;
+}
+
+.app-sidebar .menu a:hover {
+  background-color: #EAEAEA;
+}
+
+
+.app-sidebar .menu i {
+  font-size: 1.25rem; 
+}
+
+
+.app-sidebar .menu .label {
+  margin-left: 15px;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  transition: opacity 0.2s;
+}
+
+.app-sidebar.collapsed .menu .label {
+  opacity: 0;          
+  width: 0;
+  overflow: hidden;
+}
+
+.menu a.active {
+  background-color: #E0E4F7;   
+  color: #4558BE;              
+}
+
+.menu a.active i,
+.menu a.active .label {
+  color: #4558BE;              
+}

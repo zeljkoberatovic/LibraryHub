@@ -1,0 +1,65 @@
+<nav class="app-sidebar" [class.collapsed]="collapsed">
+
+  <div class="hamburger" (click)="onHamburgerClick()">
+    <i class="fas fa-bars"></i>
+  </div>
+
+  
+  <ul class="menu">
+    <!-- Dashboard -->
+    <li>
+      <a routerLink="/dashboard" routerLinkActive="active">
+        <i class="fas fa-tachometer-alt"></i>
+        <span class="label">Dashboard</span>
+      </a>
+    </li>
+
+    <!-- Librarians -->
+    <li>
+      <a routerLink="/bibliotekari" routerLinkActive="active">
+        <i class="far fa-address-book"></i>
+        <span class="label">Bibliotekari</span>
+      </a>
+    </li>
+
+    <!-- Students -->
+    <li>
+      <a routerLink="/ucenici" routerLinkActive="active">
+        <i class="fas fa-users"></i>
+        <span class="label">Učenici</span>
+      </a>
+    </li>
+
+    <!-- Books -->
+    <li>
+      <a routerLink="/knjige" routerLinkActive="active">
+        <i class="far fa-copy"></i>
+        <span class="label">Knjige</span>
+      </a>
+    </li>
+
+    <!-- Authors -->
+    <li>
+      <a routerLink="/autori" routerLinkActive="active">
+        <i class="far fa-user"></i>
+        <span class="label">Autori</span>
+      </a>
+    </li>
+
+    <!-- Issuing -->
+    <li>
+      <a routerLink="/izdavanje" routerLinkActive="active">
+        <i class="fas fa-exchange-alt"></i>
+        <span class="label">Izdavanje knjiga</span>
+      </a>
+    </li>
+
+    <!-- Settings -->
+    <li>
+      <a routerLink="/settings" routerLinkActive="active">
+        <i class="fas fa-cog"></i>
+        <span class="label">Settings</span>
+      </a>
+    </li>
+  </ul>
+</nav>
