@@ -1,14 +1,15 @@
 import { Component } from '@angular/core';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-header',
-  standalone: false,
   templateUrl: './header.component.html',
-  styleUrl: './header.component.css'
+  styleUrls: ['./header.component.css'],
+  imports: [NgIf],
 })
 export class HeaderComponent {
-     showCreateMenu = false;
-    toggleCreate() {
+  showCreateMenu = false;
+  toggleCreate() {
     this.showCreateMenu = !this.showCreateMenu;
-    }
+  }
 }
