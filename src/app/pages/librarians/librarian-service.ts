@@ -7,7 +7,7 @@ const apiUrl = "https://cortex-api.fabrika.me";
 @Injectable({
   providedIn: 'root'
 })
-export class Librarians {
+export class LibrarianService {
 
   constructor(private http: HttpClient) {}
 

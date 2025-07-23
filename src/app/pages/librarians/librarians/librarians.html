@@ -1,1 +1,40 @@
-<p>librarians works!</p>
+<div class="container">
+  <div class="header">
+    <h2>Bibliotekari</h2>
+  </div>
+
+  <div class="toolbar">
+    <button class="add-button" routerLink="/noviBibliotekar">+ Novi bibliotekar</button>
+    <div class="search-box">
+      <input type="text" placeholder="Search..." [(ngModel)]="searchText" />
+    </div>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th></th>
+        <th (click)="sortByName()" style="cursor: pointer;">
+        Ime i prezime
+        <span [ngClass]="sortDirection === 'asc' ? 'arrow down' : 'arrow up'"></span>
+        </th>
+
+        <th>Email</th>
+        <th>Tip korisnika</th>
+        <th>Zadnji pristup sistemu</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let librarian of filterLibrarians()">
+        <td><img [src]="librarian.picture_url || 'assets/default-user.png'" class="avatar" /></td>
+        <td>{{ librarian.name }}</td>
+        <td>{{ librarian.email }}</td>
+        <td>Bibliotekar</td>
+        <td>{{ librarian.last_login || 'Nije se nikad ulogovao' }}</td>
+        <td><span class="menu-icon">⋮</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
