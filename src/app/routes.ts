@@ -2,6 +2,7 @@ import { Route } from '@angular/router';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { Librarians } from './pages/librarians/librarians/librarians';
 import { NewLibrarian } from './pages/librarians/new-librarian/new-librarian';
+import { LibrarianProfile } from './pages/librarians/librarian-profile/librarian-profile';
 // import other components…
 
 export const routes: Route[] = [
@@ -9,5 +10,6 @@ export const routes: Route[] = [
   { path: 'dashboard', component: DashboardComponent },
   { path: 'bibliotekari', component: Librarians },
   { path: 'noviBibliotekar', component: NewLibrarian },
+  { path: 'bibliotekari/:id', component: LibrarianProfile },
   // …others…
 ];

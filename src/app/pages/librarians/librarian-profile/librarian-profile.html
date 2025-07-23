@@ -1,1 +1,59 @@
-<p>librarian-profile works!</p>
+<div class="profile-container" *ngIf="!loading && librarian; else loadingTpl">
+    <h1>{{ librarian.fullName || librarian.name }}</h1>
+    <nav>
+      <a routerLink="/bibliotekari">Svi bibliotekari</a>
+      <span *ngIf="librarian.id">/ ID-{{ librarian.id }}</span>
+    </nav>
+    <div class="profile-header">
+      <div class="profile-info">
+        <div class="profile-row">
+          <span class="label">Ime i prezime</span>
+          <span class="value">{{ librarian.fullName || librarian.name }}</span>
+        </div>
+        <div class="profile-row">
+          <span class="label">Tip korisnika</span>
+          <span class="value">Bibliotekar</span>
+        </div>
+        <div class="profile-row">
+          <span class="label">JMBG</span>
+          <span class="value">{{ librarian.jmbg }}</span>
+        </div>
+        <div class="profile-row">
+          <span class="label">Email</span>
+          <span class="value email">
+            <a [href]="'mailto:' + librarian.email">{{ librarian.email }}</a>
+          </span>
+        </div>
+        <div class="profile-row">
+          <span class="label">Korisničko ime</span>
+          <span class="value">{{ librarian.username }}</span>
+        </div>
+        <div class="profile-row" *ngIf="librarian.loginCount">
+          <span class="label">Broj logovanja</span>
+          <span class="value">{{ librarian.loginCount }}</span>
+        </div>
+        <div class="profile-row" *ngIf="librarian.lastLogin">
+          <span class="label">Poslednji put logovan/a</span>
+          <span class="value">{{ librarian.lastLogin | date:'short' }}</span>
+        </div>
+      </div>
+      <div class="profile-photo">
+        <img [src]="librarian.photoUrl || 'https://via.placeholder.com/220x220?text=No+Photo'" alt="Profilna slika" />
+      </div>
+    </div>
+    <div class="profile-actions">
+      <button class="action" title="Resetuj šifru">
+        <span class="material-icons">lock_reset</span> Resetuj šifru
+      </button>
+      <button class="action" title="Izmeni podatke">
+        <span class="material-icons">edit</span> Izmeni podatke
+      </button>
+      <button class="action more" title="Više opcija">
+        <span class="material-icons">more_vert</span>
+      </button>
+    </div>
+  </div>
+  <ng-template #loadingTpl>
+    <div class="loading">Učitavanje...</div>
+    <div *ngIf="error" class="error">{{ error }}</div>
+  </ng-template>

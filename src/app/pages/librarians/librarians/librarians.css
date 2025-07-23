@@ -79,4 +79,54 @@ th, td {
   border-top: 6px solid #333;
 }
 
+.actions-cell {
+  position: relative;
+}
+
+.menu-wrapper {
+  display: inline-block;
+  position: relative;
+}
+
+.menu-icon {
+  cursor: pointer;
+  font-size: 22px;
+  user-select: none;
+  padding: 4px 8px;
+  border-radius: 50%;
+  transition: background 0.2s;
+}
+
+.menu-icon:hover {
+  background: #f0f0f0;
+}
+
+.menu {
+  position: absolute;
+  right: 0;
+  top: 28px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  z-index: 10;
+  min-width: 160px;
+  display: flex;
+  flex-direction: column;
+}
+
+.menu button {
+  background: none;
+  border: none;
+  text-align: left;
+  padding: 10px 16px;
+  cursor: pointer;
+  font-size: 15px;
+  transition: background 0.2s;
+}
+
+.menu button:hover {
+  background: #f0f4f8;
+}
+
 
