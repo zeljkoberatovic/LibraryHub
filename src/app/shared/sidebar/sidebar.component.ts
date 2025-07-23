@@ -7,6 +7,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
     imports: [RouterLink, RouterLinkActive],
 })
 export class SidebarComponent {
+  
   @Input() collapsed = false;
   @Output() toggle = new EventEmitter<void>();
 

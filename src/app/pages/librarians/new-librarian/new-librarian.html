@@ -1,1 +1,60 @@
-<p>new-librarian works!</p>
+<div class="new-librarian-container">
+  <h1>Novi bibliotekar</h1>
+  <nav>
+    <a routerLink="/bibliotekari">Svi bibliotekari</a> / <a routerLink="/noviBibliotekar">Novi bibliotekar</a>
+  </nav>
+  <form [formGroup]="librarianForm" (ngSubmit)="onSubmit()">
+    <div class="form-content">
+      <div class="form-left">
+        <label>
+          Ime i prezime *
+          <input formControlName="fullName" type="text" required />
+        </label>
+        <label>
+          Tip korisnika
+          <select formControlName="userType">
+            <option value="Bibliotekar">Bibliotekar</option>
+          </select>
+        </label>
+        <label>
+          JMBG *
+          <input formControlName="jmbg" type="text" required />
+        </label>
+        <label>
+          E-mail *
+          <input formControlName="email" type="email" required />
+        </label>
+        <label>
+          Korisničko ime *
+          <input formControlName="username" type="text" required />
+        </label>
+        <label>
+          Šifra *
+          <input formControlName="password" type="password" required />
+        </label>
+        <label>
+          Ponovi šifru *
+          <input formControlName="confirmPassword" type="password" required />
+        </label>
+      </div>
+      <div class="form-right">
+        <div class="photo-upload" (click)="fileInput.click()">
+          <input #fileInput type="file" (change)="onFileSelected($event)" hidden />
+          <ng-container *ngIf="photoPreview; else addPhoto">
+            <img [src]="photoPreview" alt="Preview" />
+          </ng-container>
+          <ng-template #addPhoto>
+            <div class="add-photo-placeholder">
+              <span class="material-icons">image</span>
+              <p>Add photo</p>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+    <div class="form-actions">
+      <button type="button" class="cancel" (click)="onCancel()">Ponisti</button>
+      <button type="submit" class="save" [disabled]="librarianForm.invalid">Sacuvaj</button>
+    </div>
+  </form>
+</div>
