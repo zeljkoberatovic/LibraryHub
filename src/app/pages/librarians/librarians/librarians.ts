@@ -1,77 +1,48 @@
-import { Component } from '@angular/core';
-import { LibrarianService } from '../librarian-service';
-import { FormsModule } from '@angular/forms';
+import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+
+import { LibrarianService } from '../../../services/librarian/librarian';
+import { User } from '../../../models/user.model';
 
 @Component({
-  selector: 'app-librarians',
-  imports: [FormsModule, CommonModule, RouterModule],
+  selector: 'app-bibliotekari',
   standalone: true,
-  templateUrl: './librarians.html',
-  styleUrl: './librarians.css'
+  imports: [CommonModule, FormsModule],
+  templateUrl: './librarians.html'
 })
-export class Librarians {
+export class Librarians implements OnInit {
+  private librarianService = inject(LibrarianService);
+  private cdr = inject(ChangeDetectorRef);
 
-  librarians: any[] = [];
-  searchText: string = '';
+  librarians: User[] = [];
+  loading = true;
   sortDirection: 'asc' | 'desc' = 'asc';
-  openedMenuIndex: number | null = null;
 
-  constructor(private service: LibrarianService,
-    private router: Router
-  ) {}
-
-  ngOnInit(): void {
-    this.fetchLibrarians();
-  }
-
-  fetchLibrarians(): void {
-  this.service.getAllLibrarians().subscribe({
-    next: (response) => {
-      this.librarians = response?.data || [];
-    },
-    error: (err) => {
-      console.error('Error loading librarians:', err);
-    }
-  });
+  ngOnInit() {
+    this.librarianService.getAllLibrarians().subscribe({
+      next: users => {
+        console.log('Bibliotekari:', users);
+        this.librarians = users;  // sada imamo niz korisnika direktno
+        this.loading = false;
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.loading = false;
+      }
+    });
   }
 
-  filterLibrarians(): any[] {
-    return this.librarians.filter(l => 
-      l.name.toLowerCase().includes(this.searchText.toLowerCase()) ||
-      l.email.toLowerCase().includes(this.searchText.toLowerCase())
-    );
+  filterLibrarians(): User[] {
+    // Sortiraj bibliotekare po imenu u izabranom pravcu
+    return this.librarians.sort((a, b) => {
+      const nameA = `${a.first_name} ${a.last_name}`.toLowerCase();
+      const nameB = `${b.first_name} ${b.last_name}`.toLowerCase();
+      return this.sortDirection === 'asc' ? nameA.localeCompare(nameB) : nameB.localeCompare(nameA);
+    });
   }
 
-  sortByName(): void {
-  const direction = this.sortDirection === 'asc' ? 1 : -1;
-  this.librarians.sort((a, b) => {
-    return a.name.localeCompare(b.name) * direction;
-  });
-  this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
-  }
-
-  toggleMenu(index: number) {
-    this.openedMenuIndex = this.openedMenuIndex === index ? null : index;
-  }
-  
-  goToDetails(id: number) {
-    this.router.navigate(['/bibliotekari', id]);
-    this.openedMenuIndex = null;
-  }
-  
-  goToEdit(id: number) {
-    this.router.navigate(['/bibliotekari/izmjena', id]);
-    this.openedMenuIndex = null;
-  }
-  
-  deleteLibrarian(id: number) {
-    if (confirm('Da li ste sigurni da želite da obrišete korisnika?')) {
-      this.service.deleteLibrarian(id).subscribe(() => {
-        this.fetchLibrarians();
-      });
-    }
-    this.openedMenuIndex = null;
+  sortByName() {
+    this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
   }
 }
