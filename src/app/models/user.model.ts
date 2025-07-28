@@ -7,7 +7,7 @@ export interface User {
   email: string;
   jmbg: string;
   role_id: number;
-  profile_picture?: string;
+  profile_picture?: string | null;
   last_login?: string;  
   created_at?: string; 
 }

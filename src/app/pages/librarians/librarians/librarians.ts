@@ -114,17 +114,25 @@ export class Librarians implements OnInit, OnDestroy {
   }
 
   showDetails(librarian: User) {
-    console.log('Detalji korisnika:', librarian);
+    this.router.navigate(['/bibliotekari', librarian.id]);
     this.openMenuIndex = null;
   }
 
   editUser(librarian: User) {
-    console.log('Izmjena korisnika:', librarian);
+    this.router.navigate(['/bibliotekari', librarian.id, 'izmjena']);
     this.openMenuIndex = null;
   }
 
   deleteUser(librarian: User) {
-    console.log('Brisanje korisnika:', librarian);
-    this.openMenuIndex = null;
+   if (
+    librarian.id !== undefined &&
+    confirm(`Da li ste sigurni da želite da izbrišete korisnika ${librarian.first_name} ${librarian.last_name}?`)
+  ) {
+    this.librarianService.deleteLibrarian(librarian.id).subscribe(() => {
+      this.librarians = this.librarians.filter(l => l.id !== librarian.id);
+    });
   }
+  this.openMenuIndex = null;
+}
+
 }

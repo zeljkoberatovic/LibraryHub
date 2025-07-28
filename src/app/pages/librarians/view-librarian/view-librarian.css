@@ -1,0 +1,84 @@
+/* Glavni kontejner kartice za detalje */
+.details-card {
+  max-width: 600px;
+  margin: 30px auto;
+  padding: 30px 40px;
+  background-color: #fff;
+  border: 1px solid #34495e;      /* tamno-plava/siva ivica */
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #2c3e50;                 /* tamno-plava/siva boja teksta */
+}
+
+/* Naslov kartice */
+.details-card h2 {
+  margin-bottom: 25px;
+  font-weight: 700;
+  color: #2c3e50;
+  font-size: 28px;
+}
+
+/* Profilna slika */
+.profile-picture {
+  width: 140px;
+  height: 140px;
+  border-radius: 10px;
+  border: 1px solid #34495e;
+  object-fit: cover;
+  margin-bottom: 20px;
+}
+
+/* Raspored slike i podataka */
+.details-content {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+/* Deo sa informacijama korisnika */
+.details-info {
+  flex: 1 1 300px;
+}
+
+/* Polja sa podacima */
+.details-field {
+  margin-bottom: 18px;
+}
+
+.details-label {
+  display: block;
+  font-weight: 600;
+  font-size: 15px;
+  margin-bottom: 5px;
+  color: #34495e; /* tamnosiva/plava */
+}
+
+.details-value {
+  font-size: 16px;
+  font-weight: 400;
+  color: #4b5d6b;
+  word-wrap: break-word;
+}
+
+/* Dugme nazad */
+.go-back-button {
+  margin-top: 30px;
+  padding: 8px 20px;
+  background-color: #2c3e50;    /* tamno-plava */
+  color: #FFD700;               /* zlatna */
+  border: 1px solid #34495e;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+.go-back-button:hover {
+  background-color: #34495e;
+  color: #ffcc00;
+}
+
+

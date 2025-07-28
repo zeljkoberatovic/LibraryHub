@@ -11,6 +11,13 @@ export const routes: Route[] = [
   { path: 'dashboard', component: DashboardComponent },
   { path: 'bibliotekari', component: Librarians },
   { path: 'noviBibliotekar', component: NewLibrarian },
+  { path: 'bibliotekari/:id', loadComponent: () => import('./pages/librarians/view-librarian/view-librarian').then(m => m.ViewLibrarian) },
+{
+  path: 'bibliotekari/:id/izmjena',
+  loadComponent: () =>
+    import('./pages/librarians/edit-librarian/edit-librarian').then(m => m.EditLibrarian)
+}
+
  
  
   // …others…

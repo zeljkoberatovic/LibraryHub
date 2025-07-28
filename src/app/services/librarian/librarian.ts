@@ -19,8 +19,11 @@ export class LibrarianService {
   }
 
   getLibrarian(id: number): Observable<User> {
-    return this.http.get<User>(`${this.baseUrl}/${id}`);
-  }
+  return this.http.get<{ status: string, data: User }>(`${this.baseUrl}/${id}`).pipe(
+    map(res => res.data)
+  );
+}
+
 
   createLibrarian(librarian: User): Observable<User> {
     return this.http.post<User>(this.baseUrl, { ...librarian, role_id: 2 });
