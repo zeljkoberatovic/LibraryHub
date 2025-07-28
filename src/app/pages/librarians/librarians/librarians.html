@@ -1,11 +1,15 @@
 <div class="container">
-  <div class="header">
-    <h2>Bibliotekari</h2>
-  </div>
+  <div class="header-with-search">
+  <h2>Bibliotekari</h2>
+  <input
+    type="text"
+    placeholder="Pretraži..."
+    [(ngModel)]="searchTerm"
+    class="search-input"
+  />
+</div>
 
-  <div class="toolbar">
-    <button class="add-button" routerLink="/noviBibliotekar">+ Novi bibliotekar</button>
-  </div>
+  <button class="add-button" (click)="goToNewLibrarian()">+ Novi bibliotekar</button>
 
   <table>
     <thead>
@@ -21,9 +25,16 @@
         <th></th>
       </tr>
     </thead>
+
     <tbody>
       <tr *ngFor="let librarian of filterLibrarians()">
-        <td><img [src]="librarian.profile_picture || 'assets/default-user.png'" class="avatar" /></td>
+        <td>
+          <img
+            [src]="librarian.profile_picture || 'assets/default-user.png'"
+            alt="Profilna slika"
+            class="avatar"
+          />
+        </td>
         <td>{{ librarian.first_name }} {{ librarian.last_name }}</td>
         <td>{{ librarian.email }}</td>
         <td>Bibliotekar</td>

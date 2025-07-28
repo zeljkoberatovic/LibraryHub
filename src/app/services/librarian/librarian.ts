@@ -14,7 +14,7 @@ export class LibrarianService {
   getAllLibrarians(): Observable<User[]> {
     return this.http.get<{ data: { meta: any; data: User[] } }>(`${this.baseUrl}?role_id=2`)
       .pipe(
-        map(response => response.data.data)  //  samo niz korisnika
+        map(response => response.data.data)  //   niz korisnika
       );
   }
 
@@ -33,4 +33,11 @@ export class LibrarianService {
   deleteLibrarian(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }
+
+  uploadImage(id: number, file: File): Observable<any> {
+  const formData = new FormData();
+  formData.append('photo', file);
+  return this.http.post(`${this.baseUrl}/${id}/upload-picture`, formData);
+}
+
 }
