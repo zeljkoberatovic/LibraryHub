@@ -100,6 +100,65 @@ th, td {
   background-color: #3a4f62;
   box-shadow: 0 3px 6px rgba(58, 79, 98, 0.8);
 }
+.actions-cell {
+  position: relative;
+}
+
+.menu-icon {
+  cursor: pointer;
+  font-size: 22px;
+  user-select: none;
+  padding: 4px 8px;
+  border-radius: 50%;
+  transition: background 0.2s;
+}
+
+.menu-icon:hover {
+  background: #f0f0f0;
+}
+
+.menu {
+  position: absolute;
+  top: 28px;
+  right: 0;
+  background: #2c3e50; /* tamnosiva-plava nijansa */
+  border: 1px solid #f1c40f; /* zlatni/golden border */
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(241, 196, 15, 0.4); /* zlatni shadow */
+  display: flex;
+  flex-direction: column;
+  min-width: 200px; 
+  z-index: 1000;
+}
+
+.menu button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: none;
+  border: none;
+  padding: 10px 20px;
+  text-align: left;
+  cursor: pointer;
+  font-size: 14px;
+  color: #f1c40f; /* zlatna boja teksta */
+  transition: background 0.3s, color 0.3s;
+}
+
+.menu button .material-icons {
+  font-size: 18px;
+  color: #f1c40f; /* zlatna ikona */
+}
+
+.menu button:hover {
+  background: #34495e; /* malo svetlija tamna boja na hover */
+  color: #ffd700; /* svetlija zlatna na hover */
+}
+
+.menu button:hover .material-icons {
+  color: #ffd700;
+}
+
 
 
 

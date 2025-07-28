@@ -1,13 +1,13 @@
 <div class="container">
   <div class="header-with-search">
-  <h2>Bibliotekari</h2>
-  <input
-    type="text"
-    placeholder="Pretraži..."
-    [(ngModel)]="searchTerm"
-    class="search-input"
-  />
-</div>
+    <h2>Bibliotekari</h2>
+    <input
+      type="text"
+      placeholder="Pretraži..."
+      [(ngModel)]="searchTerm"
+      class="search-input"
+    />
+  </div>
 
   <button class="add-button" (click)="goToNewLibrarian()">+ Novi bibliotekar</button>
 
@@ -27,7 +27,7 @@
     </thead>
 
     <tbody>
-      <tr *ngFor="let librarian of filterLibrarians()">
+      <tr *ngFor="let librarian of pagedLibrarians; let i = index">
         <td>
           <img
             [src]="librarian.profile_picture || 'assets/default-user.png'"
@@ -39,8 +39,30 @@
         <td>{{ librarian.email }}</td>
         <td>Bibliotekar</td>
         <td>{{ librarian.last_login || 'Nikada' }}</td>
-        <td><span class="menu-icon">⋮</span></td>
+        <td class="actions-cell" style="position: relative;">
+          <span class="menu-icon" (click)="toggleMenu(i)">⋮</span>
+
+          <!-- Padajući meni -->
+          <div class="menu" *ngIf="openMenuIndex === i">
+            <button (click)="showDetails(librarian)">
+              <span class="material-icons" style="font-size:16px; vertical-align: middle;">info</span> Detalji korisnika
+            </button>
+            <button (click)="editUser(librarian)">
+              <span class="material-icons" style="font-size:16px; vertical-align: middle;">edit</span> Izmjeni korisnika
+            </button>
+            <button (click)="deleteUser(librarian)">
+              <span class="material-icons" style="font-size:16px; vertical-align: middle;">delete</span> Izbriši korisnika
+            </button>
+          </div>
+        </td>
       </tr>
     </tbody>
   </table>
+
+  <!-- reusable paginacija -->
+  <app-pagination
+    [totalPages]="totalPages"
+    [currentPage]="currentPage"
+    (pageChange)="onPageChange($event)"
+  ></app-pagination>
 </div>
