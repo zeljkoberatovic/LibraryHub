@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { FormBuilder, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
@@ -9,7 +9,7 @@ import { User } from '../../../models/user.model';
 @Component({
   selector: 'app-edit-librarian',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './edit-librarian.html',
   styleUrls: ['./edit-librarian.css']
 })
@@ -22,7 +22,6 @@ export class EditLibrarian implements OnInit {
   librarianId!: number;
   librarian?: User;
   selectedFile?: File;
-   filePreviewUrl: string | ArrayBuffer | null = null;
   errorMessage = '';
 
   form = this.fb.group({
@@ -34,26 +33,24 @@ export class EditLibrarian implements OnInit {
   });
 
   ngOnInit() {
-    this.librarianId = Number(this.route.snapshot.paramMap.get('id'));
-    this.loadLibrarian();
-  }
-
-  loadLibrarian() {
-    this.librarianService.getLibrarian(this.librarianId).subscribe({
-      next: librarian => {
-        this.librarian = librarian;
-        this.form.patchValue({
-          first_name: librarian.first_name,
-          last_name: librarian.last_name,
-          username: librarian.username,
-          email: librarian.email,
-          jmbg: librarian.jmbg,
-        });
-      },
-      error: () => {
-        this.errorMessage = 'Neuspjelo učitavanje podataka bibliotekara.';
-      }
-    });
+ 
+    const resolvedLibrarian = this.route.snapshot.data['librarian'] as User | null;
+     //console.log('Podaci iz resolvera:', resolvedLibrarian);
+    if (resolvedLibrarian) {
+      this.librarian = resolvedLibrarian;
+      this.librarianId = resolvedLibrarian.id!;
+      this.form.patchValue({
+        first_name: resolvedLibrarian.first_name,
+        last_name: resolvedLibrarian.last_name,
+        username: resolvedLibrarian.username,
+        email: resolvedLibrarian.email,
+        jmbg: resolvedLibrarian.jmbg,
+      });
+    } else {
+      this.errorMessage = 'Neuspjelo učitavanje podataka bibliotekara.';
+      
+      this.router.navigate(['/bibliotekari']);
+    }
   }
 
   onFileSelected(event: Event) {
@@ -68,7 +65,7 @@ export class EditLibrarian implements OnInit {
 
     const updateData = {
       ...this.form.value,
-      role_id: this.librarian?.role_id ?? 2 // fallback to 2 if not loaded, adjust as needed
+      role_id: this.librarian?.role_id ?? 2 // fallback ako nije učitan
     } as User;
 
     this.librarianService.updateLibrarian(this.librarianId, updateData).subscribe({

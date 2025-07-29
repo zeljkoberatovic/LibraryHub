@@ -2,6 +2,8 @@ import { Route } from '@angular/router';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
  
 
+import { librarianResolver } from '../app/resolvers/librarian/librarian.resolver'; 
+
 export const routes: Route[] = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
   {
@@ -18,11 +20,18 @@ export const routes: Route[] = [
   },
   {
     path: 'bibliotekari/:id',
-    loadComponent: () => import('./pages/librarians/view-librarian/view-librarian').then(m => m.ViewLibrarian)
+    loadComponent: () => import('./pages/librarians/view-librarian/view-librarian').then(m => m.ViewLibrarian),
+    resolve: {
+      librarian: librarianResolver
+    }
   },
   {
     path: 'bibliotekari/:id/izmjena',
-    loadComponent: () => import('./pages/librarians/edit-librarian/edit-librarian').then(m => m.EditLibrarian)
+    loadComponent: () => import('./pages/librarians/edit-librarian/edit-librarian').then(m => m.EditLibrarian),
+    resolve: {
+      librarian: librarianResolver
+    }
   }
 ];
+
 

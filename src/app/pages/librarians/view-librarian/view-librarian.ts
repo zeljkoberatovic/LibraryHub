@@ -1,7 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { LibrarianService } from '../../../services/librarian/librarian';
 import { User } from '../../../models/user.model';
 
 @Component({
@@ -13,22 +12,18 @@ import { User } from '../../../models/user.model';
 })
 export class ViewLibrarian implements OnInit {
   private route = inject(ActivatedRoute);
-  private librarianService = inject(LibrarianService);
   private router = inject(Router);
 
   librarian: User | null = null;
 
   ngOnInit(): void {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    if (id) {
-      this.librarianService.getLibrarian(id).subscribe({
-        next: res => {
-          this.librarian = res;
-        },
-        error: err => {
-          console.error('Greška pri dohvaćanju bibliotekara', err);
-        }
-      });
+    const resolvedLibrarian = this.route.snapshot.data['librarian'];
+     //console.log('Podaci iz resolvera:', resolvedLibrarian);
+    if (resolvedLibrarian) {
+      this.librarian = resolvedLibrarian;
+    } else {
+      alert('Bibliotekar nije pronađen.');
+      this.router.navigate(['/bibliotekari']);
     }
   }
 
