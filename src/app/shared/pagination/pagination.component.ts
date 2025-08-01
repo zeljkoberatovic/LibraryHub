@@ -12,7 +12,7 @@ import { CommonModule } from '@angular/common';
       <button (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages">Next</button>
     </nav>
   `,
-  styleUrls: ['./pagination.css']
+  styleUrls: ['./pagination.component.css']
 })
 export class PaginationComponent {
   @Input() totalPages = 1;

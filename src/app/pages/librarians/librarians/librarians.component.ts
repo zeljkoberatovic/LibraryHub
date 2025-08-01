@@ -4,13 +4,13 @@ import { FormsModule } from '@angular/forms';
 
 import { LibrarianService } from '../../../services/librarian/librarian';
 import { User } from '../../../models/user.model';
-import { Router } from '@angular/router';
-import { PaginationComponent } from '../../../shared/pagination/pagination';
+import { Router, RouterLink } from '@angular/router';
+import { PaginationComponent } from '../../../shared/pagination/pagination.component';
 
 @Component({
   selector: 'app-bibliotekari',
   standalone: true,
-  imports: [CommonModule, FormsModule, PaginationComponent],
+  imports: [CommonModule, FormsModule, PaginationComponent, RouterLink],
   templateUrl: './librarians.component.html',
   styleUrls: ['./librarians.component.css']
 })
