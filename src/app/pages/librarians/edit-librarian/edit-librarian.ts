@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 
 import { LibrarianService } from '../../../services/librarian/librarian';
 import { User } from '../../../models/user.model';
+import { catchError, map, of, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-edit-librarian',
@@ -68,27 +69,31 @@ export class EditLibrarian implements OnInit {
       role_id: this.librarian?.role_id ?? 2 // fallback ako nije učitan
     } as User;
 
-    this.librarianService.updateLibrarian(this.librarianId, updateData).subscribe({
-      next: () => {
-        if (this.selectedFile) {
-          this.librarianService.uploadImage(this.librarianId, this.selectedFile).subscribe({
-            next: () => {
+
+      this.librarianService.updateLibrarian(this.librarianId, updateData).pipe(
+        switchMap(() => {
+          if (this.selectedFile) {
+            return this.librarianService.uploadImage(this.librarianId, this.selectedFile).pipe(
+              map(() => true),
+              catchError(() => of(false))  // ako upload slike ne uspe, vratimo false
+            );
+          } else {
+            return of(true);  // nema slike za upload, tretiramo kao uspeh
+          }
+})
+        ).subscribe({
+          next: (imageUploaded) => {
+            if (imageUploaded) {
               alert('Bibliotekar uspješno ažuriran zajedno sa slikom.');
-              this.router.navigate(['/bibliotekari']);
-            },
-            error: () => {
+            } else {
               alert('Bibliotekar ažuriran, ali slika nije poslata.');
-              this.router.navigate(['/bibliotekari']);
             }
-          });
-        } else {
-          alert('Bibliotekar uspješno ažuriran.');
-          this.router.navigate(['/bibliotekari']);
-        }
-      },
-      error: () => {
-        this.errorMessage = 'Greška pri ažuriranju bibliotekara.';
-      }
-    });
+            this.router.navigate(['/bibliotekari']);
+          },
+          error: () => {
+            this.errorMessage = 'Greška pri ažuriranju bibliotekara.';
+          }
+        });
+
   }
 }

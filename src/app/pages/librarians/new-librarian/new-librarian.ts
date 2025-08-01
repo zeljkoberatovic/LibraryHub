@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { LibrarianService } from '../../../services/librarian/librarian';
 import { User } from '../../../models/user.model';
+import { map, of, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-new-librarian',
@@ -67,28 +68,29 @@ export class NewLibrarian {
       
     };
 
-    this.librarianService.createLibrarian(user).subscribe({
-      next: (createdUser) => {
-        if (this.selectedFile && createdUser.id) {
-          this.librarianService.uploadImage(createdUser.id, this.selectedFile).subscribe({
-            next: () => {
-              alert('Bibliotekar kreiran i slika uspešno uploadovana!');
-              this.router.navigate(['/bibliotekari']);
-            },
-            error: (err) => {
-              console.error('Greška pri uploadu slike:', err);
-              alert('Bibliotekar kreiran, ali slika nije uploadovana.');
-              this.router.navigate(['/bibliotekari']);
-            }
-          });
-        } else {
-          alert('Bibliotekar uspešno kreiran!');
-          this.router.navigate(['/bibliotekari']);
+    this.librarianService.createLibrarian(user).pipe(
+        switchMap(createdUser => {
+          if (this.selectedFile && createdUser.id) {
+            return this.librarianService.uploadImage(createdUser.id, this.selectedFile).pipe(
+              map(() => ({ createdUser, imageUploaded: true }))
+            );
+      } else {
+        // Ako nema slike za upload, samo prosledi kreiranog korisnika
+        return of({ createdUser, imageUploaded: false });
+      }
+    })
+      ).subscribe({
+          next: ({ createdUser, imageUploaded }) => {
+            if (imageUploaded) {
+                alert('Bibliotekar kreiran i slika uspešno uploadovana!');
+          } else {
+                alert('Bibliotekar uspešno kreiran!');
         }
+              this.router.navigate(['/bibliotekari']);
       },
-      error: (error) => {
-        console.error('Greška prilikom kreiranja bibliotekara:', error);
-        alert('Došlo je do greške prilikom kreiranja bibliotekara.');
+                error: (error) => {
+                console.error('Greška prilikom kreiranja bibliotekara ili uploadu slike:', error);
+                alert('Došlo je do greške prilikom kreiranja bibliotekara ili uploadu slike.');
       }
     });
   }

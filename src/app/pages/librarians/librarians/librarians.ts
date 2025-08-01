@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, inject, OnInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -14,9 +14,8 @@ import { PaginationComponent } from '../../../shared/pagination/pagination';
   templateUrl: './librarians.html',
   styleUrls: ['./librarians.css']
 })
-export class Librarians implements OnInit, OnDestroy {
+export class Librarians implements OnInit {
   private librarianService = inject(LibrarianService);
-  private cdr = inject(ChangeDetectorRef);
   private router = inject(Router);
 
   librarians: User[] = [];
@@ -31,33 +30,26 @@ export class Librarians implements OnInit, OnDestroy {
   itemsPerPage = 5;
   totalPages = 1;
 
-  private handleDocumentClick = (event: MouseEvent) => {
-    const target = event.target as HTMLElement;
-    if (!target.closest('.actions-cell')) {
-      this.openMenuIndex = null;
-      this.cdr.detectChanges();
-    }
-  };
-
-  ngOnInit() {
+  ngOnInit(): void {
     this.librarianService.getAllLibrarians().subscribe({
       next: users => {
-        console.log('Bibliotekari:', users);
+        //console.log('Bibliotekari:', users);
         this.librarians = users;
         this.updatePagination();
         this.loading = false;
-        this.cdr.detectChanges();
       },
       error: () => {
         this.loading = false;
       }
     });
-
-    document.addEventListener('click', this.handleDocumentClick);
   }
 
-  ngOnDestroy() {
-    document.removeEventListener('click', this.handleDocumentClick);
+  @HostListener('document:click', ['$event'])
+  handleDocumentClick(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+    if (!target.closest('.actions-cell')) {
+      this.openMenuIndex = null;
+    }
   }
 
   filterLibrarians(): User[] {
@@ -78,7 +70,6 @@ export class Librarians implements OnInit, OnDestroy {
     });
   }
 
-  // Vrati samo bibliotekare za trenutnu stranicu
   get pagedLibrarians(): User[] {
     const filtered = this.filterLibrarians();
     this.totalPages = Math.ceil(filtered.length / this.itemsPerPage) || 1;
@@ -87,52 +78,47 @@ export class Librarians implements OnInit, OnDestroy {
     return filtered.slice(start, start + this.itemsPerPage);
   }
 
-  updatePagination() {
+  updatePagination(): void {
     const filteredLength = this.filterLibrarians().length;
     this.totalPages = Math.ceil(filteredLength / this.itemsPerPage) || 1;
     if (this.currentPage > this.totalPages) this.currentPage = this.totalPages;
   }
 
-  onPageChange(page: number) {
+  onPageChange(page: number): void {
     this.currentPage = page;
   }
 
-  sortByName() {
+  sortByName(): void {
     this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
   }
 
-  goToNewLibrarian() {
+  goToNewLibrarian(): void {
     this.router.navigate(['/noviBibliotekar']);
   }
 
-  toggleMenu(index: number) {
-    if (this.openMenuIndex === index) {
-      this.openMenuIndex = null;
-    } else {
-      this.openMenuIndex = index;
-    }
+  toggleMenu(index: number): void {
+    this.openMenuIndex = this.openMenuIndex === index ? null : index;
   }
 
-  showDetails(librarian: User) {
+  showDetails(librarian: User): void {
     this.router.navigate(['/bibliotekari', librarian.id]);
     this.openMenuIndex = null;
   }
 
-  editUser(librarian: User) {
+  editUser(librarian: User): void {
     this.router.navigate(['/bibliotekari', librarian.id, 'izmjena']);
     this.openMenuIndex = null;
   }
 
-  deleteUser(librarian: User) {
-   if (
-    librarian.id !== undefined &&
-    confirm(`Da li ste sigurni da želite da izbrišete korisnika ${librarian.first_name} ${librarian.last_name}?`)
-  ) {
-    this.librarianService.deleteLibrarian(librarian.id).subscribe(() => {
-      this.librarians = this.librarians.filter(l => l.id !== librarian.id);
-    });
+  deleteUser(librarian: User): void {
+    if (
+      librarian.id !== undefined &&
+      confirm(`Da li ste sigurni da želite da izbrišete korisnika ${librarian.first_name} ${librarian.last_name}?`)
+    ) {
+      this.librarianService.deleteLibrarian(librarian.id).subscribe(() => {
+        this.librarians = this.librarians.filter(l => l.id !== librarian.id);
+      });
+    }
+    this.openMenuIndex = null;
   }
-  this.openMenuIndex = null;
-}
-
 }
