@@ -10,8 +10,8 @@ import { map, of, switchMap } from 'rxjs';
   selector: 'app-new-librarian',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterLink, FormsModule],
-  templateUrl: './new-librarian.html',
-  styleUrls: ['./new-librarian.css']
+  templateUrl: './new-librarian.component.html',
+  styleUrls: ['./new-librarian.component.css']
 })
 export class NewLibrarian {
   private fb = inject(FormBuilder);

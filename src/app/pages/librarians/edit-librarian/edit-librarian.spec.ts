@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EditLibrarian } from './edit-librarian';
+import { EditLibrarian } from './edit-librarian.component';
 
 describe('EditLibrarian', () => {
   let component: EditLibrarian;

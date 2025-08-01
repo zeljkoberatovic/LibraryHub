@@ -11,8 +11,8 @@ import { catchError, map, of, switchMap } from 'rxjs';
   selector: 'app-edit-librarian',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './edit-librarian.html',
-  styleUrls: ['./edit-librarian.css']
+  templateUrl: './edit-librarian.component.html',
+  styleUrls: ['./edit-librarian.component.css']
 })
 export class EditLibrarian implements OnInit {
   private librarianService = inject(LibrarianService);

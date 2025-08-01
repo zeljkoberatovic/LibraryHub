@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Librarians } from './librarians';
+import { Librarians } from './librarians.component';
 
 describe('Librarians', () => {
   let component: Librarians;

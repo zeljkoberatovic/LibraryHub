@@ -11,8 +11,8 @@ import { PaginationComponent } from '../../../shared/pagination/pagination';
   selector: 'app-bibliotekari',
   standalone: true,
   imports: [CommonModule, FormsModule, PaginationComponent],
-  templateUrl: './librarians.html',
-  styleUrls: ['./librarians.css']
+  templateUrl: './librarians.component.html',
+  styleUrls: ['./librarians.component.css']
 })
 export class Librarians implements OnInit {
   private librarianService = inject(LibrarianService);

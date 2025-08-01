@@ -7,8 +7,8 @@ import { User } from '../../../models/user.model';
   selector: 'app-view-librarian',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './view-librarian.html',
-  styleUrls: ['./view-librarian.css']
+  templateUrl: './view-librarian.component.html',
+  styleUrls: ['./view-librarian.component.css']
 })
 export class ViewLibrarian implements OnInit {
   private route = inject(ActivatedRoute);
