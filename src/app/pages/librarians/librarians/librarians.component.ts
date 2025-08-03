@@ -2,7 +2,7 @@ import { Component, inject, OnInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-import { LibrarianService } from '../../../services/librarian/librarian';
+import { LibrarianService } from '../../../services/librarian/librarian.service';
 import { User } from '../../../models/user.model';
 import { Router, RouterLink } from '@angular/router';
 import { PaginationComponent } from '../../../shared/pagination/pagination.component';
@@ -27,7 +27,7 @@ export class Librarians implements OnInit {
 
   // Pagination
   currentPage = 1;
-  itemsPerPage = 5;
+  itemsPerPage = 8;
   totalPages = 1;
 
   ngOnInit(): void {

@@ -11,9 +11,11 @@ import { authInterceptor } from './app/auth-interceptor';
 bootstrapApplication(App, {
   providers: [
     provideRouter(routes),
-    provideHttpClient(),
     provideBrowserGlobalErrorListeners(),
-    provideHttpClient(withFetch()),
-    provideHttpClient(withInterceptors([authInterceptor])),
-  ]
+    provideHttpClient(
+      withFetch(),
+      withInterceptors([authInterceptor])
+    ),
+  ],
 });
+

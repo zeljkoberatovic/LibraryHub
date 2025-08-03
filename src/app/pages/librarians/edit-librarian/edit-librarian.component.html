@@ -5,7 +5,7 @@
     <!-- Slika sa leve strane -->
     <div class="profile-picture-section">
       <p *ngIf="librarian?.profile_picture || selectedFile">Profilna slika:</p>
-      
+
       <img
         *ngIf="selectedFile; else currentPicture"
         [src]=""
@@ -29,47 +29,31 @@
       <div class="form-group">
         <label for="first_name">Ime</label>
         <input id="first_name" formControlName="first_name" />
-        <small *ngIf="form.controls.first_name.invalid && form.controls.first_name.touched" class="error">
-          Ime je obavezno i mora imati najmanje 2 karaktera.
-        </small>
       </div>
 
       <div class="form-group">
         <label for="last_name">Prezime</label>
         <input id="last_name" formControlName="last_name" />
-        <small *ngIf="form.controls.last_name.invalid && form.controls.last_name.touched" class="error">
-          Prezime je obavezno i mora imati najmanje 2 karaktera.
-        </small>
       </div>
 
       <div class="form-group">
         <label for="username">Korisničko ime</label>
         <input id="username" formControlName="username" />
-        <small *ngIf="form.controls.username.invalid && form.controls.username.touched" class="error">
-          Korisničko ime je obavezno i mora imati najmanje 4 karaktera.
-        </small>
       </div>
 
       <div class="form-group">
         <label for="email">Email</label>
         <input id="email" type="email" formControlName="email" />
-        <small *ngIf="form.controls.email.invalid && form.controls.email.touched" class="error">
-          Unesite validnu email adresu.
-        </small>
       </div>
 
-        <div class="form-group">
-            <label>Tip korisnika</label>
-            <input type="text" [value]="'Bibliotekar'" disabled class="readonly-input" />
-        </div>
-
+      <div class="form-group">
+        <label>Tip korisnika</label>
+        <input type="text" [value]="'Bibliotekar'" disabled class="readonly-input" />
+      </div>
 
       <div class="form-group">
         <label for="jmbg">JMBG</label>
         <input id="jmbg" formControlName="jmbg" />
-        <small *ngIf="form.controls.jmbg.invalid && form.controls.jmbg.touched" class="error">
-          JMBG mora imati tačno 13 cifara.
-        </small>
       </div>
 
       <div class="form-group">

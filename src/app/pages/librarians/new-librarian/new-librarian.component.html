@@ -1,46 +1,45 @@
 <div class="new-librarian-container">
   <h2>Novi bibliotekar</h2>
   <nav>
-  <a routerLink="/bibliotekari" >Svi bibliotekari</a> /
-  <a routerLink="/noviBibliotekar" >Novi bibliotekar</a>
-</nav>
-
+    <a routerLink="/bibliotekari">Svi bibliotekari</a> /
+    <a routerLink="/noviBibliotekar">Novi bibliotekar</a>
+  </nav>
 
   <form [formGroup]="librarianForm" (ngSubmit)="onSubmit()">
     <div class="form-content">
       <div class="form-left">
         <label>
-          Ime *
+          Ime
           <input formControlName="first_name" type="text" required />
         </label>
 
         <label>
-          Prezime *
+          Prezime
           <input formControlName="last_name" type="text" required />
         </label>
 
         <label>
-          JMBG *
+          JMBG
           <input formControlName="jmbg" type="text" required />
         </label>
 
         <label>
-          E-mail *
+          E-mail
           <input formControlName="email" type="email" required />
         </label>
 
         <label>
-          Korisničko ime *
+          Korisničko ime
           <input formControlName="username" type="text" required />
         </label>
 
         <label>
-          Šifra *
+          Šifra
           <input formControlName="password" type="password" required />
         </label>
 
         <label>
-          Ponovi šifru *
+          Ponovi šifru
           <input formControlName="confirmPassword" type="password" required />
         </label>
       </div>
