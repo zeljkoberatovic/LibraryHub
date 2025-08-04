@@ -36,22 +36,22 @@ export const routes: Route[] = [
 
    {
     path: 'students',
-    loadComponent: () => import('./pages/student/students/students').then(m => m.Students)
+    loadComponent: () => import('./pages/student/students/students.component').then(m => m.Students)
   },
   {
     path: 'students/new',
-    loadComponent: () => import('./pages/student/new-student/new-student').then(m => m.NewStudent)
+    loadComponent: () => import('./pages/student/new-student/new-student.component').then(m => m.NewStudent)
   },
   {
     path: 'students/:id',
-    loadComponent: () => import('./pages/student/view-student/view-student').then(m => m.ViewStudent),
+    loadComponent: () => import('./pages/student/view-student/view-student.component').then(m => m.ViewStudent),
     resolve: {
       student: studentResolver
     }
   },
   {
     path: 'students/:id/edit',
-    loadComponent: () => import('./pages/student/edit-student/edit-student').then(m => m.EditStudent),
+    loadComponent: () => import('./pages/student/edit-student/edit-student.component').then(m => m.EditStudent),
     resolve: {
       student: studentResolver
     }

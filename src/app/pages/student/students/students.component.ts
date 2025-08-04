@@ -2,25 +2,25 @@ import { Component, inject, OnInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-import { LibrarianService } from '../../../services/librarian/librarian.service';
+import { StudentService } from '../../../services/student/student.service';
 import { User } from '../../../models/user.model';
 import { Router, RouterLink } from '@angular/router';
 import { PaginationComponent } from '../../../shared/pagination/pagination.component';
 import { PaginationService } from '../../../shared/pagination/pagination.service';
 
 @Component({
-  selector: 'app-bibliotekari',
+  selector: 'app-students',
   standalone: true,
   imports: [CommonModule, FormsModule, PaginationComponent, RouterLink],
-  templateUrl: './librarians.component.html',
-  styleUrls: ['./librarians.component.css']
+  templateUrl: './students.component.html',
+  styleUrls: ['./students.component.css']
 })
-export class Librarians implements OnInit {
-  private librarianService = inject(LibrarianService);
+export class Students implements OnInit {
+  private studentService = inject(StudentService);
   private router = inject(Router);
   pagination = inject(PaginationService);
 
-  librarians: User[] = [];
+  students: User[] = [];
   loading = true;
   sortDirection: 'asc' | 'desc' = 'asc';
 
@@ -28,9 +28,9 @@ export class Librarians implements OnInit {
   openMenuIndex: number | null = null;
 
   ngOnInit(): void {
-    this.librarianService.getAllLibrarians().subscribe({
+    this.studentService.getAllStudents().subscribe({
       next: users => {
-        this.librarians = users;
+        this.students = users;
         this.pagination.reset();
         this.loading = false;
       },
@@ -48,14 +48,14 @@ export class Librarians implements OnInit {
     }
   }
 
-  filterLibrarians(): User[] {
-    let filtered = this.librarians;
+  filterStudents(): User[] {
+    let filtered = this.students;
 
     if (this.searchTerm.trim()) {
       const term = this.searchTerm.toLowerCase();
-      filtered = filtered.filter(lib =>
-        (`${lib.first_name} ${lib.last_name}`).toLowerCase().includes(term) ||
-        lib.email.toLowerCase().includes(term)
+      filtered = filtered.filter(student =>
+        (`${student.first_name} ${student.last_name}`).toLowerCase().includes(term) ||
+        student.email.toLowerCase().includes(term)
       );
     }
 
@@ -66,8 +66,8 @@ export class Librarians implements OnInit {
     });
   }
 
-  get paged(): User[] {
-    const filtered = this.filterLibrarians();
+  get pagedStudents(): User[] {
+    const filtered = this.filterStudents();
     this.pagination.updateTotal(filtered.length);
     return this.pagination.getPageSlice(filtered);
   }
@@ -80,31 +80,31 @@ export class Librarians implements OnInit {
     this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
   }
 
-  goToNewLibrarian(): void {
-    this.router.navigate(['/noviBibliotekar']);
+  goToNewStudent(): void {
+    this.router.navigate(['/students/new']);
   }
 
   toggleMenu(index: number): void {
     this.openMenuIndex = this.openMenuIndex === index ? null : index;
   }
 
-  showDetails(librarian: User): void {
-    this.router.navigate(['/bibliotekari', librarian.id]);
+  showDetails(student: User): void {
+    this.router.navigate(['/students', student.id]);
     this.openMenuIndex = null;
   }
 
-  editUser(librarian: User): void {
-    this.router.navigate(['/bibliotekari', librarian.id, 'izmjena']);
+  editUser(student: User): void {
+    this.router.navigate(['/students', student.id, 'edit']);
     this.openMenuIndex = null;
   }
 
-  deleteUser(librarian: User): void {
+  deleteUser(student: User): void {
     if (
-      librarian.id !== undefined &&
-      confirm(`Da li ste sigurni da želite da izbrišete korisnika ${librarian.first_name} ${librarian.last_name}?`)
+      student.id !== undefined &&
+      confirm(`Da li ste sigurni da želite da izbrišete korisnika ${student.first_name} ${student.last_name}?`)
     ) {
-      this.librarianService.deleteLibrarian(librarian.id).subscribe(() => {
-        this.librarians = this.librarians.filter(l => l.id !== librarian.id);
+      this.studentService.deleteStudent(student.id).subscribe(() => {
+        this.students = this.students.filter(s => s.id !== student.id);
       });
     }
     this.openMenuIndex = null;

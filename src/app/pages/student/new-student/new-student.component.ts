@@ -2,28 +2,28 @@ import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
-import { LibrarianService } from '../../../services/librarian/librarian.service';
+import { StudentService } from '../../../services/student/student.service';
 import { User } from '../../../models/user.model';
 import { map, of, switchMap } from 'rxjs';
 
 @Component({
-  selector: 'app-new-librarian',
+  selector: 'app-new-student',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterLink, FormsModule],
-  templateUrl: './new-librarian.component.html',
-  styleUrls: ['./new-librarian.component.css']
+  templateUrl: './new-student.component.html',
+  styleUrls: ['./new-student.component.css']
 })
-export class NewLibrarian {
+export class NewStudent {
   private fb = inject(FormBuilder);
-  private librarianService = inject(LibrarianService);
+  private studentService = inject(StudentService);
   private router = inject(Router);
 
-  librarianForm: FormGroup;
+  studentForm: FormGroup;
   photoPreview: string | ArrayBuffer | null = null;
   selectedFile?: File;
 
   constructor() {
-    this.librarianForm = this.fb.group({
+    this.studentForm = this.fb.group({
       first_name: ['', Validators.required],
       last_name: ['', Validators.required],
       jmbg: ['', Validators.required],
@@ -33,8 +33,6 @@ export class NewLibrarian {
       confirmPassword: ['', Validators.required],
     });
   }
-
-  
 
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
@@ -49,9 +47,9 @@ export class NewLibrarian {
   }
 
   onSubmit() {
-    if (this.librarianForm.invalid) return;
+    if (this.studentForm.invalid) return;
 
-    const form = this.librarianForm.value;
+    const form = this.studentForm.value;
 
     if (form.password !== form.confirmPassword) {
       alert('Šifre se ne poklapaju!');
@@ -64,38 +62,36 @@ export class NewLibrarian {
       email: form.email,
       username: form.username,
       jmbg: form.jmbg,
-      role_id: 2,
-      
+      role_id: 1, 
     };
 
-    this.librarianService.createLibrarian(user).pipe(
-        switchMap(createdUser => {
-          if (this.selectedFile && createdUser.id) {
-            return this.librarianService.uploadImage(createdUser.id, this.selectedFile).pipe(
-              map(() => ({ createdUser, imageUploaded: true }))
-            );
-      } else {
-        // Ako nema slike za upload, samo prosledi kreiranog korisnika
-        return of({ createdUser, imageUploaded: false });
-      }
-    })
-      ).subscribe({
-          next: ({ createdUser, imageUploaded }) => {
-            if (imageUploaded) {
-                alert('Bibliotekar kreiran i slika uspešno uploadovana!');
-          } else {
-                alert('Bibliotekar uspešno kreiran!');
+    this.studentService.createStudent(user).pipe(
+      switchMap(createdUser => {
+        if (this.selectedFile && createdUser.id) {
+          return this.studentService.uploadImage(createdUser.id, this.selectedFile).pipe(
+            map(() => ({ createdUser, imageUploaded: true }))
+          );
+        } else {
+          return of({ createdUser, imageUploaded: false });
         }
-              this.router.navigate(['/bibliotekari']);
+      })
+    ).subscribe({
+      next: ({ createdUser, imageUploaded }) => {
+        if (imageUploaded) {
+          alert('Student kreiran i slika uspešno uploadovana!');
+        } else {
+          alert('Student uspešno kreiran!');
+        }
+        this.router.navigate(['/students']);
       },
-                error: (error) => {
-                console.error('Greška prilikom kreiranja bibliotekara ili uploadu slike:', error);
-                alert('Došlo je do greške prilikom kreiranja bibliotekara ili uploadu slike.');
+      error: (error) => {
+        console.error('Greška prilikom kreiranja studenta ili uploadu slike:', error);
+        alert('Došlo je do greške prilikom kreiranja studenta ili uploadu slike.');
       }
     });
   }
 
   onCancel() {
-    this.router.navigate(['/bibliotekari']);
+    this.router.navigate(['/students']);
   }
 }

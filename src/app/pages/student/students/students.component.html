@@ -1,6 +1,6 @@
 <div class="container">
   <div class="header-with-search">
-    <h2>Bibliotekari</h2>
+    <h2>Studenti</h2>
     <input
       type="text"
       placeholder="Pretraži..."
@@ -9,7 +9,7 @@
     />
   </div>
 
-  <button class="add-button" [routerLink]="['/noviBibliotekar']">+ Novi bibliotekar</button>
+  <button class="add-button" [routerLink]="['/students/new']">+ Novi student</button>
 
   <table>
     <thead>
@@ -27,34 +27,30 @@
     </thead>
 
     <tbody>
-      <tr *ngFor="let librarian of paged; let i = index">
+      <tr *ngFor="let student of pagedStudents; let i = index">
         <td>
           <img
-            [src]="librarian.profile_picture || 'assets/default-user.png'"
+            [src]="student.profile_picture || 'assets/default-user.png'"
             alt="Profilna slika"
             class="avatar"
           />
         </td>
-        <td>{{ librarian.first_name }} {{ librarian.last_name }}</td>
-        <td>{{ librarian.email }}</td>
-        <td>Bibliotekar</td>
-        <td>{{ librarian.last_login || 'Nikada' }}</td>
+        <td>{{ student.first_name }} {{ student.last_name }}</td>
+        <td>{{ student.email }}</td>
+        <td>Student</td>
+        <td>{{ student.last_login || 'Nikada' }}</td>
         <td class="actions-cell" style="position: relative;">
           <span class="menu-icon" (click)="toggleMenu(i)">⋮</span>
 
-          <!-- Padajući meni -->
           <div class="menu" *ngIf="openMenuIndex === i">
-            <button (click)="showDetails(librarian)">
-              <span class="material-icons" style="font-size:16px; vertical-align: middle;">info</span>
-              Detalji korisnika
+            <button (click)="showDetails(student)">
+              <span class="material-icons" style="font-size:16px; vertical-align: middle;">info</span> Detalji korisnika
             </button>
-            <button (click)="editUser(librarian)">
-              <span class="material-icons" style="font-size:16px; vertical-align: middle;">edit</span>
-              Izmjeni korisnika
+            <button (click)="editUser(student)">
+              <span class="material-icons" style="font-size:16px; vertical-align: middle;">edit</span> Izmijeni korisnika
             </button>
-            <button (click)="deleteUser(librarian)">
-              <span class="material-icons" style="font-size:16px; vertical-align: middle;">delete</span>
-              Izbriši korisnika
+            <button (click)="deleteUser(student)">
+              <span class="material-icons" style="font-size:16px; vertical-align: middle;">delete</span> Izbriši korisnika
             </button>
           </div>
         </td>

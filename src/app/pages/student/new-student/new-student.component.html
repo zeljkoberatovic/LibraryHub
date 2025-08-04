@@ -1,11 +1,11 @@
-<div class="new-librarian-container">
-  <h2>Novi bibliotekar</h2>
+<div class="new-student-container">
+  <h2>Novi student</h2>
   <nav>
-    <a routerLink="/bibliotekari">Svi bibliotekari</a> /
-    <a routerLink="/noviBibliotekar">Novi bibliotekar</a>
+    <a routerLink="/students">Svi studenti</a> /
+    <a routerLink="/students/new">Novi student</a>
   </nav>
 
-  <form [formGroup]="librarianForm" (ngSubmit)="onSubmit()">
+  <form [formGroup]="studentForm" (ngSubmit)="onSubmit()">
     <div class="form-content">
       <div class="form-left">
         <label>
@@ -62,7 +62,8 @@
 
     <div class="form-actions">
       <button type="button" class="cancel" (click)="onCancel()">Poništi</button>
-      <button type="submit" class="save" [disabled]="librarianForm.invalid">Sačuvaj</button>
+      <button type="submit" class="save" [disabled]="studentForm.invalid">Sačuvaj</button>
     </div>
   </form>
 </div>
+
