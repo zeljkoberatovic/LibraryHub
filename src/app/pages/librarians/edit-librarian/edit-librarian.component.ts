@@ -50,7 +50,7 @@ export class EditLibrarian implements OnInit {
     } else {
       this.errorMessage = 'Neuspjelo učitavanje podataka bibliotekara.';
       
-      this.router.navigate(['/bibliotekari']);
+      this.router.navigate(['/librarians']);
     }
   }
 
@@ -88,7 +88,7 @@ export class EditLibrarian implements OnInit {
             } else {
               alert('Bibliotekar ažuriran, ali slika nije poslata.');
             }
-            this.router.navigate(['/bibliotekari']);
+            this.router.navigate(['/librarians']);
           },
           error: () => {
             this.errorMessage = 'Greška pri ažuriranju bibliotekara.';

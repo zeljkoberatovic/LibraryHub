@@ -8,7 +8,7 @@ import { Router, RouterLink } from '@angular/router';
 import { PaginationComponent } from '../../../shared/pagination/pagination.component';
 
 @Component({
-  selector: 'app-bibliotekari',
+  selector: 'app-librarians',
   standalone: true,
   imports: [CommonModule, FormsModule, PaginationComponent, RouterLink],
   templateUrl: './librarians.component.html',
@@ -93,7 +93,7 @@ export class Librarians implements OnInit {
   }
 
   goToNewLibrarian(): void {
-    this.router.navigate(['/noviBibliotekar']);
+    this.router.navigate(['/new-librarians']);
   }
 
   toggleMenu(index: number): void {
@@ -101,12 +101,12 @@ export class Librarians implements OnInit {
   }
 
   showDetails(librarian: User): void {
-    this.router.navigate(['/bibliotekari', librarian.id]);
+    this.router.navigate(['/librarians', librarian.id]);
     this.openMenuIndex = null;
   }
 
   editUser(librarian: User): void {
-    this.router.navigate(['/bibliotekari', librarian.id, 'izmjena']);
+    this.router.navigate(['/librarians', librarian.id, 'edit']);
     this.openMenuIndex = null;
   }
 

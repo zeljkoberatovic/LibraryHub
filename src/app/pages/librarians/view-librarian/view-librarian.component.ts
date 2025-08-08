@@ -23,11 +23,11 @@ export class ViewLibrarian implements OnInit {
       this.librarian = resolvedLibrarian;
     } else {
       alert('Bibliotekar nije pronađen.');
-      this.router.navigate(['/bibliotekari']);
+      this.router.navigate(['/librarians']);
     }
   }
 
   goBack() {
-    this.router.navigate(['/bibliotekari']);
+    this.router.navigate(['/librarians']);
   }
 }
