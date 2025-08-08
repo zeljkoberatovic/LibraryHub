@@ -18,6 +18,7 @@ export class ViewLibrarian implements OnInit {
   librarian: User | null = null;
   imageBaseUrl = environment.imageBaseUrl;
 
+<<<<<<< HEAD
   
  ngOnInit(): void {
   const resolvedLibrarian = this.route.snapshot.data['librarian'];
@@ -38,9 +39,20 @@ export class ViewLibrarian implements OnInit {
 
   get profilePictureUrl(): string {
     return this.librarian?.profile_picture ?? 'assets/default-user.png';
+=======
+  ngOnInit(): void {
+    const resolvedLibrarian = this.route.snapshot.data['librarian'];
+     //console.log('Podaci iz resolvera:', resolvedLibrarian);
+    if (resolvedLibrarian) {
+      this.librarian = resolvedLibrarian;
+    } else {
+      alert('Bibliotekar nije pronađen.');
+      this.router.navigate(['/librarians']);
+    }
+>>>>>>> librarians
   }
 
   goBack() {
-    this.router.navigate(['/bibliotekari']);
+    this.router.navigate(['/librarians']);
   }
 }

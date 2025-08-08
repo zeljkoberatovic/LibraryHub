@@ -2,8 +2,11 @@
   <h2>Novi bibliotekar</h2>
   <nav>
     <a routerLink="/bibliotekari">Svi bibliotekari</a> /
-    <a routerLink="/noviBibliotekar">Novi bibliotekar</a>
-  </nav>
+    <a routerLink="/noviBibliotekar">Novi bibliotekar</a> /
+  <a routerLink="/librarians" >Svi bibliotekari</a> /
+  <a routerLink="/librarians/new" >Novi bibliotekar</a>
+</nav>
+
 
   <form [formGroup]="librarianForm" (ngSubmit)="onSubmit()">
     <div class="form-content">

@@ -86,7 +86,7 @@ export class NewLibrarian {
           } else {
                 alert('Bibliotekar uspešno kreiran!');
         }
-              this.router.navigate(['/bibliotekari']);
+              this.router.navigate(['/librarians']);
       },
                 error: (error) => {
                 console.error('Greška prilikom kreiranja bibliotekara ili uploadu slike:', error);
@@ -96,6 +96,6 @@ export class NewLibrarian {
   }
 
   onCancel() {
-    this.router.navigate(['/bibliotekari']);
+    this.router.navigate(['/librarians']);
   }
 }

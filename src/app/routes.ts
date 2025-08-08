@@ -12,22 +12,22 @@ export const routes: Route[] = [
     loadComponent: () => import('./pages/dashboard/dashboard.component').then(m => m.DashboardComponent)
   },
   {
-    path: 'bibliotekari',
+    path: 'librarians',
     loadComponent: () => import('./pages/librarians/librarians/librarians.component').then(m => m.Librarians)
   },
   {
-    path: 'noviBibliotekar',
+    path: 'librarians/new',
     loadComponent: () => import('./pages/librarians/new-librarian/new-librarian.component').then(m => m.NewLibrarian)
   },
   {
-    path: 'bibliotekari/:id',
+    path: 'librarians/:id',
     loadComponent: () => import('./pages/librarians/view-librarian/view-librarian.component').then(m => m.ViewLibrarian),
     resolve: {
       librarian: librarianResolver
     }
   },
   {
-    path: 'bibliotekari/:id/izmjena',
+    path: 'librarians/:id/edit',
     loadComponent: () => import('./pages/librarians/edit-librarian/edit-librarian.component').then(m => m.EditLibrarian),
     resolve: {
       librarian: librarianResolver
