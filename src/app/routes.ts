@@ -3,6 +3,7 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 
 import { librarianResolver } from '../app/resolvers/librarian/librarian.resolver'; 
 import { studentResolver } from '../app/resolvers/student/student-resolver';
+import { bookResolver } from '../app/resolvers/book/book-resolver';
 
 import { SettingsComponent } from './pages/settings/settings.component';
 import { GenreComponent } from './pages/settings/genre/genres.component';
@@ -74,5 +75,29 @@ export const routes: Route[] = [
       { path: 'format', component: FormatComponent },
       { path: 'pismo', component: LanguageComponent },
     ],
+  },
+
+   // Books routes
+  {
+    path: 'books',
+    loadComponent: () => import('./pages/books/books/books.component').then(m => m.Books),
+  },
+  {
+    path: 'books/new',
+    loadComponent: () => import('./pages/books/new-book/new-book.component').then(m => m.NewBook),
+  },
+  {
+    path: 'books/edit/:id',
+    loadComponent: () => import('./pages/books/edit-book/edit-book.component').then(m => m.EditBook),
+    resolve: {
+      book: bookResolver
+    }
+  },
+  {
+    path: 'books/view/:id',
+    loadComponent: () => import('./pages/books/view-book/view-book.component').then(m => m.ViewBook),
+    resolve: {
+      book: bookResolver
+    }
   },
 ];
