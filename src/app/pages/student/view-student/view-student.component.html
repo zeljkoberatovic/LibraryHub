@@ -1,0 +1,22 @@
+
+<div class="details-card">
+  <h2>Detalji studenta</h2>
+
+  <div class="details-content">
+    <img
+      [src]="student?.profile_picture || 'assets/default-user.png'"
+      alt="Profilna slika"
+      class="profile-picture"
+    />
+
+    <div class="details-info">
+      <p><span class="details-label">Ime i prezime:</span> <span class="details-value">{{ student?.first_name }} {{ student?.last_name }}</span></p>
+      <p><span class="details-label">Korisničko ime:</span> <span class="details-value">{{ student?.username }}</span></p>
+      <p><span class="details-label">Email:</span> <span class="details-value">{{ student?.email }}</span></p>
+      <p><span class="details-label">JMBG:</span> <span class="details-value">{{ student?.jmbg }}</span></p>
+      <p><span class="details-label">Tip korisnika:</span> <span class="details-value">Student</span></p>
+    </div>
+  </div>
+
+  <button class="go-back-button" (click)="goBack()">Nazad</button>
+</div>

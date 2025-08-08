@@ -1,0 +1,69 @@
+<div class="edit-container">
+  <h2>Izmjena bibliotekara</h2>
+
+  <div class="edit-content">
+    <!-- Slika sa leve strane -->
+    <div class="profile-picture-section">
+      <p *ngIf="librarian?.profile_picture || selectedFile">Profilna slika:</p>
+
+      <img
+        *ngIf="selectedFile; else currentPicture"
+        [src]=""
+        alt="Preview slike"
+        class="profile-picture"
+      />
+
+      <ng-template #currentPicture>
+        <img
+          *ngIf="librarian?.profile_picture"
+          [src]="librarian?.profile_picture"
+          alt="Trenutna profilna slika"
+          class="profile-picture"
+        />
+        <p *ngIf="!librarian?.profile_picture">Nema profilne slike.</p>
+      </ng-template>
+    </div>
+
+    <!-- Forma sa desne strane -->
+    <form [formGroup]="form" (ngSubmit)="save()" novalidate class="edit-form">
+      <div class="form-group">
+        <label for="first_name">Ime</label>
+        <input id="first_name" formControlName="first_name" />
+      </div>
+
+      <div class="form-group">
+        <label for="last_name">Prezime</label>
+        <input id="last_name" formControlName="last_name" />
+      </div>
+
+      <div class="form-group">
+        <label for="username">Korisničko ime</label>
+        <input id="username" formControlName="username" />
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input id="email" type="email" formControlName="email" />
+      </div>
+
+      <div class="form-group">
+        <label>Tip korisnika</label>
+        <input type="text" [value]="'Bibliotekar'" disabled class="readonly-input" />
+      </div>
+
+      <div class="form-group">
+        <label for="jmbg">JMBG</label>
+        <input id="jmbg" formControlName="jmbg" />
+      </div>
+
+      <div class="form-group">
+        <label>Izmijeni profilnu sliku</label>
+        <input type="file" (change)="onFileSelected($event)" accept="image/*" />
+      </div>
+
+      <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+
+      <button type="submit" [disabled]="form.invalid" class="save-btn">Sačuvaj izmjene</button>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,104 @@
+.edit-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+.edit-content {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+}
+
+.profile-picture-section {
+  flex: 1;
+  text-align: center;
+}
+
+.profile-picture-section p {
+  font-weight: 600;
+  color: #283593; /* tamno plava */
+  margin-bottom: 10px;
+}
+
+.profile-picture {
+  max-width: 200px;
+  border-radius: 8px;
+  border: 2px solid #f0c419; /* zlatna */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.edit-form {
+  flex: 2;
+}
+
+.form-group {
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-weight: 600;
+  margin-bottom: 5px;
+  color: #283593;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="file"],
+.form-group input {
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: border-color 0.2s;
+}
+
+.form-group input:focus {
+  border-color: #f0c419;
+  outline: none;
+}
+
+.error {
+  color: #d32f2f;
+  font-size: 12px;
+  margin-top: 3px;
+}
+
+.error-message {
+  margin-top: 10px;
+  color: #d32f2f;
+  font-weight: 600;
+}
+
+.save-btn {
+  background-color: #2a3f54; /* tamno plava */
+  color: #f9c846; /* zlatna */
+  border: none;
+  padding: 12px 20px;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.save-btn:disabled {
+  background-color: #9fa8da; /* svijetlija plava */
+  cursor: not-allowed;
+}
+
+.save-btn:hover:not(:disabled) {
+  background-color: #1a237e; /* još tamnija plava */
+}
+
+.readonly-input {
+  background-color: #f0f4f8; /* svetlo plavo-sivo, kao padajući meni */
+  border: 1px solid #999999; /* tamnosiva */
+  padding: 8px 10px;
+  border-radius: 4px;
+  color: #444; /* tamnosiva tekst */
+  font-style: italic;
+}
