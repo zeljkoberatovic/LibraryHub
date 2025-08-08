@@ -18,38 +18,24 @@ export class ViewLibrarian implements OnInit {
   librarian: User | null = null;
   imageBaseUrl = environment.imageBaseUrl;
 
-<<<<<<< HEAD
-  
- ngOnInit(): void {
-  const resolvedLibrarian = this.route.snapshot.data['librarian'];
-
-  if (resolvedLibrarian) {
-    this.librarian = resolvedLibrarian;
-
-   if (this.librarian?.profile_picture && !this.librarian.profile_picture.startsWith('http')) {
-  this.librarian.profile_picture = environment.imageBaseUrl + this.librarian.profile_picture;
-}
-
-  } else {
-    alert('Bibliotekar nije pronađen.');
-    this.router.navigate(['/bibliotekari']);
-  }
-}
-
-
-  get profilePictureUrl(): string {
-    return this.librarian?.profile_picture ?? 'assets/default-user.png';
-=======
   ngOnInit(): void {
     const resolvedLibrarian = this.route.snapshot.data['librarian'];
-     //console.log('Podaci iz resolvera:', resolvedLibrarian);
+    // console.log('Podaci iz resolvera:', resolvedLibrarian);
+
     if (resolvedLibrarian) {
       this.librarian = resolvedLibrarian;
+
+      if (this.librarian?.profile_picture && !this.librarian.profile_picture.startsWith('http')) {
+        this.librarian.profile_picture = environment.imageBaseUrl + this.librarian.profile_picture;
+      }
     } else {
       alert('Bibliotekar nije pronađen.');
       this.router.navigate(['/librarians']);
     }
->>>>>>> librarians
+  }
+
+  get profilePictureUrl(): string {
+    return this.librarian?.profile_picture ?? 'assets/default-user.png';
   }
 
   goBack() {
