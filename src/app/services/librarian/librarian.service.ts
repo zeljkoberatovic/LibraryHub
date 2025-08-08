@@ -13,14 +13,13 @@ export class LibrarianService {
   // Vraća niz korisnika (bibliotekara) iz response.data.data
   getAllLibrarians(): Observable<User[]> {
     return this.http.get<{ data: { meta: any; data: User[] } }>(`${this.baseUrl}?role_id=2`)
-      .pipe(
-        map(response => response.data.data)  //   niz korisnika
+      .pipe(map(response => response.data.data)  //   niz korisnika
       );
   }
 
   getLibrarian(id: number): Observable<User> {
-  return this.http.get<{ status: string, data: User }>(`${this.baseUrl}/${id}`).pipe(
-    map(res => res.data)
+    return this.http.get<{ status: string, data: User }>(`${this.baseUrl}/${id}`)
+      .pipe(map(res => res.data)
   );
 }
 
@@ -38,9 +37,9 @@ export class LibrarianService {
   }
 
   uploadImage(id: number, file: File): Observable<any> {
-  const formData = new FormData();
-  formData.append('picture', file);
-  return this.http.post(`${this.baseUrl}/${id}/upload-picture`, formData);
-}
+    const formData = new FormData();
+      formData.append('picture', file);
+        return this.http.post(`${this.baseUrl}/${id}/upload-picture`, formData);
+  }
 
 }

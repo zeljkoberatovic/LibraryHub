@@ -13,14 +13,13 @@ export class StudentService {
   // Vraća niz korisnika (studenta) iz response.data.data
   getAllStudents(): Observable<User[]> {
     return this.http.get<{ data: { meta: any; data: User[] } }>(`${this.baseUrl}?role_id=1`)
-      .pipe(
-        map(response => response.data.data)
+      .pipe(map(response => response.data.data)
       );
   }
 
   getStudent(id: number): Observable<User> {
-    return this.http.get<{ status: string, data: User }>(`${this.baseUrl}/${id}`).pipe(
-      map(res => res.data)
+    return this.http.get<{ status: string, data: User }>(`${this.baseUrl}/${id}`)
+      .pipe(map(res => res.data)
     );
   }
 
