@@ -9,7 +9,8 @@
     </button>
   </div>
 
-  <div *ngIf="showForm" class="mb-6 bg-white shadow rounded p-6 relative">
+  @if (showForm) {
+<div class="mb-6 bg-white shadow rounded p-6 relative">
     <h2 class="text-xl font-medium mb-4">
       {{ editingId ? "Edit Category" : "New Category" }}
     </h2>
@@ -40,13 +41,15 @@
       <div class="md:col-span-2">
         <label class="block mb-1 font-medium">Icon</label>
         <input type="file" (change)="onFileChange($event)" />
-        <div *ngIf="iconPreviewUrl" class="mt-2">
+        @if (iconPreviewUrl) {
+<div class="mt-2">
           <img
             [src]="iconPreviewUrl"
             alt="Icon preview"
             class="w-12 h-12 object-contain border rounded"
           />
         </div>
+}
       </div>
 
       <div class="md:col-span-2 flex space-x-3 mt-4">
@@ -66,6 +69,7 @@
       </div>
     </form>
   </div>
+}
 
   <div class="bg-white shadow rounded overflow-hidden">
     <table class="min-w-full">
@@ -80,17 +84,22 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let cat of categories" class="border-t hover:bg-gray-50">
+        @for (cat of categories; track cat) {
+<tr class="border-t hover:bg-gray-50">
           <td class="p-4">
             <input type="checkbox" />
           </td>
           <td class="p-4 flex items-center space-x-3">
-            <ng-container *ngIf="cat.icon; else placeholderIcon">
+            @if (cat.icon) {
+
               <img [src]="cat.icon" alt="{{ cat.name }}" class="w-6 h-6" />
-            </ng-container>
-            <ng-template #placeholderIcon>
+            
+} @else {
+
               <i class="fas fa-folder-open text-gray-400 w-6"></i>
-            </ng-template>
+            
+}
+            
             <span>{{ cat.name }}</span>
           </td>
           <td class="p-4">{{ cat.description }}</td>
@@ -102,6 +111,7 @@
             </button>
           </td>
         </tr>
+}
       </tbody>
     </table>
   </div>

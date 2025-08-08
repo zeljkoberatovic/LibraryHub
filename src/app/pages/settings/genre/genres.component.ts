@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import {
   ReactiveFormsModule,
   FormBuilder,
@@ -10,7 +10,7 @@ import { GenreService, Genre } from '../../../shared/services/genre.service';
 
 @Component({
   selector: 'app-genres',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [ReactiveFormsModule],
   templateUrl: './genres.component.html',
   styleUrls: ['./genres.component.css'],
 })

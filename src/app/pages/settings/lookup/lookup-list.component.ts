@@ -1,13 +1,13 @@
 
 import { Component, Input, OnInit } from '@angular/core';
-import { CommonModule }            from '@angular/common';
+
 import { LookupService }           from '../../../shared/services/lookup.service';
 import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-lookup-list',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   template: `
     <div class="px-6 py-4">
       <div class="flex justify-between items-center mb-6">
@@ -26,7 +26,8 @@ import { Observable } from 'rxjs';
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let item of items" class="border-t">
+            @for (item of items; track item) {
+<tr class="border-t">
               <td class="p-4"><input type="checkbox" /></td>
               <td class="p-4">{{ item }}</td>
               <td class="p-4 text-right">
@@ -35,6 +36,7 @@ import { Observable } from 'rxjs';
                 </button>
               </td>
             </tr>
+}
           </tbody>
         </table>
       </div>

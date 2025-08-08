@@ -1,7 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
+
 
 import { StudentService } from '../../../services/student/student.service';
 import { User } from '../../../models/user.model';
@@ -10,7 +10,7 @@ import { catchError, map, of, switchMap } from 'rxjs';
 @Component({
   selector: 'app-edit-student',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [ReactiveFormsModule],
   templateUrl: './edit-student.component.html',
   styleUrls: ['./edit-student.component.css']
 })

@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+
 import { Router, RouterLink } from '@angular/router';
 import { LibrarianService } from '../../../services/librarian/librarian.service';
 import { User } from '../../../models/user.model';
@@ -9,7 +9,7 @@ import { map, of, switchMap } from 'rxjs';
 @Component({
   selector: 'app-new-librarian',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink, FormsModule],
+  imports: [ReactiveFormsModule, RouterLink, FormsModule],
   templateUrl: './new-librarian.component.html',
   styleUrls: ['./new-librarian.component.css']
 })

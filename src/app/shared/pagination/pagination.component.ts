@@ -1,16 +1,18 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-pagination',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   template: `
-    <nav *ngIf="totalPages > 1" class="pagination">
+    @if (totalPages > 1) {
+<nav class="pagination">
       <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">Prev</button>
       <span>{{currentPage}} / {{totalPages}}</span>
       <button (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages">Next</button>
     </nav>
+}
   `,
   styleUrls: ['./pagination.component.css']
 })

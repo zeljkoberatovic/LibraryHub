@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+
 import { Router, RouterLink } from '@angular/router';
 import { StudentService } from '../../../services/student/student.service';
 import { User } from '../../../models/user.model';
@@ -9,7 +9,7 @@ import { map, of, switchMap } from 'rxjs';
 @Component({
   selector: 'app-new-student',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink, FormsModule],
+  imports: [ReactiveFormsModule, RouterLink, FormsModule],
   templateUrl: './new-student.component.html',
   styleUrls: ['./new-student.component.css']
 })

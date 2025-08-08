@@ -50,15 +50,19 @@
       <div class="form-right">
         <div class="photo-upload" (click)="fileInput.click()">
           <input #fileInput type="file" (change)="onFileSelected($event)" hidden />
-          <ng-container *ngIf="photoPreview; else addPhoto">
+          @if (photoPreview) {
+
             <img [src]="photoPreview" alt="Preview" />
-          </ng-container>
-          <ng-template #addPhoto>
+          
+} @else {
+
             <div class="add-photo-placeholder">
               <span class="material-icons">image</span>
               <p>Dodaj fotografiju</p>
             </div>
-          </ng-template>
+          
+}
+          
         </div>
       </div>
     </div>

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import {
   ReactiveFormsModule,
   FormBuilder,
@@ -14,7 +14,7 @@ import {
 @Component({
   selector: 'app-publishers',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [ReactiveFormsModule],
   templateUrl: './publishers.component.html',
   styleUrls: ['./publishers.component.css'],
 })

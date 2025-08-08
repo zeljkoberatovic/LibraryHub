@@ -1,12 +1,12 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '../../../models/user.model';
 
 @Component({
   selector: 'app-view-student',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './view-student.component.html',
   styleUrls: ['./view-student.component.css']
 })

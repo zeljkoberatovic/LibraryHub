@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '../../../models/user.model';
 import { environment } from '../../../../environments/environment';
@@ -7,7 +7,7 @@ import { environment } from '../../../../environments/environment';
 @Component({
   selector: 'app-view-librarian',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './view-librarian.component.html',
   styleUrls: ['./view-librarian.component.css']
 })

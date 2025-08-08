@@ -4,24 +4,34 @@
   <div class="edit-content">
     <!-- Slika sa leve strane -->
     <div class="profile-picture-section">
-      <p *ngIf="librarian?.profile_picture || selectedFile">Profilna slika:</p>
+      @if (librarian?.profile_picture || selectedFile) {
+<p>Profilna slika:</p>
+}
 
-      <img
-        *ngIf="selectedFile; else currentPicture"
+      @if (selectedFile) {
+<img
+       
         [src]=""
         alt="Preview slike"
         class="profile-picture"
       />
+} @else {
 
-      <ng-template #currentPicture>
-        <img
-          *ngIf="librarian?.profile_picture"
+        @if (librarian?.profile_picture) {
+<img
+         
           [src]="librarian?.profile_picture"
           alt="Trenutna profilna slika"
           class="profile-picture"
         />
-        <p *ngIf="!librarian?.profile_picture">Nema profilne slike.</p>
-      </ng-template>
+}
+        @if (!librarian?.profile_picture) {
+<p>Nema profilne slike.</p>
+}
+      
+}
+
+      
     </div>
 
     <!-- Forma sa desne strane -->
@@ -61,7 +71,9 @@
         <input type="file" (change)="onFileSelected($event)" accept="image/*" />
       </div>
 
-      <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+      @if (errorMessage) {
+<div class="error-message">{{ errorMessage }}</div>
+}
 
       <button type="submit" [disabled]="form.invalid" class="save-btn">Sačuvaj izmjene</button>
     </form>

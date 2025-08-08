@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule }      from '@angular/common';
+
 import {
   ReactiveFormsModule,
   FormBuilder,
@@ -11,7 +11,7 @@ import { CategoryService, Category } from '../../../shared/services/category.ser
 @Component({
   selector: 'app-categories',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [ReactiveFormsModule],
   templateUrl: './categories.component.html',
   styleUrls: ['./categories.component.css']
 })
