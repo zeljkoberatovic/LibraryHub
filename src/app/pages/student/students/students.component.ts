@@ -99,14 +99,22 @@ export class Students implements OnInit {
   }
 
   deleteUser(student: User): void {
-    if (
-      student.id !== undefined &&
-      confirm(`Da li ste sigurni da želite da izbrišete korisnika ${student.first_name} ${student.last_name}?`)
-    ) {
-      this.studentService.deleteStudent(student.id).subscribe(() => {
+  if (
+    student.id !== undefined &&
+    confirm(`Da li ste sigurni da želite da izbrišete korisnika ${student.first_name} ${student.last_name}?`)
+  ) {
+    this.studentService.deleteStudent(student.id).subscribe({
+      next: () => {
         this.students = this.students.filter(s => s.id !== student.id);
-      });
-    }
-    this.openMenuIndex = null;
+        alert(`Korisnik ${student.first_name} ${student.last_name} je uspešno obrisan.`);
+      },
+      error: (err) => {
+        console.error('Greška pri brisanju korisnika:', err);
+        alert(`Došlo je do greške prilikom brisanja korisnika ${student.first_name} ${student.last_name}.`);
+      }
+    });
   }
+  this.openMenuIndex = null;
+}
+
 }

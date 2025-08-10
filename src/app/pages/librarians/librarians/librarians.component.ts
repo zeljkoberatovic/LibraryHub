@@ -98,15 +98,23 @@ export class Librarians implements OnInit {
     this.openMenuIndex = null;
   }
 
-  deleteUser(librarian: User): void {
-    if (
-      librarian.id !== undefined &&
-      confirm(`Da li ste sigurni da želite da izbrišete korisnika ${librarian.first_name} ${librarian.last_name}?`)
-    ) {
-      this.librarianService.deleteLibrarian(librarian.id).subscribe(() => {
+ deleteUser(librarian: User): void {
+  if (
+    librarian.id !== undefined &&
+    confirm(`Da li ste sigurni da želite da izbrišete korisnika ${librarian.first_name} ${librarian.last_name}?`)
+  ) {
+    this.librarianService.deleteLibrarian(librarian.id).subscribe({
+      next: () => {
         this.librarians = this.librarians.filter(l => l.id !== librarian.id);
-      });
-    }
-    this.openMenuIndex = null;
+        alert(`Korisnik ${librarian.first_name} ${librarian.last_name} je uspešno obrisan.`);
+      },
+      error: (err) => {
+        console.error('Greška pri brisanju korisnika:', err);
+        alert(`Došlo je do greške prilikom brisanja korisnika ${librarian.first_name} ${librarian.last_name}.`);
+      }
+    });
   }
+  this.openMenuIndex = null;
+}
+
 }
