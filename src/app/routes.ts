@@ -10,6 +10,7 @@ import { PublisherComponent } from './pages/settings/publishers/publishers.compo
 import { BindingComponent } from './pages/settings/bindings/bindings.component';
 import { FormatComponent } from './pages/settings/formats/formats.component';
 import { LanguageComponent } from './pages/settings/languages/languages.component';
+import { authorResolver } from './resolvers/author/author-resolver';
 
 export const routes: Route[] = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
@@ -54,6 +55,31 @@ export const routes: Route[] = [
     loadComponent: () => import('./pages/student/edit-student/edit-student.component').then(m => m.EditStudent),
     resolve: { student: studentResolver }
   },
+
+  // Authors routes
+  {
+  path: 'authors',
+  loadComponent: () =>
+    import('./pages/authors/authors/authors.component').then(m => m.Authors)
+},
+{
+  path: 'authors/new',
+  loadComponent: () =>
+    import('./pages/authors/new-author/new-author.component').then(m => m.NewAuthor)
+},
+{
+  path: 'authors/:id',
+  loadComponent: () =>
+    import('./pages/authors/view-author/view-author.component').then(m => m.ViewAuthor),
+   resolve: { author: authorResolver }
+},
+{
+  path: 'authors/:id/edit',
+  loadComponent: () =>
+    import('./pages/authors/edit-author/edit-author.component').then(m => m.EditAuthor),
+   resolve: { author: authorResolver }
+},
+
 
   // Settings routes
   {

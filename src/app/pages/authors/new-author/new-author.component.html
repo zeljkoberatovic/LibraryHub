@@ -1,0 +1,48 @@
+<div class="new-author-container">
+  <h2>Novi autor</h2>
+  <nav>
+    <a routerLink="/authors">Svi autori</a> /
+    <a routerLink="/authors/new">Novi autor</a>
+  </nav>
+
+  <form [formGroup]="authorForm" (ngSubmit)="onSubmit()">
+    <div class="form-content">
+      <div class="form-left">
+        <label>
+          Ime
+          <input formControlName="first_name" type="text" required />
+        </label>
+
+        <label>
+          Prezime
+          <input formControlName="last_name" type="text" required />
+        </label>
+
+        <label>
+          Biografija
+          <textarea formControlName="biography" required></textarea>
+        </label>
+      </div>
+
+      <div class="form-right">
+        <div class="photo-upload" (click)="fileInput.click()">
+          <input #fileInput type="file" (change)="onFileSelected($event)" hidden />
+          @if (photoPreview) {
+            <img [src]="photoPreview" alt="Preview" />
+          } @else {
+            <div class="add-photo-placeholder">
+              <span class="material-icons">image</span>
+              <p>Dodaj fotografiju</p>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" class="cancel" (click)="onCancel()">Poništi</button>
+      <button type="submit" class="save" [disabled]="authorForm.invalid">Sačuvaj</button>
+    </div>
+  </form>
+</div>
+

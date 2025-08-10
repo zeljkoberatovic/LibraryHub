@@ -1,0 +1,18 @@
+<div class="details-card">
+  <h2>Detalji autora</h2>
+
+  <div class="details-content">
+    <div class="details-info">
+      <p>
+        <span class="details-label">Ime i prezime:</span>
+        <span class="details-value">{{ author?.first_name }} {{ author?.last_name }}</span>
+      </p>
+      <p>
+        <span class="details-label">Biografija:</span>
+        <span class="details-value">{{ author?.biography || 'Nema biografije' }}</span>
+      </p>
+    </div>
+  </div>
+
+  <button class="go-back-button" (click)="goBack()">Nazad</button>
+</div>
