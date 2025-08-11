@@ -1,0 +1,67 @@
+<div class="container">
+  <div class="header-with-search">
+    <h2>Autori</h2>
+    <input
+      type="text"
+      placeholder="Pretraži autore..."
+      [(ngModel)]="searchTerm"
+      class="search-input"
+    />
+  </div>
+
+  <button class="add-button" [routerLink]="['/authors/new']">+ Novi autor</button>
+
+  <table>
+    <thead>
+      <tr>
+        <th></th>
+        <th (click)="sortByName()" style="cursor: pointer;">
+          Ime i prezime
+          <span [ngClass]="sortDirection === 'asc' ? 'arrow down' : 'arrow up'"></span>
+        </th>
+        <th>Biografija</th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      @for (author of pagedAuthors; track author; let i = $index) {
+      <tr>
+        <td>
+          <img
+            [src]="author.picture || 'assets/default-user.png'"
+            alt="Slika autora"
+            class="avatar"
+          />
+        </td>
+        <td>{{ author.first_name }} {{ author.last_name }}</td>
+        <td>{{ author.biography || 'Nema biografije' }}</td>
+        <td class="actions-cell" style="position: relative;">
+          <span class="menu-icon" (click)="toggleMenu(i)">⋮</span>
+
+          @if (openMenuIndex === i) {
+          <div class="menu">
+            <button (click)="showDetails(author)">
+              <span class="material-icons" style="font-size:16px; vertical-align: middle;">info</span> Detalji autora
+            </button>
+            <button (click)="editAuthor(author)">
+              <span class="material-icons" style="font-size:16px; vertical-align: middle;">edit</span> Izmijeni autora
+            </button>
+            <button (click)="deleteAuthor(author)">
+              <span class="material-icons" style="font-size:16px; vertical-align: middle;">delete</span> Izbriši autora
+            </button>
+          </div>
+          }
+        </td>
+      </tr>
+      }
+    </tbody>
+  </table>
+
+  <app-pagination
+    [totalPages]="pagination.totalPages"
+    [currentPage]="pagination.currentPage"
+    (pageChange)="onPageChange($event)"
+  ></app-pagination>
+</div>
+
