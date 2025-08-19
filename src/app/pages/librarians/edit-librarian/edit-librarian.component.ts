@@ -24,6 +24,7 @@ export class EditLibrarian implements OnInit {
   librarian?: User;
   selectedFile?: File;
   errorMessage = '';
+  photoPreview: string | ArrayBuffer | null = null;
 
   form = this.fb.group({
     first_name: ['', [Validators.required, Validators.minLength(2)]],
@@ -55,11 +56,17 @@ export class EditLibrarian implements OnInit {
   }
 
   onFileSelected(event: Event) {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length) {
-      this.selectedFile = input.files[0];
-    }
+  const input = event.target as HTMLInputElement;
+  if (input.files && input.files.length > 0) {
+    this.selectedFile = input.files[0];
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.photoPreview = reader.result;
+    };
+    reader.readAsDataURL(this.selectedFile);
   }
+}
 
   save() {
     if (this.form.invalid) return;
