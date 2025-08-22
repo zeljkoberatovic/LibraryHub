@@ -1,0 +1,95 @@
+<div class="login-container">
+  <div class="login-card">
+    
+    <div class="login-header">
+      <div class="logo">
+        <i class="fas fa-book-open"></i>
+        <h1>Online Biblioteka</h1>
+      </div>
+      <h2>Dobrodošli</h2>
+      <p>Prijavite se na svoj nalog</p>
+    </div>
+
+    <!-- Login Form -->
+    <form (ngSubmit)="login()" class="login-form">
+      <!-- Email Input -->
+      <div class="form-group">
+        <label for="email">Email adresa</label>
+        <div class="input-with-icon">
+          <i class="fas fa-envelope"></i>
+          <input
+            type="email"
+            id="email"
+            [(ngModel)]="credentials.email"
+            name="email"
+            required
+            placeholder="Unesite vaš email"
+            [disabled]="isLoading"
+            class="form-control"
+          >
+        </div>
+      </div>
+
+      
+      <div class="form-group">
+        <label for="password">Lozinka</label>
+        <div class="input-with-icon">
+          <i class="fas fa-lock"></i>
+          <input
+            type="password"
+            id="password"
+            [(ngModel)]="credentials.password"
+            name="password"
+            required
+            placeholder="Unesite vašu lozinku"
+            [disabled]="isLoading"
+            class="form-control"
+          >
+        </div>
+      </div>
+
+      
+      <div *ngIf="errorMessage" class="error-message">
+        <i class="fas fa-exclamation-circle"></i>
+        <span>{{ errorMessage }}</span>
+      </div>
+
+      
+      <button
+        type="submit"
+        [disabled]="isLoading"
+        class="login-btn"
+      >
+        <span *ngIf="!isLoading">
+          <i class="fas fa-sign-in-alt"></i>
+          Prijavi se
+        </span>
+        <span *ngIf="isLoading">
+          <i class="fas fa-spinner fa-spin"></i>
+          Prijavljujem...
+        </span>
+      </button>
+    </form>
+
+    <!-- Test Users (samo za development) -->
+    <div *ngIf="!isLoading" class="test-users">
+      <h4>Testni korisnici:</h4>
+      <div class="test-buttons">
+        <button 
+          *ngFor="let user of testUsers; let i = index" 
+          (click)="quickLogin(i)" 
+          class="test-btn"
+          [title]="user.email"
+        >
+          <i class="fas fa-user"></i>
+          {{ user.name }}
+        </button>
+      </div>
+    </div>
+
+    
+    <div class="login-footer">
+      <p>Nemate nalog? <a routerLink="/register" class="register-link">Registrujte se ovdje</a></p>
+    </div>
+  </div>
+</div>

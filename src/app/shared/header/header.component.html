@@ -1,7 +1,38 @@
+<!-- src/app/components/header/header.component.html -->
 <header class="app-header">
-<a (click)="toggleCreate()">Online Biblioteka</a>
-@if (showCreateMenu) {
-<div class="dropdown-create">…</div>
-}
-</header>
+  <!-- Logo / naslov -->
+  <a routerLink="/" class="logo-font">Online Biblioteka
+    <i class="fas fa-book-open"></i>
+  </a>
 
+  <!-- Login / Register na desnoj strani -->
+  <div class="auth-buttons" *ngIf="!isLoggedIn">
+    <a routerLink="/login" class="auth-btn">
+      <i class="fas fa-sign-in-alt"></i> Login
+    </a>
+    <a routerLink="/register" class="auth-btn">
+      <i class="far fa-user"></i> Register
+    </a>
+  </div>
+  
+  <!-- User menu za prijavljene korisnike -->
+  <div class="user-menu" *ngIf="isLoggedIn">
+    <div class="user-dropdown">
+      <button class="user-btn">
+        <i class="fas fa-user-circle"></i> {{ user?.name || 'Korisnik' }}
+        <i class="fas fa-caret-down"></i>
+      </button>
+      <div class="dropdown-content">
+        <a routerLink="/user-profile">
+          <i class="fas fa-user"></i> Moj profil
+        </a>
+        <a routerLink="/settings">
+          <i class="fas fa-cog"></i> Postavke
+        </a>
+        <a (click)="logout()" class="logout-btn">
+          <i class="fas fa-sign-out-alt"></i> Odjava
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
