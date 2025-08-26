@@ -10,17 +10,15 @@ export class StudentService {
   private http = inject(HttpClient);
   private baseUrl = environment.apiUrl + '/users';
 
-  // Vraća niz korisnika (studenta) iz response.data.data
+  // Vraća sve studente
   getAllStudents(): Observable<User[]> {
     return this.http.get<{ data: { meta: any; data: User[] } }>(`${this.baseUrl}?role_id=1`)
-      .pipe(map(response => response.data.data)
-      );
+      .pipe(map(response => response.data.data));
   }
 
   getStudent(id: number): Observable<User> {
     return this.http.get<{ status: string, data: User }>(`${this.baseUrl}/${id}`)
-      .pipe(map(res => res.data)
-    );
+      .pipe(map(res => res.data));
   }
 
   createStudent(student: User): Observable<User> {
@@ -37,7 +35,7 @@ export class StudentService {
 
   uploadImage(id: number, file: File): Observable<any> {
     const formData = new FormData();
-    formData.append('photo', file);
+    formData.append('photo', file); 
     return this.http.post(`${this.baseUrl}/${id}/upload-picture`, formData);
   }
 }

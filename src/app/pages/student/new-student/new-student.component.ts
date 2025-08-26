@@ -1,6 +1,5 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
-
 import { Router, RouterLink } from '@angular/router';
 import { StudentService } from '../../../services/student/student.service';
 import { User } from '../../../models/user.model';
@@ -39,9 +38,7 @@ export class NewStudent {
     if (input.files && input.files.length > 0) {
       this.selectedFile = input.files[0];
       const reader = new FileReader();
-      reader.onload = () => {
-        this.photoPreview = reader.result;
-      };
+      reader.onload = () => this.photoPreview = reader.result;
       reader.readAsDataURL(this.selectedFile);
     }
   }
@@ -62,26 +59,27 @@ export class NewStudent {
       email: form.email,
       username: form.username,
       jmbg: form.jmbg,
-      role_id: 1, 
+      role_id: 1, // <--- student
+      password: form.password, // mora biti u User modelu opcionalno
     };
 
+    // Kreiranje i upload slike odmah
     this.studentService.createStudent(user).pipe(
       switchMap(createdUser => {
         if (this.selectedFile && createdUser.id) {
-          return this.studentService.uploadImage(createdUser.id, this.selectedFile).pipe(
-            map(() => ({ createdUser, imageUploaded: true }))
-          );
+          const formData = new FormData();
+          formData.append('photo', this.selectedFile); // isto kao kod librarian
+          return this.studentService.uploadImage(createdUser.id, this.selectedFile)
+            .pipe(map(() => ({ createdUser, imageUploaded: true })));
         } else {
           return of({ createdUser, imageUploaded: false });
         }
       })
     ).subscribe({
       next: ({ createdUser, imageUploaded }) => {
-        if (imageUploaded) {
-          alert('Student kreiran i slika uspešno uploadovana!');
-        } else {
-          alert('Student uspešno kreiran!');
-        }
+        alert(imageUploaded
+          ? 'Student kreiran i slika uspešno uploadovana!'
+          : 'Student uspešno kreiran!');
         this.router.navigate(['/students']);
       },
       error: (error) => {

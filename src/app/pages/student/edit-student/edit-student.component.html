@@ -1,42 +1,30 @@
 <div class="edit-container">
   <h2>Izmjena studenta</h2>
 
-  <div class="edit-content">
+  <div *ngIf="student; else loading" class="edit-content">
+
     <!-- Slika sa leve strane -->
     <div class="profile-picture-section">
-      @if (student?.profile_picture || selectedFile) {
-<p>Profilna slika:</p>
-}
+      <div *ngIf="student.profile_picture || selectedFile">
+        <p>Profilna slika:</p>
+      </div>
 
-      @if (selectedFile) {
-<img
-       
-        [src]="photoPreview"
-        alt="Preview slike"
-        class="profile-picture"
-      />
-} @else {
+      <div *ngIf="selectedFile; else existingPicture">
+        <img [src]="photoPreview" alt="Preview slike" class="profile-picture" />
+      </div>
 
-        @if (student?.profile_picture) {
-<img
-         
-          [src]="student?.profile_picture"
-          alt="Trenutna profilna slika"
-          class="profile-picture"
-        />
-}
-        
-        @if (!student?.profile_picture) {
-<p>Nema profilne slike.</p>
-}
-      
-}
-
-      
+      <ng-template #existingPicture>
+        <div *ngIf="student.profile_picture; else noPicture">
+          <img [src]="student.profile_picture" alt="Trenutna profilna slika" class="profile-picture" />
+        </div>
+        <ng-template #noPicture>
+          <p>Nema profilne slike.</p>
+        </ng-template>
+      </ng-template>
     </div>
 
     <!-- Forma sa desne strane -->
-    <form [formGroup]="form" (ngSubmit)="save()" novalidate class="edit-form">
+    <form [formGroup]="studentForm" (ngSubmit)="onSubmit()" novalidate class="edit-form">
       <div class="form-group">
         <label for="first_name">Ime</label>
         <input id="first_name" formControlName="first_name" />
@@ -58,11 +46,6 @@
       </div>
 
       <div class="form-group">
-        <label>Tip korisnika</label>
-        <input type="text" [value]="'Student'" disabled class="readonly-input" />
-      </div>
-
-      <div class="form-group">
         <label for="jmbg">JMBG</label>
         <input id="jmbg" formControlName="jmbg" />
       </div>
@@ -72,11 +55,14 @@
         <input type="file" (change)="onFileSelected($event)" accept="image/*" />
       </div>
 
-      @if (errorMessage) {
-<div class="error-message">{{ errorMessage }}</div>
-}
+      <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
 
-      <button type="submit" [disabled]="form.invalid" class="save-btn">Sačuvaj izmjene</button>
+      <button type="submit" [disabled]="studentForm.invalid" class="save-btn">Sačuvaj izmjene</button>
     </form>
+
   </div>
+
+  <ng-template #loading>
+    <div class="loading">Učitavanje podataka o studentu...</div>
+  </ng-template>
 </div>

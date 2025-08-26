@@ -7,6 +7,7 @@ import { Author } from '../../../models/author.model';
 import { Router, RouterLink } from '@angular/router';
 import { PaginationComponent } from '../../../shared/pagination/pagination.component';
 import { PaginationService } from '../../../shared/pagination/pagination.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-authors',
@@ -47,6 +48,11 @@ export class Authors implements OnInit {
       this.openMenuIndex = null;
     }
   }
+
+  getAuthorImageUrl(picturePath?: string): string {
+  return this.authorService.getAuthorImageUrl(picturePath);
+  }
+
 
   filterAuthors(): Author[] {
     let filtered = this.authors;

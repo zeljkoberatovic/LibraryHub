@@ -10,4 +10,5 @@ export interface User {
   profile_picture?: string | null;
   last_login?: string;  
   created_at?: string; 
+   password?: string;
 }
