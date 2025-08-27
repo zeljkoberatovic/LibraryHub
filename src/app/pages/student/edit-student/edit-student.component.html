@@ -3,28 +3,19 @@
 
   <div *ngIf="student; else loading" class="edit-content">
 
-    <!-- Slika sa leve strane -->
+   
     <div class="profile-picture-section">
-      <div *ngIf="student.profile_picture || selectedFile">
-        <p>Profilna slika:</p>
-      </div>
+      <p>Profilna slika:</p>
 
-      <div *ngIf="selectedFile; else existingPicture">
-        <img [src]="photoPreview" alt="Preview slike" class="profile-picture" />
-      </div>
+      
+      <img *ngIf="getProfilePictureUrl()" [src]="getProfilePictureUrl()" alt="Profilna slika" class="profile-picture" />
 
-      <ng-template #existingPicture>
-        <div *ngIf="student.profile_picture; else noPicture">
-          <img [src]="student.profile_picture" alt="Trenutna profilna slika" class="profile-picture" />
-        </div>
-        <ng-template #noPicture>
-          <p>Nema profilne slike.</p>
-        </ng-template>
-      </ng-template>
+      <p *ngIf="!getProfilePictureUrl()">Nema profilne slike.</p>
     </div>
 
-    <!-- Forma sa desne strane -->
+    <!-- Forma -->
     <form [formGroup]="studentForm" (ngSubmit)="onSubmit()" novalidate class="edit-form">
+
       <div class="form-group">
         <label for="first_name">Ime</label>
         <input id="first_name" formControlName="first_name" />
@@ -52,12 +43,16 @@
 
       <div class="form-group">
         <label>Izmijeni profilnu sliku</label>
-        <input type="file" (change)="onFileSelected($event)" accept="image/*" />
+        <input id="fileInput" type="file" (change)="onFileSelected($event)" accept="image/*" />
+        <button *ngIf="selectedFile" type="button" class="remove-btn" (click)="removeSelectedFile()">Ukloni odabranu sliku</button>
       </div>
 
       <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
 
-      <button type="submit" [disabled]="studentForm.invalid" class="save-btn">Sačuvaj izmjene</button>
+      <button type="submit" [disabled]="studentForm.invalid || isSaving" class="save-btn">
+        {{ isSaving ? 'Čuvanje...' : 'Sačuvaj izmjene' }}
+      </button>
+     <button type="button" class="cancel-btn" (click)="onCancel()">Odustani</button>
     </form>
 
   </div>

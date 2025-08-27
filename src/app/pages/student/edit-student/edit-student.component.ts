@@ -1,10 +1,11 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { StudentService } from '../../../services/student/student.service';
 import { User } from '../../../models/user.model';
 import { switchMap, of } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-edit-student',
@@ -20,11 +21,12 @@ export class EditStudent implements OnInit {
   private route = inject(ActivatedRoute);
 
   studentForm: FormGroup;
-  student?: User;
-  photoPreview: string | ArrayBuffer | null = null;
+  student?: User | null;
+  photoPreview: string | null = null; 
   selectedFile?: File;
   studentId!: number;
   errorMessage?: string;
+  isSaving = false;
 
   constructor() {
     this.studentForm = this.fb.group({
@@ -39,23 +41,31 @@ export class EditStudent implements OnInit {
   }
 
   ngOnInit() {
-    this.studentId = Number(this.route.snapshot.paramMap.get('id'));
-    if (this.studentId) {
-      this.studentService.getStudent(this.studentId).subscribe({
-        next: student => {
-          this.student = student;
-          this.studentForm.patchValue({
-            first_name: student.first_name,
-            last_name: student.last_name,
-            username: student.username,
-            email: student.email,
-            jmbg: student.jmbg,
-          });
-          this.photoPreview = student.profile_picture || null;
-        },
-        error: () => this.errorMessage = 'Greška pri učitavanju podataka o studentu.'
-      });
+    this.route.data.subscribe(({ student }) => {
+      this.student = student;
+      if (student) {
+        this.studentId = student.id;
+        this.studentForm.patchValue({
+          first_name: student.first_name,
+          last_name: student.last_name,
+          username: student.username,
+          email: student.email,
+          jmbg: student.jmbg,
+        });
+        this.photoPreview = null;
+      } else {
+        this.errorMessage = 'Greška pri učitavanju podataka o studentu.';
+      }
+    });
+  }
+
+  
+  getProfilePictureUrl(): string | null {
+    if (this.photoPreview) return this.photoPreview;
+    if (this.student?.profile_picture) {
+      return `${environment.imageBaseUrl}uploads/${this.student.profile_picture}`;
     }
+    return null;
   }
 
   onFileSelected(event: Event) {
@@ -63,18 +73,27 @@ export class EditStudent implements OnInit {
     if (input.files && input.files.length > 0) {
       this.selectedFile = input.files[0];
       const reader = new FileReader();
-      reader.onload = () => this.photoPreview = reader.result;
+      reader.onload = () => {
+        this.photoPreview = reader.result as string; 
+      };
       reader.readAsDataURL(this.selectedFile);
     }
   }
 
+  removeSelectedFile() {
+    this.selectedFile = undefined;
+    this.photoPreview = null;
+    const fileInput = document.getElementById('fileInput') as HTMLInputElement;
+    if (fileInput) fileInput.value = '';
+  }
+
   onSubmit() {
-    if (this.studentForm.invalid) return;
+    if (this.studentForm.invalid || !this.studentId) return;
 
     const form = this.studentForm.value;
 
     if (form.password && form.password !== form.confirmPassword) {
-      alert('Šifre se ne poklapaju!');
+      this.errorMessage = 'Šifre se ne poklapaju!';
       return;
     }
 
@@ -84,29 +103,32 @@ export class EditStudent implements OnInit {
       username: form.username,
       email: form.email,
       jmbg: form.jmbg,
+      ...(form.password ? { password: form.password } : {})
     };
 
-    if (form.password) updatedUser.password = form.password;
+    this.isSaving = true;
+    this.errorMessage = undefined;
 
     this.studentService.updateStudent(this.studentId, updatedUser as User).pipe(
-      switchMap(user => {
-        if (this.selectedFile) {
-          return this.studentService.uploadImage(this.studentId, this.selectedFile)
-            .pipe(switchMap(() => of({ user, imageUploaded: true })));
-        } else {
-          return of({ user, imageUploaded: false });
-        }
-      })
+      switchMap(user =>
+        this.selectedFile
+          ? this.studentService.uploadImage(this.studentId, this.selectedFile).pipe(
+              switchMap(() => of({ user, imageUploaded: true }))
+            )
+          : of({ user, imageUploaded: false })
+      )
     ).subscribe({
-      next: ({ user, imageUploaded }) => {
+      next: ({ imageUploaded }) => {
+        this.isSaving = false;
         alert(imageUploaded
           ? 'Student uspešno ažuriran i slika uploadovana!'
           : 'Student uspešno ažuriran!');
         this.router.navigate(['/students']);
       },
-      error: (error) => {
-        console.error('Greška prilikom ažuriranja studenta ili uploadu slike:', error);
-        alert('Došlo je do greške prilikom ažuriranja studenta ili uploadu slike.');
+      error: (err) => {
+        this.isSaving = false;
+        console.error(err);
+        this.errorMessage = 'Došlo je do greške. Pokušajte ponovo.';
       }
     });
   }

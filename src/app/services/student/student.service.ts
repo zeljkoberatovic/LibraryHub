@@ -26,7 +26,7 @@ export class StudentService {
   }
 
   updateStudent(id: number, student: User): Observable<User> {
-    return this.http.put<User>(`${this.baseUrl}/${id}`, student);
+    return this.http.put<User>(`${this.baseUrl}/${id}`, { ...student, role_id: 1 });
   }
 
   deleteStudent(id: number): Observable<void> {
@@ -35,7 +35,7 @@ export class StudentService {
 
   uploadImage(id: number, file: File): Observable<any> {
     const formData = new FormData();
-    formData.append('photo', file); 
+    formData.append('picture', file); 
     return this.http.post(`${this.baseUrl}/${id}/upload-picture`, formData);
   }
 }
