@@ -1,41 +1,15 @@
 <div class="edit-container">
   <h2>Izmjena bibliotekara</h2>
 
-  <div class="edit-content">
-    <!-- Slika sa leve strane -->
+  <div *ngIf="librarian; else loading" class="edit-content">
+
     <div class="profile-picture-section">
-      @if (librarian?.profile_picture || selectedFile) {
-<p>Profilna slika:</p>
-}
-
-      @if (selectedFile) {
-<img
-       
-        [src]="photoPreview"
-        alt="Preview slike"
-        class="profile-picture"
-      />
-} @else {
-
-        @if (librarian?.profile_picture) {
-<img
-         
-          [src]="librarian?.profile_picture"
-          alt="Trenutna profilna slika"
-          class="profile-picture"
-        />
-}
-        @if (!librarian?.profile_picture) {
-<p>Nema profilne slike.</p>
-}
-      
-}
-
-      
+      <p>Profilna slika:</p>
+      <img *ngIf="getProfilePictureUrl()" [src]="getProfilePictureUrl()" alt="Profilna slika" class="profile-picture" />
+      <p *ngIf="!getProfilePictureUrl()">Nema profilne slike.</p>
     </div>
 
-    <!-- Forma sa desne strane -->
-    <form [formGroup]="form" (ngSubmit)="save()" novalidate class="edit-form">
+    <form [formGroup]="librarianForm" (ngSubmit)="onSubmit()" novalidate class="edit-form">
       <div class="form-group">
         <label for="first_name">Ime</label>
         <input id="first_name" formControlName="first_name" />
@@ -57,25 +31,27 @@
       </div>
 
       <div class="form-group">
-        <label>Tip korisnika</label>
-        <input type="text" [value]="'Bibliotekar'" disabled class="readonly-input" />
-      </div>
-
-      <div class="form-group">
         <label for="jmbg">JMBG</label>
         <input id="jmbg" formControlName="jmbg" />
       </div>
 
       <div class="form-group">
         <label>Izmijeni profilnu sliku</label>
-        <input type="file" (change)="onFileSelected($event)" accept="image/*" />
+        <input id="fileInput" type="file" (change)="onFileSelected($event)" accept="image/*" />
+        <button *ngIf="selectedFile" type="button" class="remove-btn" (click)="removeSelectedFile()">Ukloni odabranu sliku</button>
       </div>
 
-      @if (errorMessage) {
-<div class="error-message">{{ errorMessage }}</div>
-}
+      <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
 
-      <button type="submit" [disabled]="form.invalid" class="save-btn">Sačuvaj izmjene</button>
+      <button type="submit" [disabled]="librarianForm.invalid || isSaving" class="save-btn">
+        {{ isSaving ? 'Čuvanje...' : 'Sačuvaj izmjene' }}
+      </button>
+      <button type="button" class="cancel-btn" (click)="onCancel()">Odustani</button>
     </form>
+
   </div>
+
+  <ng-template #loading>
+    <div class="loading">Učitavanje podataka o bibliotekaru...</div>
+  </ng-template>
 </div>

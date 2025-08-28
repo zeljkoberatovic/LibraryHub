@@ -102,3 +102,28 @@
   color: #444; /* tamnosiva tekst */
   font-style: italic;
 }
+/* Ukloni odabranu sliku i Odustani dugmad */
+.cancel-btn,
+.remove-btn {
+  background-color: #2a3f54;
+  color: #f9c846; 
+  border: none;
+  padding: 12px 20px;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-left: 10px; 
+}
+
+.cancel-btn:hover,
+.remove-btn:hover {
+  background-color: #1a237e; 
+}
+
+.cancel-btn:disabled,
+.remove-btn:disabled {
+  background-color: #9fa8da; 
+  cursor: not-allowed;
+}
+
