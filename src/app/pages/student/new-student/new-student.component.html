@@ -8,66 +8,96 @@
   <form [formGroup]="studentForm" (ngSubmit)="onSubmit()">
     <div class="form-content">
       <div class="form-left">
+        <!-- Ime -->
         <label>
           Ime
           <input formControlName="first_name" type="text" required />
         </label>
+        <div class="error" *ngIf="studentForm.get('first_name')?.touched">
+          <small *ngIf="studentForm.get('first_name')?.errors?.['required']">Ime je obavezno.</small>
+        </div>
 
+        <!-- Prezime -->
         <label>
           Prezime
           <input formControlName="last_name" type="text" required />
         </label>
+        <div class="error" *ngIf="studentForm.get('last_name')?.touched">
+          <small *ngIf="studentForm.get('last_name')?.errors?.['required']">Prezime je obavezno.</small>
+        </div>
 
+        <!-- JMBG -->
         <label>
           JMBG
-          <input formControlName="jmbg" type="text" required />
+          <input formControlName="jmbg" type="text" required maxlength="13" />
         </label>
+        <div class="error" *ngIf="studentForm.get('jmbg')?.touched">
+          <small *ngIf="studentForm.get('jmbg')?.errors?.['required']">JMBG je obavezan.</small>
+          <small *ngIf="studentForm.get('jmbg')?.errors?.['minlength'] || studentForm.get('jmbg')?.errors?.['maxlength']">
+            JMBG mora imati 13 cifara.
+          </small>
+          <small *ngIf="studentForm.get('jmbg')?.errors?.['jmbgTaken']">Ovaj JMBG je već zauzet.</small>
+        </div>
 
+        <!-- E-mail -->
         <label>
           E-mail
           <input formControlName="email" type="email" required />
         </label>
+        <div class="error" *ngIf="studentForm.get('email')?.touched">
+          <small *ngIf="studentForm.get('email')?.errors?.['required']">E-mail je obavezan.</small>
+          <small *ngIf="studentForm.get('email')?.errors?.['email']">Unesite validan e-mail.</small>
+          <small *ngIf="studentForm.get('email')?.errors?.['emailTaken']">Ovaj e-mail je već zauzet.</small>
+        </div>
 
+        <!-- Username -->
         <label>
           Korisničko ime
           <input formControlName="username" type="text" required />
         </label>
+        <div class="error" *ngIf="studentForm.get('username')?.touched">
+          <small *ngIf="studentForm.get('username')?.errors?.['required']">Korisničko ime je obavezno.</small>
+          <small *ngIf="studentForm.get('username')?.errors?.['usernameTaken']">Ovo korisničko ime je već zauzeto.</small>
+        </div>
 
+        <!-- Šifra -->
         <label>
           Šifra
-          <input formControlName="password" type="password" required />
+          <input formControlName="password" type="password" required minlength="6" />
         </label>
+        <div class="error" *ngIf="studentForm.get('password')?.touched">
+          <small *ngIf="studentForm.get('password')?.errors?.['required']">Šifra je obavezna.</small>
+          <small *ngIf="studentForm.get('password')?.errors?.['minlength']">Šifra mora imati barem 6 karaktera.</small>
+        </div>
 
+        <!-- Ponovi šifru -->
         <label>
           Ponovi šifru
           <input formControlName="confirmPassword" type="password" required />
         </label>
+        <div class="error" *ngIf="studentForm.get('confirmPassword')?.touched">
+          <small *ngIf="studentForm.get('confirmPassword')?.errors?.['required']">Potvrda šifre je obavezna.</small>
+          <small *ngIf="studentForm.get('confirmPassword')?.errors?.['mismatch']">Šifre se ne poklapaju.</small>
+        </div>
       </div>
 
+      <!-- PHOTO -->
       <div class="form-right">
         <div class="photo-upload" (click)="fileInput.click()">
           <input #fileInput type="file" (change)="onFileSelected($event)" hidden />
-          @if (photoPreview) {
-
-            <img [src]="photoPreview" alt="Preview" />
-          
-} @else {
-
-            <div class="add-photo-placeholder">
-              <span class="material-icons">image</span>
-              <p>Dodaj fotografiju</p>
-            </div>
-          
-}
-          
+          <img *ngIf="photoPreview" [src]="photoPreview" alt="Preview" />
+          <div *ngIf="!photoPreview" class="add-photo-placeholder">
+            <span class="material-icons">image</span>
+            <p>Dodaj fotografiju</p>
+          </div>
         </div>
       </div>
     </div>
 
+    <!-- BUTTONS -->
     <div class="form-actions">
       <button type="button" class="cancel" (click)="onCancel()">Poništi</button>
       <button type="submit" class="save" [disabled]="studentForm.invalid">Sačuvaj</button>
     </div>
   </form>
 </div>
-

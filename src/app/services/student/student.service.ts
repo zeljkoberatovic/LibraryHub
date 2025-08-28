@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { User } from '../../models/user.model';
 import { environment } from '../../../environments/environment';
@@ -10,7 +10,7 @@ export class StudentService {
   private http = inject(HttpClient);
   private baseUrl = environment.apiUrl + '/users';
 
-  // Vraća sve studente
+  
   getAllStudents(): Observable<User[]> {
     return this.http.get<{ data: { meta: any; data: User[] } }>(`${this.baseUrl}?role_id=1`)
       .pipe(map(response => response.data.data));
@@ -38,4 +38,6 @@ export class StudentService {
     formData.append('picture', file); 
     return this.http.post(`${this.baseUrl}/${id}/upload-picture`, formData);
   }
+
+
 }
