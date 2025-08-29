@@ -1,15 +1,56 @@
-import { Component } from '@angular/core';
-
+// src/app/components/header/header.component.ts
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { AuthService } from '../../auth/services/auth.services';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-header',
+  standalone: true,
+  imports: [CommonModule, RouterModule],
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css'],
-  imports: [],
+  styleUrls: ['./header.component.css']
 })
-export class HeaderComponent {
-  showCreateMenu = false;
-  toggleCreate() {
-    this.showCreateMenu = !this.showCreateMenu;
+export class HeaderComponent implements OnInit, OnDestroy {
+  isLoggedIn = false;
+  user: any = null;
+  private authSubscription!: Subscription;
+
+  constructor(private authService: AuthService) {}
+
+  ngOnInit() {
+    // Pratite promjene u autentikaciji
+    this.authSubscription = this.authService.authStatus$.subscribe(isLoggedIn => {
+      this.isLoggedIn = isLoggedIn;
+      if (isLoggedIn) {
+        this.user = this.authService.getCurrentUser();
+      } else {
+        this.user = null;
+      }
+    });
+
+    // Inicijalno postavite status
+    this.isLoggedIn = this.authService.isLoggedIn();
+    if (this.isLoggedIn) {
+      this.user = this.authService.getCurrentUser();
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.authSubscription) {
+      this.authSubscription.unsubscribe();
+    }
+  }
+
+  logout() {
+    this.authService.logout().subscribe({
+      next: () => {
+        console.log('Logout successful');
+      },
+      error: (err) => {
+        console.error('Logout error:', err);
+      }
+    });
   }
 }

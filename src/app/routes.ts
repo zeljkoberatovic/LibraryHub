@@ -12,80 +12,104 @@ import { BindingComponent } from './pages/settings/bindings/bindings.component';
 import { FormatComponent } from './pages/settings/formats/formats.component';
 import { LanguageComponent } from './pages/settings/languages/languages.component';
 import { authorResolver } from './resolvers/author/author-resolver';
+import { authGuard } from './core/guards/auth.guard';
+
+
 
 export const routes: Route[] = [
+  // Auth routes
+  {
+    path: 'login',
+    loadComponent: () =>
+      import('./auth/pages/login/login.component').then(m => m.Login)
+  },
+  {
+    path: 'register',
+    loadComponent: () =>
+      import('./auth/pages/register/register.component').then(m => m.Register)
+  },
+
+  // Public dashboard
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
   { path: 'dashboard', component: DashboardComponent },
 
-  // Librarians routes
+  // Librarians routes (zaštićeno)
   {
     path: 'librarians',
+    canActivate: [authGuard],
     loadComponent: () => import('./pages/librarians/librarians/librarians.component').then(m => m.Librarians)
   },
   {
     path: 'librarians/new',
+    canActivate: [authGuard],
     loadComponent: () => import('./pages/librarians/new-librarian/new-librarian.component').then(m => m.NewLibrarian)
   },
   {
     path: 'librarians/:id',
+    canActivate: [authGuard],
     loadComponent: () => import('./pages/librarians/view-librarian/view-librarian.component').then(m => m.ViewLibrarian),
     resolve: { librarian: librarianResolver }
   },
   {
     path: 'librarians/:id/edit',
+    canActivate: [authGuard],
     loadComponent: () => import('./pages/librarians/edit-librarian/edit-librarian.component').then(m => m.EditLibrarian),
     resolve: { librarian: librarianResolver }
   },
 
-  // Students routes
+  // Students routes (zaštićeno)
   {
     path: 'students',
+    canActivate: [authGuard],
     loadComponent: () => import('./pages/student/students/students.component').then(m => m.Students)
   },
   {
     path: 'students/new',
+    canActivate: [authGuard],
     loadComponent: () => import('./pages/student/new-student/new-student.component').then(m => m.NewStudent)
   },
   {
     path: 'students/:id',
+    canActivate: [authGuard],
     loadComponent: () => import('./pages/student/view-student/view-student.component').then(m => m.ViewStudent),
     resolve: { student: studentResolver }
   },
   {
     path: 'students/:id/edit',
+    canActivate: [authGuard],
     loadComponent: () => import('./pages/student/edit-student/edit-student.component').then(m => m.EditStudent),
     resolve: { student: studentResolver }
   },
 
-  // Authors routes
+  // Authors routes (zaštićeno)
   {
-  path: 'authors',
-  loadComponent: () =>
-    import('./pages/authors/authors/authors.component').then(m => m.Authors)
-},
-{
-  path: 'authors/new',
-  loadComponent: () =>
-    import('./pages/authors/new-author/new-author.component').then(m => m.NewAuthor)
-},
-{
-  path: 'authors/:id',
-  loadComponent: () =>
-    import('./pages/authors/view-author/view-author.component').then(m => m.ViewAuthor),
-   resolve: { author: authorResolver }
-},
-{
-  path: 'authors/:id/edit',
-  loadComponent: () =>
-    import('./pages/authors/edit-author/edit-author.component').then(m => m.EditAuthor),
-   resolve: { author: authorResolver }
-},
+    path: 'authors',
+    canActivate: [authGuard],
+    loadComponent: () => import('./pages/authors/authors/authors.component').then(m => m.Authors)
+  },
+  {
+    path: 'authors/new',
+    canActivate: [authGuard],
+    loadComponent: () => import('./pages/authors/new-author/new-author.component').then(m => m.NewAuthor)
+  },
+  {
+    path: 'authors/:id',
+    canActivate: [authGuard],
+    loadComponent: () => import('./pages/authors/view-author/view-author.component').then(m => m.ViewAuthor),
+    resolve: { author: authorResolver }
+  },
+  {
+    path: 'authors/:id/edit',
+    canActivate: [authGuard],
+    loadComponent: () => import('./pages/authors/edit-author/edit-author.component').then(m => m.EditAuthor),
+    resolve: { author: authorResolver }
+  },
 
-
-  // Settings routes
+  // Settings routes (zaštićeno)
   {
     path: 'settings',
     component: SettingsComponent,
+    canActivate: [authGuard],
     children: [
       { path: '', redirectTo: 'kategorije', pathMatch: 'full' },
       {
@@ -94,26 +118,30 @@ export const routes: Route[] = [
           import('./pages/settings/categories/categories.component').then(
             (m) => m.CategoryComponent
           ),
+        canActivate: [authGuard]
       },
-      { path: 'zanrovi', component: GenreComponent },
-      { path: 'izdavac', component: PublisherComponent },
-      { path: 'povez', component: BindingComponent },
-      { path: 'format', component: FormatComponent },
-      { path: 'pismo', component: LanguageComponent },
+      { path: 'zanrovi', component: GenreComponent, canActivate: [authGuard] },
+      { path: 'izdavac', component: PublisherComponent, canActivate: [authGuard] },
+      { path: 'povez', component: BindingComponent, canActivate: [authGuard] },
+      { path: 'format', component: FormatComponent, canActivate: [authGuard] },
+      { path: 'pismo', component: LanguageComponent, canActivate: [authGuard] },
     ],
   },
 
-   // Books routes
+  // Books routes (zaštićeno)
   {
     path: 'books',
+    canActivate: [authGuard],
     loadComponent: () => import('./pages/books/books/books.component').then(m => m.Books),
   },
   {
     path: 'books/new',
+    canActivate: [authGuard],
     loadComponent: () => import('./pages/books/new-book/new-book.component').then(m => m.NewBook),
   },
   {
     path: 'books/edit/:id',
+    canActivate: [authGuard],
     loadComponent: () => import('./pages/books/edit-book/edit-book.component').then(m => m.EditBook),
     resolve: {
       book: bookResolver
@@ -121,9 +149,13 @@ export const routes: Route[] = [
   },
   {
     path: 'books/view/:id',
+    canActivate: [authGuard],
     loadComponent: () => import('./pages/books/view-book/view-book.component').then(m => m.ViewBook),
     resolve: {
       book: bookResolver
     }
   },
+
+  // Catch-all (404)
+  { path: '**', redirectTo: '/dashboard' }
 ];

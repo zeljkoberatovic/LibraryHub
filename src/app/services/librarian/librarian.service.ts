@@ -38,7 +38,7 @@ export class LibrarianService {
 
   uploadImage(id: number, file: File): Observable<any> {
     const formData = new FormData();
-      formData.append('photo', file);
+      formData.append('profile_picture', file);
         return this.http.post(`${this.baseUrl}/${id}/upload-picture`, formData);
   }
 

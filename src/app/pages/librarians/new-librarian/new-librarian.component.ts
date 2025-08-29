@@ -38,8 +38,10 @@ export class NewLibrarian {
 
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
+    console.log('File input event triggered:', input.files);
     if (input.files && input.files.length > 0) {
       this.selectedFile = input.files[0];
+      //console.log('Selected file:', this.selectedFile);
       const reader = new FileReader();
       reader.onload = () => {
         this.photoPreview = reader.result;
@@ -68,31 +70,40 @@ export class NewLibrarian {
       
     };
 
-    this.librarianService.createLibrarian(user).pipe(
-        switchMap(createdUser => {
-          if (this.selectedFile && createdUser.id) {
-            return this.librarianService.uploadImage(createdUser.id, this.selectedFile).pipe(
-              map(() => ({ createdUser, imageUploaded: true }))
-            );
-      } else {
-        // Ako nema slike za upload, samo prosledi kreiranog korisnika
-        return of({ createdUser, imageUploaded: false });
-      }
-    })
-      ).subscribe({
-          next: ({ createdUser, imageUploaded }) => {
-            if (imageUploaded) {
-                alert('Bibliotekar kreiran i slika uspešno uploadovana!');
-          } else {
-                alert('Bibliotekar uspešno kreiran!');
-        }
-              this.router.navigate(['/librarians']);
-      },
-                error: (error) => {
-                console.error('Greška prilikom kreiranja bibliotekara ili uploadu slike:', error);
-                alert('Došlo je do greške prilikom kreiranja bibliotekara ili uploadu slike.');
-      }
-    });
+    
+ this.librarianService.createLibrarian(user).pipe(
+  switchMap((response: any)  => {
+    const createdUser = response.data; // <-- izvuci korisnika iz data
+    console.log('Created user:', createdUser);
+
+    if (this.selectedFile && createdUser.id) {
+      console.log('Selected file to upload:', this.selectedFile);
+      return this.librarianService.uploadImage(createdUser.id, this.selectedFile).pipe(
+        map(() => {
+          console.log('Upload successful for user ID:', createdUser.id);
+          return { createdUser, imageUploaded: true };
+        })
+      );
+    } else {
+      console.log('No file selected, skipping upload');
+      return of({ createdUser, imageUploaded: false });
+    }
+  })
+).subscribe({
+  next: ({ createdUser, imageUploaded }) => {
+    if (imageUploaded) {
+      alert('Bibliotekar kreiran i slika uspešno uploadovana!');
+    } else {
+      alert('Bibliotekar uspešno kreiran!');
+    }
+    this.router.navigate(['/librarians']);
+  },
+  error: (error) => {
+    console.error('Greška prilikom kreiranja bibliotekara ili uploadu slike:', error);
+    alert('Došlo je do greške prilikom kreiranja bibliotekara ili uploadu slike.');
+  }
+});
+
   }
 
   onCancel() {
