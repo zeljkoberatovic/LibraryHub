@@ -81,17 +81,7 @@
         </div>
       </div>
 
-      <!-- PHOTO -->
-      <div class="form-right">
-        <div class="photo-upload" (click)="fileInput.click()">
-          <input #fileInput type="file" (change)="onFileSelected($event)" hidden />
-          <img *ngIf="photoPreview" [src]="photoPreview" alt="Preview" />
-          <div *ngIf="!photoPreview" class="add-photo-placeholder">
-            <span class="material-icons">image</span>
-            <p>Dodaj fotografiju</p>
-          </div>
-        </div>
-      </div>
+      
     </div>
 
     <!-- BUTTONS -->

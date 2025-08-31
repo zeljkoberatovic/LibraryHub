@@ -30,8 +30,8 @@ getAuthorImageUrl(picturePath?: string): string {
 
 
 
-  createAuthor(formData: FormData): Observable<Author> {
-    return this.http.post<Author>(this.baseUrl, formData).pipe(
+  createAuthor(data: { first_name: string; last_name: string; biography: string }): Observable<Author> {
+    return this.http.post<Author>(this.baseUrl, data).pipe(
       tap(res => console.log('Author created:', res)),
       catchError(error => {
         console.error('Create author error:', error);
@@ -39,6 +39,7 @@ getAuthorImageUrl(picturePath?: string): string {
       })
     );
   }
+
 
   updateAuthor(id: number, formData: FormData): Observable<Author> {
     return this.http.post<Author>(`${this.baseUrl}/${id}`, formData).pipe(

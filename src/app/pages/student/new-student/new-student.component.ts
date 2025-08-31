@@ -20,7 +20,6 @@ export class NewStudent {
   private router = inject(Router);
 
   studentForm: FormGroup;
-  photoPreview: string | ArrayBuffer | null = null;
 
   constructor() {
     this.studentForm = this.fb.group({
@@ -32,20 +31,6 @@ export class NewStudent {
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', Validators.required],
     });
-  }
-
-  onFileSelected(event: Event) {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      const file = input.files[0];
-      const reader = new FileReader();
-      reader.onload = () => this.photoPreview = reader.result;
-      reader.readAsDataURL(file);
-    }
-  }
-
-  removeSelectedFile() {
-    this.photoPreview = null;
   }
 
   onSubmit() {
@@ -89,3 +74,4 @@ export class NewStudent {
     this.router.navigate(['/students']);
   }
 }
+

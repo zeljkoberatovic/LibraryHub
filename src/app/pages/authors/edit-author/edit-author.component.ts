@@ -23,6 +23,7 @@ export class EditAuthor implements OnInit {
   selectedFile?: File;
   photoPreview: string | ArrayBuffer | null = null;
   errorMessage = '';
+  isSaving: boolean = false;
 
   form = this.fb.group({
     first_name: ['', [Validators.required, Validators.minLength(2)]],
@@ -88,4 +89,8 @@ export class EditAuthor implements OnInit {
       }
     });
   }
+  onCancel() {
+  this.router.navigate(['/authors']);
+}
+
 }

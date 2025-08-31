@@ -23,20 +23,6 @@
           <textarea formControlName="biography" required></textarea>
         </label>
       </div>
-
-      <div class="form-right">
-        <div class="photo-upload" (click)="fileInput.click()">
-          <input #fileInput type="file" (change)="onFileSelected($event)" hidden />
-          @if (photoPreview) {
-            <img [src]="photoPreview" alt="Preview" />
-          } @else {
-            <div class="add-photo-placeholder">
-              <span class="material-icons">image</span>
-              <p>Dodaj fotografiju</p>
-            </div>
-          }
-        </div>
-      </div>
     </div>
 
     <div class="form-actions">
@@ -45,4 +31,3 @@
     </div>
   </form>
 </div>
-

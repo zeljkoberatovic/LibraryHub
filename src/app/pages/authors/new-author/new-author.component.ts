@@ -2,11 +2,12 @@ import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthorService } from '../../../services/author/author.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-new-author',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterLink, FormsModule],
+  imports: [ReactiveFormsModule, RouterLink, FormsModule, CommonModule],
   templateUrl: './new-author.component.html',
   styleUrls: ['./new-author.component.css']
 })
@@ -16,8 +17,6 @@ export class NewAuthor {
   private router = inject(Router);
 
   authorForm: FormGroup;
-  photoPreview: string | ArrayBuffer | null = null;
-  selectedFile?: File;
 
   constructor() {
     this.authorForm = this.fb.group({
@@ -27,29 +26,17 @@ export class NewAuthor {
     });
   }
 
-  onFileSelected(event: Event) {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      this.selectedFile = input.files[0];
-      const reader = new FileReader();
-      reader.onload = () => this.photoPreview = reader.result;
-      reader.readAsDataURL(this.selectedFile);
-    }
-  }
-
   onSubmit() {
     if (this.authorForm.invalid) {
       alert('Molimo popunite sva polja');
       return;
     }
 
-    const formData = new FormData();
-    formData.append('first_name', this.authorForm.get('first_name')?.value || '');
-    formData.append('last_name', this.authorForm.get('last_name')?.value || '');
-    formData.append('biography', this.authorForm.get('biography')?.value || '');
-    if (this.selectedFile) {
-      formData.append('picture', this.selectedFile);
-    }
+    const formData = {
+      first_name: this.authorForm.get('first_name')?.value || '',
+      last_name: this.authorForm.get('last_name')?.value || '',
+      biography: this.authorForm.get('biography')?.value || ''
+    };
 
     this.authorService.createAuthor(formData).subscribe({
       next: () => {

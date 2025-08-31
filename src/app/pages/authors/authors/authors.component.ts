@@ -27,6 +27,7 @@ export class Authors implements OnInit {
 
   searchTerm: string = '';
   openMenuIndex: number | null = null;
+  
 
   ngOnInit(): void {
     this.authorService.getAuthors().subscribe({
