@@ -5,7 +5,6 @@ import { LibrarianService } from '../../../services/librarian/librarian.service'
 import { User } from '../../../models/user.model';
 import { switchMap, of } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-edit-librarian',
@@ -52,18 +51,16 @@ export class EditLibrarian implements OnInit {
           email: librarian.email,
           jmbg: librarian.jmbg,
         });
+        // inicijalni preview iz servisa
+        this.photoPreview = this.librarianService.getLibrarianImageUrl(librarian.profile_picture);
       } else {
         this.errorMessage = 'Greška pri učitavanju podataka o bibliotekaru.';
       }
     });
   }
 
-  getProfilePictureUrl(): string | null {
-    if (this.photoPreview) return this.photoPreview;
-    if (this.librarian?.profile_picture) {
-      return `${environment.imageBaseUrl}uploads/${this.librarian.profile_picture}`;
-    }
-    return null;
+  getProfilePictureUrl(): string {
+    return this.photoPreview || 'assets/default-user.png';
   }
 
   onFileSelected(event: Event) {
@@ -78,7 +75,11 @@ export class EditLibrarian implements OnInit {
 
   removeSelectedFile() {
     this.selectedFile = undefined;
-    this.photoPreview = null;
+    if (this.librarian) {
+      this.photoPreview = this.librarianService.getLibrarianImageUrl(this.librarian.profile_picture);
+    } else {
+      this.photoPreview = null;
+    }
     const fileInput = document.getElementById('fileInput') as HTMLInputElement;
     if (fileInput) fileInput.value = '';
   }
@@ -99,7 +100,7 @@ export class EditLibrarian implements OnInit {
       username: form.username,
       email: form.email,
       jmbg: form.jmbg,
-      role_id: 2,  
+      role_id: 2,
       ...(form.password ? { password: form.password } : {})
     };
 

@@ -4,7 +4,7 @@
   <div class="details-content">
     <!-- Profilna slika -->
     <img
-      [src]="author?.picture || 'assets/default-user.png'"
+      [src]="getAuthorImageUrl(author?.picture)"
       alt="Profilna slika"
       class="profile-picture"
     />

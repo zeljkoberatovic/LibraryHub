@@ -39,5 +39,13 @@ export class StudentService {
     return this.http.post(`${this.baseUrl}/${id}/upload-picture`, formData);
   }
 
+  getStudentImageUrl(picturePath?: string): string {
+  if (!picturePath) {
+    return 'assets/default-user.png';
+  }
+  return `${environment.imageBaseUrl}${picturePath}`;
+}
+
+
 
 }

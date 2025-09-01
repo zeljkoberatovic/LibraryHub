@@ -18,7 +18,7 @@ export class EditAuthor implements OnInit {
   private router = inject(Router);
   private fb = inject(FormBuilder);
 
-  author!: Author; 
+  author!: Author;
   authorId!: number;
   selectedFile?: File;
   photoPreview: string | ArrayBuffer | null = null;
@@ -32,11 +32,10 @@ export class EditAuthor implements OnInit {
   });
 
   ngOnInit() {
-    // Dobijamo podatke iz resolvera
     const resolvedAuthor = this.route.snapshot.data['author'] as Author | null;
-    
+
     if (resolvedAuthor) {
-      this.author = resolvedAuthor; // Postavljamo author objekat
+      this.author = resolvedAuthor;
       this.authorId = resolvedAuthor.id!;
       this.form.patchValue({
         first_name: resolvedAuthor.first_name,
@@ -44,7 +43,7 @@ export class EditAuthor implements OnInit {
         biography: resolvedAuthor.biography,
       });
       if (resolvedAuthor.picture) {
-        this.photoPreview = resolvedAuthor.picture;
+        this.photoPreview = this.getAuthorImageUrl(resolvedAuthor.picture);
       }
     } else {
       this.errorMessage = 'Neuspjelo učitavanje podataka autora.';
@@ -52,12 +51,16 @@ export class EditAuthor implements OnInit {
     }
   }
 
+  getAuthorImageUrl(picture?: string | null): string {
+    return this.authorService.getAuthorImageUrl(picture ?? undefined);
+  }
+
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       this.selectedFile = input.files[0];
       const reader = new FileReader();
-      reader.onload = () => this.photoPreview = reader.result;
+      reader.onload = () => (this.photoPreview = reader.result);
       reader.readAsDataURL(this.selectedFile);
     }
   }
@@ -72,7 +75,7 @@ export class EditAuthor implements OnInit {
     formData.append('first_name', this.form.get('first_name')?.value || '');
     formData.append('last_name', this.form.get('last_name')?.value || '');
     formData.append('biography', this.form.get('biography')?.value || '');
-    formData.append('_method', 'PUT'); // Laravel spoofing
+    formData.append('_method', 'PUT');
     if (this.selectedFile) {
       formData.append('picture', this.selectedFile);
     }
@@ -83,14 +86,15 @@ export class EditAuthor implements OnInit {
         this.router.navigate(['/authors']);
       },
       error: (err) => {
-        this.errorMessage = err.status === 422
-          ? 'Validation error: ' + JSON.stringify(err.error?.errors)
-          : 'Greška pri ažuriranju autora.';
-      }
+        this.errorMessage =
+          err.status === 422
+            ? 'Validation error: ' + JSON.stringify(err.error?.errors)
+            : 'Greška pri ažuriranju autora.';
+      },
     });
   }
-  onCancel() {
-  this.router.navigate(['/authors']);
-}
 
+  onCancel() {
+    this.router.navigate(['/authors']);
+  }
 }

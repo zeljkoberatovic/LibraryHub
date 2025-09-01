@@ -1,13 +1,14 @@
-
 <div class="details-card">
   <h2>Detalji studenta</h2>
 
   <div class="details-content">
-    <img
-      [src]="student?.profile_picture || 'assets/default-user.png'"
-      alt="Profilna slika"
-      class="profile-picture"
-    />
+    <!-- Profilna slika sa servisom za preview -->
+   <img
+  [src]="getStudentImageUrl(student?.profile_picture)"
+  alt="Profilna slika"
+  class="profile-picture"
+/>
+
 
     <div class="details-info">
       <p><span class="details-label">Ime i prezime:</span> <span class="details-value">{{ student?.first_name }} {{ student?.last_name }}</span></p>

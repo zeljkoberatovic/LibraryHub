@@ -42,4 +42,12 @@ export class LibrarianService {
         return this.http.post(`${this.baseUrl}/${id}/upload-picture`, formData);
   }
 
+  getLibrarianImageUrl(picturePath?: string | null): string {
+  if (!picturePath) {
+    return 'assets/default-user.png';
+  }
+  return `${environment.imageBaseUrl}${picturePath}`;
+}
+
+
 }

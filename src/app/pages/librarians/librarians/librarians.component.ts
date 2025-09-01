@@ -1,10 +1,10 @@
 import { Component, inject, OnInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
 
 import { LibrarianService } from '../../../services/librarian/librarian.service';
 import { User } from '../../../models/user.model';
-import { Router, RouterLink } from '@angular/router';
 import { PaginationComponent } from '../../../shared/pagination/pagination.component';
 import { PaginationService } from '../../../shared/pagination/pagination.service';
 
@@ -23,7 +23,6 @@ export class Librarians implements OnInit {
   librarians: User[] = [];
   loading = true;
   sortDirection: 'asc' | 'desc' = 'asc';
-
   searchTerm: string = '';
   openMenuIndex: number | null = null;
 
@@ -34,23 +33,22 @@ export class Librarians implements OnInit {
         this.pagination.reset();
         this.loading = false;
       },
-      error: () => {
-        this.loading = false;
-      }
+      error: () => this.loading = false
     });
   }
 
   @HostListener('document:click', ['$event'])
   handleDocumentClick(event: MouseEvent): void {
     const target = event.target as HTMLElement;
-    if (!target.closest('.actions-cell')) {
-      this.openMenuIndex = null;
-    }
+    if (!target.closest('.actions-cell')) this.openMenuIndex = null;
+  }
+
+  getLibrarianImageUrl(picture?: string | null): string {
+    return this.librarianService.getLibrarianImageUrl(picture ?? undefined);
   }
 
   filterLibrarians(): User[] {
     let filtered = this.librarians;
-
     if (this.searchTerm.trim()) {
       const term = this.searchTerm.toLowerCase();
       filtered = filtered.filter(lib =>
@@ -58,7 +56,6 @@ export class Librarians implements OnInit {
         lib.email.toLowerCase().includes(term)
       );
     }
-
     return filtered.sort((a, b) => {
       const nameA = `${a.first_name} ${a.last_name}`.toLowerCase();
       const nameB = `${b.first_name} ${b.last_name}`.toLowerCase();
@@ -73,48 +70,37 @@ export class Librarians implements OnInit {
   }
 
   onPageChange(page: number): void {
-    this.pagination.currentPage = page;
-  }
+     this.pagination.currentPage = page; }
 
   sortByName(): void {
-    this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
-  }
+     this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc'; }
 
   goToNewLibrarian(): void {
-    this.router.navigate(['/new-librarians']);
-  }
+     this.router.navigate(['/librarians/new']); }
 
   toggleMenu(index: number): void {
-    this.openMenuIndex = this.openMenuIndex === index ? null : index;
-  }
+     this.openMenuIndex = this.openMenuIndex === index ? null : index; }
 
-  showDetails(librarian: User): void {
-    this.router.navigate(['/librarians', librarian.id]);
-    this.openMenuIndex = null;
-  }
+  showDetails(lib: User): void {
+     this.router.navigate(['/librarians', lib.id]);
+      this.openMenuIndex = null; }
 
-  editUser(librarian: User): void {
-    this.router.navigate(['/librarians', librarian.id, 'edit']);
-    this.openMenuIndex = null;
-  }
+  editUser(lib: User): void {
+     this.router.navigate(['/librarians', lib.id, 'edit']);
+      this.openMenuIndex = null; }
 
- deleteUser(librarian: User): void {
-  if (
-    librarian.id !== undefined &&
-    confirm(`Da li ste sigurni da želite da izbrišete korisnika ${librarian.first_name} ${librarian.last_name}?`)
-  ) {
-    this.librarianService.deleteLibrarian(librarian.id).subscribe({
+  deleteUser(lib: User): void {
+    if (lib.id === undefined) return;
+    if (!confirm(`Da li ste sigurni da želite da izbrišete korisnika ${lib.first_name} ${lib.last_name}?`)) return;
+
+    this.librarianService.deleteLibrarian(lib.id).subscribe({
       next: () => {
-        this.librarians = this.librarians.filter(l => l.id !== librarian.id);
-        alert(`Korisnik ${librarian.first_name} ${librarian.last_name} je uspešno obrisan.`);
+        this.librarians = this.librarians.filter(l => l.id !== lib.id);
+        alert(`Korisnik ${lib.first_name} ${lib.last_name} je uspešno obrisan.`);
       },
-      error: (err) => {
-        console.error('Greška pri brisanju korisnika:', err);
-        alert(`Došlo je do greške prilikom brisanja korisnika ${librarian.first_name} ${librarian.last_name}.`);
-      }
+      error: () => alert(`Došlo je do greške prilikom brisanja korisnika ${lib.first_name} ${lib.last_name}.`)
     });
-  }
-  this.openMenuIndex = null;
-}
 
+    this.openMenuIndex = null;
+  }
 }

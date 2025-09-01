@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
-
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '../../../models/user.model';
+import { StudentService } from '../../../services/student/student.service';
 
 @Component({
   selector: 'app-view-student',
@@ -13,6 +13,7 @@ import { User } from '../../../models/user.model';
 export class ViewStudent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+  private studentService = inject(StudentService);
 
   student: User | null = null;
 
@@ -25,6 +26,11 @@ export class ViewStudent implements OnInit {
       this.router.navigate(['/students']);
     }
   }
+
+  getStudentImageUrl(picturePath: string | null | undefined): string {
+  return this.studentService.getStudentImageUrl(picturePath ?? undefined);
+}
+
 
   goBack() {
     this.router.navigate(['/students']);

@@ -59,13 +59,12 @@ export class EditStudent implements OnInit {
     });
   }
 
-  
-  getProfilePictureUrl(): string | null {
+  getProfilePictureUrl(): string {
     if (this.photoPreview) return this.photoPreview;
     if (this.student?.profile_picture) {
-      return `${environment.imageBaseUrl}uploads/${this.student.profile_picture}`;
+      return `${environment.imageBaseUrl}${this.student.profile_picture}`;
     }
-    return null;
+    return 'assets/default-user.png';
   }
 
   onFileSelected(event: Event) {
@@ -73,9 +72,7 @@ export class EditStudent implements OnInit {
     if (input.files && input.files.length > 0) {
       this.selectedFile = input.files[0];
       const reader = new FileReader();
-      reader.onload = () => {
-        this.photoPreview = reader.result as string; 
-      };
+      reader.onload = () => this.photoPreview = reader.result as string;
       reader.readAsDataURL(this.selectedFile);
     }
   }
@@ -127,7 +124,6 @@ export class EditStudent implements OnInit {
       },
       error: (err) => {
         this.isSaving = false;
-        console.error(err);
         this.errorMessage = 'Došlo je do greške. Pokušajte ponovo.';
       }
     });

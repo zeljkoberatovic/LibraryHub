@@ -1,12 +1,7 @@
 <div class="container">
   <div class="header-with-search">
     <h2>Bibliotekari</h2>
-    <input
-      type="text"
-      placeholder="Pretraži..."
-      [(ngModel)]="searchTerm"
-      class="search-input"
-    />
+    <input type="text" placeholder="Pretraži..." [(ngModel)]="searchTerm" class="search-input" />
   </div>
 
   <button class="add-button" [routerLink]="['/librarians/new']">+ Novi bibliotekar</button>
@@ -27,14 +22,9 @@
     </thead>
 
     <tbody>
-      @for (librarian of paged; track librarian; let i = $index) {
-<tr>
+      <tr *ngFor="let librarian of paged; let i = index">
         <td>
-          <img
-            [src]="librarian.profile_picture || 'assets/default-user.png'"
-            alt="Profilna slika"
-            class="avatar"
-          />
+          <img [src]="getLibrarianImageUrl(librarian.profile_picture)" alt="Profilna slika" class="avatar" />
         </td>
         <td>{{ librarian.first_name }} {{ librarian.last_name }}</td>
         <td>{{ librarian.email }}</td>
@@ -43,9 +33,7 @@
         <td class="actions-cell" style="position: relative;">
           <span class="menu-icon" (click)="toggleMenu(i)">⋮</span>
 
-          <!-- Padajući meni -->
-          @if (openMenuIndex === i) {
-<div class="menu">
+          <div *ngIf="openMenuIndex === i" class="menu">
             <button (click)="showDetails(librarian)">
               <span class="material-icons" style="font-size:16px; vertical-align: middle;">info</span>
               Detalji korisnika
@@ -59,10 +47,8 @@
               Izbriši korisnika
             </button>
           </div>
-}
         </td>
       </tr>
-}
     </tbody>
   </table>
 

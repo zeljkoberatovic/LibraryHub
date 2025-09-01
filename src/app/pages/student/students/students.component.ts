@@ -7,6 +7,7 @@ import { User } from '../../../models/user.model';
 import { Router, RouterLink } from '@angular/router';
 import { PaginationComponent } from '../../../shared/pagination/pagination.component';
 import { PaginationService } from '../../../shared/pagination/pagination.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-students',
@@ -47,6 +48,11 @@ export class Students implements OnInit {
       this.openMenuIndex = null;
     }
   }
+
+ getStudentImageUrl(picturePath?: string | null): string {
+  return picturePath ? `${environment.imageBaseUrl}${picturePath}` : 'assets/default-user.png';
+}
+
 
   filterStudents(): User[] {
     let filtered = this.students;
@@ -99,22 +105,21 @@ export class Students implements OnInit {
   }
 
   deleteUser(student: User): void {
-  if (
-    student.id !== undefined &&
-    confirm(`Da li ste sigurni da želite da izbrišete korisnika ${student.first_name} ${student.last_name}?`)
-  ) {
-    this.studentService.deleteStudent(student.id).subscribe({
-      next: () => {
-        this.students = this.students.filter(s => s.id !== student.id);
-        alert(`Korisnik ${student.first_name} ${student.last_name} je uspešno obrisan.`);
-      },
-      error: (err) => {
-        console.error('Greška pri brisanju korisnika:', err);
-        alert(`Došlo je do greške prilikom brisanja korisnika ${student.first_name} ${student.last_name}.`);
-      }
-    });
+    if (student.id !== undefined && confirm(`Da li ste sigurni da želite da izbrišete korisnika ${student.first_name} ${student.last_name}?`)) {
+      this.studentService.deleteStudent(student.id).subscribe({
+        next: () => {
+          this.students = this.students.filter(s => s.id !== student.id);
+          alert(`Korisnik ${student.first_name} ${student.last_name} je uspešno obrisan.`);
+        },
+        error: (err) => {
+          alert(`Došlo je do greške prilikom brisanja korisnika ${student.first_name} ${student.last_name}.`);
+        }
+      });
+    }
+    this.openMenuIndex = null;
   }
-  this.openMenuIndex = null;
-}
 
+   trackByFn(index: number, student: User): number {
+    return student.id!;
+  }
 }
