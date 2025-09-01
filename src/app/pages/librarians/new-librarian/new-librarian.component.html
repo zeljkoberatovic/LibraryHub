@@ -1,13 +1,12 @@
 <div class="new-librarian-container">
   <h2>Novi bibliotekar</h2>
   <nav>
-
    
   <a routerLink="/librarians" >Svi bibliotekari</a> /
   <a>Novi bibliotekar</a>
 </nav>
 
-<form [formGroup]="librarianForm" (ngSubmit)="onSubmit()">
+  <form [formGroup]="librarianForm" (ngSubmit)="onSubmit()">
     <div class="form-content">
       <div class="form-left">
         <!-- Ime -->
