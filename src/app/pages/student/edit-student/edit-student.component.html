@@ -1,82 +1,67 @@
 <div class="edit-container">
   <h2>Izmjena studenta</h2>
 
-  <div class="edit-content">
-    <!-- Slika sa leve strane -->
-    <div class="profile-picture-section">
-      @if (student?.profile_picture || selectedFile) {
-<p>Profilna slika:</p>
-}
+  @if (student) {
+    <div class="edit-content">
 
-      @if (selectedFile) {
-<img
-       
-        [src]="photoPreview"
-        alt="Preview slike"
-        class="profile-picture"
-      />
-} @else {
+      <div class="profile-picture-section">
+        <p>Profilna slika:</p>
 
-        @if (student?.profile_picture) {
-<img
-         
-          [src]="student?.profile_picture"
-          alt="Trenutna profilna slika"
-          class="profile-picture"
-        />
-}
-        
-        @if (!student?.profile_picture) {
-<p>Nema profilne slike.</p>
-}
-      
-}
+        @if (getProfilePictureUrl()) {
+          <img [src]="getProfilePictureUrl()" alt="Profilna slika" class="profile-picture" />
+        } @else {
+          <p>Nema profilne slike.</p>
+        }
+      </div>
 
-      
+      <!-- Forma -->
+      <form [formGroup]="studentForm" (ngSubmit)="onSubmit()" novalidate class="edit-form">
+
+        <div class="form-group">
+          <label for="first_name">Ime</label>
+          <input id="first_name" formControlName="first_name" />
+        </div>
+
+        <div class="form-group">
+          <label for="last_name">Prezime</label>
+          <input id="last_name" formControlName="last_name" />
+        </div>
+
+        <div class="form-group">
+          <label for="username">Korisničko ime</label>
+          <input id="username" formControlName="username" />
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input id="email" type="email" formControlName="email" />
+        </div>
+
+        <div class="form-group">
+          <label for="jmbg">JMBG</label>
+          <input id="jmbg" formControlName="jmbg" />
+        </div>
+
+        <div class="form-group">
+          <label>Izmijeni profilnu sliku</label>
+          <input id="fileInput" type="file" (change)="onFileSelected($event)" accept="image/*" />
+
+          @if (selectedFile) {
+            <button type="button" class="remove-btn" (click)="removeSelectedFile()">Ukloni odabranu sliku</button>
+          }
+        </div>
+
+        @if (errorMessage) {
+          <div class="error-message">{{ errorMessage }}</div>
+        }
+
+        <button type="submit" [disabled]="studentForm.invalid || isSaving" class="save-btn">
+          {{ isSaving ? 'Čuvanje...' : 'Sačuvaj izmjene' }}
+        </button>
+        <button type="button" class="cancel-btn" (click)="onCancel()">Odustani</button>
+      </form>
     </div>
-
-    <!-- Forma sa desne strane -->
-    <form [formGroup]="form" (ngSubmit)="save()" novalidate class="edit-form">
-      <div class="form-group">
-        <label for="first_name">Ime</label>
-        <input id="first_name" formControlName="first_name" />
-      </div>
-
-      <div class="form-group">
-        <label for="last_name">Prezime</label>
-        <input id="last_name" formControlName="last_name" />
-      </div>
-
-      <div class="form-group">
-        <label for="username">Korisničko ime</label>
-        <input id="username" formControlName="username" />
-      </div>
-
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input id="email" type="email" formControlName="email" />
-      </div>
-
-      <div class="form-group">
-        <label>Tip korisnika</label>
-        <input type="text" [value]="'Student'" disabled class="readonly-input" />
-      </div>
-
-      <div class="form-group">
-        <label for="jmbg">JMBG</label>
-        <input id="jmbg" formControlName="jmbg" />
-      </div>
-
-      <div class="form-group">
-        <label>Izmijeni profilnu sliku</label>
-        <input type="file" (change)="onFileSelected($event)" accept="image/*" />
-      </div>
-
-      @if (errorMessage) {
-<div class="error-message">{{ errorMessage }}</div>
-}
-
-      <button type="submit" [disabled]="form.invalid" class="save-btn">Sačuvaj izmjene</button>
-    </form>
-  </div>
+  } @else {
+    <div class="loading">Učitavanje podataka o studentu...</div>
+  }
 </div>

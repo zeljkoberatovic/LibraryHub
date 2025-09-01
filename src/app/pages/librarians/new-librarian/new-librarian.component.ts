@@ -1,15 +1,14 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
-
 import { Router, RouterLink } from '@angular/router';
 import { LibrarianService } from '../../../services/librarian/librarian.service';
 import { User } from '../../../models/user.model';
-import { map, of, switchMap } from 'rxjs';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-new-librarian',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterLink, FormsModule],
+  imports: [ReactiveFormsModule, FormsModule, RouterLink, CommonModule],
   templateUrl: './new-librarian.component.html',
   styleUrls: ['./new-librarian.component.css']
 })
@@ -19,35 +18,17 @@ export class NewLibrarian {
   private router = inject(Router);
 
   librarianForm: FormGroup;
-  photoPreview: string | ArrayBuffer | null = null;
-  selectedFile?: File;
 
   constructor() {
     this.librarianForm = this.fb.group({
       first_name: ['', Validators.required],
       last_name: ['', Validators.required],
-      jmbg: ['', Validators.required],
+      jmbg: ['', [Validators.required, Validators.minLength(13), Validators.maxLength(13)]],
       email: ['', [Validators.required, Validators.email]],
       username: ['', Validators.required],
-      password: ['', Validators.required],
+      password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', Validators.required],
     });
-  }
-
-  
-
-  onFileSelected(event: Event) {
-    const input = event.target as HTMLInputElement;
-    console.log('File input event triggered:', input.files);
-    if (input.files && input.files.length > 0) {
-      this.selectedFile = input.files[0];
-      //console.log('Selected file:', this.selectedFile);
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.photoPreview = reader.result;
-      };
-      reader.readAsDataURL(this.selectedFile);
-    }
   }
 
   onSubmit() {
@@ -56,7 +37,7 @@ export class NewLibrarian {
     const form = this.librarianForm.value;
 
     if (form.password !== form.confirmPassword) {
-      alert('Šifre se ne poklapaju!');
+      this.librarianForm.get('confirmPassword')?.setErrors({ mismatch: true });
       return;
     }
 
@@ -66,44 +47,25 @@ export class NewLibrarian {
       email: form.email,
       username: form.username,
       jmbg: form.jmbg,
-      role_id: 2,
-      
+      role_id: 2, 
+      password: form.password,
     };
 
-    
- this.librarianService.createLibrarian(user).pipe(
-  switchMap((response: any)  => {
-    const createdUser = response.data; // <-- izvuci korisnika iz data
-    console.log('Created user:', createdUser);
-
-    if (this.selectedFile && createdUser.id) {
-      console.log('Selected file to upload:', this.selectedFile);
-      return this.librarianService.uploadImage(createdUser.id, this.selectedFile).pipe(
-        map(() => {
-          console.log('Upload successful for user ID:', createdUser.id);
-          return { createdUser, imageUploaded: true };
-        })
-      );
-    } else {
-      console.log('No file selected, skipping upload');
-      return of({ createdUser, imageUploaded: false });
-    }
-  })
-).subscribe({
-  next: ({ createdUser, imageUploaded }) => {
-    if (imageUploaded) {
-      alert('Bibliotekar kreiran i slika uspešno uploadovana!');
-    } else {
-      alert('Bibliotekar uspešno kreiran!');
-    }
-    this.router.navigate(['/librarians']);
-  },
-  error: (error) => {
-    console.error('Greška prilikom kreiranja bibliotekara ili uploadu slike:', error);
-    alert('Došlo je do greške prilikom kreiranja bibliotekara ili uploadu slike.');
-  }
-});
-
+    this.librarianService.createLibrarian(user).subscribe({
+      next: () => {
+        alert('Bibliotekar uspešno kreiran!');
+        this.router.navigate(['/librarians']);
+      },
+      error: (error) => {
+        if (error.error?.errors) {
+          if (error.error.errors.email) this.librarianForm.get('email')?.setErrors({ emailTaken: true });
+          if (error.error.errors.username) this.librarianForm.get('username')?.setErrors({ usernameTaken: true });
+          if (error.error.errors.jmbg) this.librarianForm.get('jmbg')?.setErrors({ jmbgTaken: true });
+        } else {
+          alert('Došlo je do greške prilikom kreiranja bibliotekara.');
+        }
+      }
+    });
   }
 
   onCancel() {

@@ -8,66 +8,110 @@
   <form [formGroup]="studentForm" (ngSubmit)="onSubmit()">
     <div class="form-content">
       <div class="form-left">
+        
         <label>
           Ime
           <input formControlName="first_name" type="text" required />
         </label>
+        @if (studentForm.get('first_name')?.touched) {
+          @if (studentForm.get('first_name')?.errors?.['required']) {
+            <div class="error"><small>Ime je obavezno.</small></div>
+          }
+        }
 
+       
         <label>
           Prezime
           <input formControlName="last_name" type="text" required />
         </label>
+        @if (studentForm.get('last_name')?.touched) {
+          @if (studentForm.get('last_name')?.errors?.['required']) {
+            <div class="error"><small>Prezime je obavezno.</small></div>
+          }
+        }
 
+      
         <label>
           JMBG
-          <input formControlName="jmbg" type="text" required />
+          <input formControlName="jmbg" type="text" required maxlength="13" />
         </label>
+        @if (studentForm.get('jmbg')?.touched) {
+          @if (studentForm.get('jmbg')?.errors?.['required']) {
+            <div class="error"><small>JMBG je obavezan.</small></div>
+          }
+          @if (studentForm.get('jmbg')?.errors?.['minlength'] || studentForm.get('jmbg')?.errors?.['maxlength']) {
+            <div class="error"><small>JMBG mora imati 13 cifara.</small></div>
+          }
+          @if (studentForm.get('jmbg')?.errors?.['jmbgTaken']) {
+            <div class="error"><small>Ovaj JMBG je već zauzet.</small></div>
+          }
+        }
 
+        
         <label>
           E-mail
           <input formControlName="email" type="email" required />
         </label>
+        @if (studentForm.get('email')?.touched) {
+          @if (studentForm.get('email')?.errors?.['required']) {
+            <div class="error"><small>E-mail je obavezan.</small></div>
+          }
+          @if (studentForm.get('email')?.errors?.['email']) {
+            <div class="error"><small>Unesite validan e-mail.</small></div>
+          }
+          @if (studentForm.get('email')?.errors?.['emailTaken']) {
+            <div class="error"><small>Ovaj e-mail je već zauzet.</small></div>
+          }
+        }
 
+        
         <label>
           Korisničko ime
           <input formControlName="username" type="text" required />
         </label>
+        @if (studentForm.get('username')?.touched) {
+          @if (studentForm.get('username')?.errors?.['required']) {
+            <div class="error"><small>Korisničko ime je obavezno.</small></div>
+          }
+          @if (studentForm.get('username')?.errors?.['usernameTaken']) {
+            <div class="error"><small>Ovo korisničko ime je već zauzeto.</small></div>
+          }
+        }
 
+      
         <label>
           Šifra
-          <input formControlName="password" type="password" required />
+          <input formControlName="password" type="password" required minlength="6" />
         </label>
+        @if (studentForm.get('password')?.touched) {
+          @if (studentForm.get('password')?.errors?.['required']) {
+            <div class="error"><small>Šifra je obavezna.</small></div>
+          }
+          @if (studentForm.get('password')?.errors?.['minlength']) {
+            <div class="error"><small>Šifra mora imati barem 6 karaktera.</small></div>
+          }
+        }
 
+        
         <label>
           Ponovi šifru
           <input formControlName="confirmPassword" type="password" required />
         </label>
-      </div>
-
-      <div class="form-right">
-        <div class="photo-upload" (click)="fileInput.click()">
-          <input #fileInput type="file" (change)="onFileSelected($event)" hidden />
-          @if (photoPreview) {
-
-            <img [src]="photoPreview" alt="Preview" />
-          
-} @else {
-
-            <div class="add-photo-placeholder">
-              <span class="material-icons">image</span>
-              <p>Dodaj fotografiju</p>
-            </div>
-          
-}
-          
-        </div>
+        @if (studentForm.get('confirmPassword')?.touched) {
+          @if (studentForm.get('confirmPassword')?.errors?.['required']) {
+            <div class="error"><small>Potvrda šifre je obavezna.</small></div>
+          }
+          @if (studentForm.get('confirmPassword')?.errors?.['mismatch']) {
+            <div class="error"><small>Šifre se ne poklapaju.</small></div>
+          }
+        }
       </div>
     </div>
 
+    
     <div class="form-actions">
       <button type="button" class="cancel" (click)="onCancel()">Poništi</button>
       <button type="submit" class="save" [disabled]="studentForm.invalid">Sačuvaj</button>
     </div>
   </form>
 </div>
-

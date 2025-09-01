@@ -1,15 +1,14 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-
 import { AuthorService } from '../../../services/author/author.service';
 import { Author } from '../../../models/author.model';
-import { catchError, map, of, switchMap } from 'rxjs';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-edit-author',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './edit-author.component.html',
   styleUrls: ['./edit-author.component.css']
 })
@@ -19,11 +18,12 @@ export class EditAuthor implements OnInit {
   private router = inject(Router);
   private fb = inject(FormBuilder);
 
+  author!: Author;
   authorId!: number;
-  author?: Author;
   selectedFile?: File;
-  errorMessage = '';
   photoPreview: string | ArrayBuffer | null = null;
+  errorMessage = '';
+  isSaving: boolean = false;
 
   form = this.fb.group({
     first_name: ['', [Validators.required, Validators.minLength(2)]],
@@ -42,55 +42,59 @@ export class EditAuthor implements OnInit {
         last_name: resolvedAuthor.last_name,
         biography: resolvedAuthor.biography,
       });
+      if (resolvedAuthor.picture) {
+        this.photoPreview = this.getAuthorImageUrl(resolvedAuthor.picture);
+      }
     } else {
       this.errorMessage = 'Neuspjelo učitavanje podataka autora.';
       this.router.navigate(['/authors']);
     }
   }
 
+  getAuthorImageUrl(picture?: string | null): string {
+    return this.authorService.getAuthorImageUrl(picture ?? undefined);
+  }
+
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       this.selectedFile = input.files[0];
-
       const reader = new FileReader();
-      reader.onload = () => {
-        this.photoPreview = reader.result;
-      };
+      reader.onload = () => (this.photoPreview = reader.result);
       reader.readAsDataURL(this.selectedFile);
     }
   }
 
   save() {
-    if (this.form.invalid) return;
+    if (this.form.invalid) {
+      alert('Molimo popunite sva obavezna polja');
+      return;
+    }
 
-    const updateData = {
-      ...this.form.value,
-    } as Author;
+    const formData = new FormData();
+    formData.append('first_name', this.form.get('first_name')?.value || '');
+    formData.append('last_name', this.form.get('last_name')?.value || '');
+    formData.append('biography', this.form.get('biography')?.value || '');
+    formData.append('_method', 'PUT');
+    if (this.selectedFile) {
+      formData.append('picture', this.selectedFile);
+    }
 
-    this.authorService.updateAuthor(this.authorId, updateData).pipe(
-      switchMap(() => {
-        if (this.selectedFile) {
-          return this.authorService.uploadImage(this.authorId, this.selectedFile).pipe(
-            map(() => true),
-            catchError(() => of(false))
-          );
-        } else {
-          return of(true);
-        }
-      })
-    ).subscribe({
-      next: (imageUploaded) => {
-        if (imageUploaded) {
-          alert('Autor uspešno ažuriran sa slikom.');
-        } else {
-          alert('Autor ažuriran, ali slika nije poslata.');
-        }
+    this.authorService.updateAuthor(this.authorId, formData).subscribe({
+      next: () => {
+        alert('Autor uspešno ažuriran!');
         this.router.navigate(['/authors']);
       },
-      error: () => {
-        this.errorMessage = 'Greška pri ažuriranju autora.';
-      }
+      error: (err) => {
+        this.errorMessage =
+          err.status === 422
+            ? 'Validation error: ' + JSON.stringify(err.error?.errors)
+            : 'Greška pri ažuriranju autora.';
+      },
     });
+  }
+
+  onCancel() {
+    this.router.navigate(['/authors']);
   }
 }

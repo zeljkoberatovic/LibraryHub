@@ -1,15 +1,16 @@
 import { Component, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
-
-import { Router, RouterLink } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { StudentService } from '../../../services/student/student.service';
 import { User } from '../../../models/user.model';
-import { map, of, switchMap } from 'rxjs';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-new-student',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterLink, FormsModule],
+  imports: [ReactiveFormsModule, FormsModule, RouterLink, CommonModule],
   templateUrl: './new-student.component.html',
   styleUrls: ['./new-student.component.css']
 })
@@ -19,31 +20,17 @@ export class NewStudent {
   private router = inject(Router);
 
   studentForm: FormGroup;
-  photoPreview: string | ArrayBuffer | null = null;
-  selectedFile?: File;
 
   constructor() {
     this.studentForm = this.fb.group({
       first_name: ['', Validators.required],
       last_name: ['', Validators.required],
-      jmbg: ['', Validators.required],
+      jmbg: ['', [Validators.required, Validators.minLength(13), Validators.maxLength(13)]],
       email: ['', [Validators.required, Validators.email]],
       username: ['', Validators.required],
-      password: ['', Validators.required],
+      password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', Validators.required],
     });
-  }
-
-  onFileSelected(event: Event) {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      this.selectedFile = input.files[0];
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.photoPreview = reader.result;
-      };
-      reader.readAsDataURL(this.selectedFile);
-    }
   }
 
   onSubmit() {
@@ -52,7 +39,7 @@ export class NewStudent {
     const form = this.studentForm.value;
 
     if (form.password !== form.confirmPassword) {
-      alert('Šifre se ne poklapaju!');
+      this.studentForm.get('confirmPassword')?.setErrors({ mismatch: true });
       return;
     }
 
@@ -62,31 +49,23 @@ export class NewStudent {
       email: form.email,
       username: form.username,
       jmbg: form.jmbg,
-      role_id: 1, 
+      role_id: 1,
+      password: form.password,
     };
 
-    this.studentService.createStudent(user).pipe(
-      switchMap(createdUser => {
-        if (this.selectedFile && createdUser.id) {
-          return this.studentService.uploadImage(createdUser.id, this.selectedFile).pipe(
-            map(() => ({ createdUser, imageUploaded: true }))
-          );
-        } else {
-          return of({ createdUser, imageUploaded: false });
-        }
-      })
-    ).subscribe({
-      next: ({ createdUser, imageUploaded }) => {
-        if (imageUploaded) {
-          alert('Student kreiran i slika uspešno uploadovana!');
-        } else {
-          alert('Student uspešno kreiran!');
-        }
+    this.studentService.createStudent(user).subscribe({
+      next: () => {
+        alert('Student uspešno kreiran!');
         this.router.navigate(['/students']);
       },
       error: (error) => {
-        console.error('Greška prilikom kreiranja studenta ili uploadu slike:', error);
-        alert('Došlo je do greške prilikom kreiranja studenta ili uploadu slike.');
+        if (error.error?.errors) {
+          if (error.error.errors.email) this.studentForm.get('email')?.setErrors({ emailTaken: true });
+          if (error.error.errors.username) this.studentForm.get('username')?.setErrors({ usernameTaken: true });
+          if (error.error.errors.jmbg) this.studentForm.get('jmbg')?.setErrors({ jmbgTaken: true });
+        } else {
+          alert('Došlo je do greške prilikom kreiranja studenta.');
+        }
       }
     });
   }
@@ -95,3 +74,4 @@ export class NewStudent {
     this.router.navigate(['/students']);
   }
 }
+

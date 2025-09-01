@@ -1,71 +1,130 @@
 <div class="new-librarian-container">
   <h2>Novi bibliotekar</h2>
   <nav>
+
    
   <a routerLink="/librarians" >Svi bibliotekari</a> /
   <a>Novi bibliotekar</a>
 </nav>
 
-
-  <form [formGroup]="librarianForm" (ngSubmit)="onSubmit()">
+<form [formGroup]="librarianForm" (ngSubmit)="onSubmit()">
     <div class="form-content">
       <div class="form-left">
+        <!-- Ime -->
         <label>
           Ime
           <input formControlName="first_name" type="text" required />
         </label>
+        <div class="error">
+          @if (librarianForm.get('first_name')?.touched) {
+            @if (librarianForm.get('first_name')?.errors?.['required']) {
+              <small>Ime je obavezno.</small>
+            }
+          }
+        </div>
 
+        <!-- Prezime -->
         <label>
           Prezime
           <input formControlName="last_name" type="text" required />
         </label>
+        <div class="error">
+          @if (librarianForm.get('last_name')?.touched) {
+            @if (librarianForm.get('last_name')?.errors?.['required']) {
+              <small>Prezime je obavezno.</small>
+            }
+          }
+        </div>
 
+        <!-- JMBG -->
         <label>
           JMBG
-          <input formControlName="jmbg" type="text" required />
+          <input formControlName="jmbg" type="text" required maxlength="13" />
         </label>
+        <div class="error">
+          @if (librarianForm.get('jmbg')?.touched) {
+            @if (librarianForm.get('jmbg')?.errors?.['required']) {
+              <small>JMBG je obavezan.</small>
+            }
+            @if (librarianForm.get('jmbg')?.errors?.['minlength'] || librarianForm.get('jmbg')?.errors?.['maxlength']) {
+              <small>JMBG mora imati 13 cifara.</small>
+            }
+            @if (librarianForm.get('jmbg')?.errors?.['jmbgTaken']) {
+              <small>Ovaj JMBG je već zauzet.</small>
+            }
+          }
+        </div>
 
+        <!-- E-mail -->
         <label>
           E-mail
           <input formControlName="email" type="email" required />
         </label>
+        <div class="error">
+          @if (librarianForm.get('email')?.touched) {
+            @if (librarianForm.get('email')?.errors?.['required']) {
+              <small>E-mail je obavezan.</small>
+            }
+            @if (librarianForm.get('email')?.errors?.['email']) {
+              <small>Unesite validan e-mail.</small>
+            }
+            @if (librarianForm.get('email')?.errors?.['emailTaken']) {
+              <small>Ovaj e-mail je već zauzet.</small>
+            }
+          }
+        </div>
 
+        <!-- Username -->
         <label>
           Korisničko ime
           <input formControlName="username" type="text" required />
         </label>
+        <div class="error">
+          @if (librarianForm.get('username')?.touched) {
+            @if (librarianForm.get('username')?.errors?.['required']) {
+              <small>Korisničko ime je obavezno.</small>
+            }
+            @if (librarianForm.get('username')?.errors?.['usernameTaken']) {
+              <small>Ovo korisničko ime je već zauzeto.</small>
+            }
+          }
+        </div>
 
+        <!-- Šifra -->
         <label>
           Šifra
-          <input formControlName="password" type="password" required />
+          <input formControlName="password" type="password" required minlength="6" />
         </label>
+        <div class="error">
+          @if (librarianForm.get('password')?.touched) {
+            @if (librarianForm.get('password')?.errors?.['required']) {
+              <small>Šifra je obavezna.</small>
+            }
+            @if (librarianForm.get('password')?.errors?.['minlength']) {
+              <small>Šifra mora imati barem 6 karaktera.</small>
+            }
+          }
+        </div>
 
+        <!-- Ponovi šifru -->
         <label>
           Ponovi šifru
           <input formControlName="confirmPassword" type="password" required />
         </label>
-      </div>
-
-      <div class="form-right">
-        <div class="photo-upload" (click)="fileInput.click()">
-          <input #fileInput type="file" (change)="onFileSelected($event)" hidden />
-          @if (photoPreview) {
-
-            <img [src]="photoPreview" alt="Preview" />
-          
-} @else {
-
-            <div class="add-photo-placeholder">
-              <span class="material-icons">image</span>
-              <p>Dodaj fotografiju</p>
-            </div>
-          
-}
-          
+        <div class="error">
+          @if (librarianForm.get('confirmPassword')?.touched) {
+            @if (librarianForm.get('confirmPassword')?.errors?.['required']) {
+              <small>Potvrda šifre je obavezna.</small>
+            }
+            @if (librarianForm.get('confirmPassword')?.errors?.['mismatch']) {
+              <small>Šifre se ne poklapaju.</small>
+            }
+          }
         </div>
       </div>
     </div>
 
+    <!-- BUTTONS -->
     <div class="form-actions">
       <button type="button" class="cancel" (click)="onCancel()">Poništi</button>
       <button type="submit" class="save" [disabled]="librarianForm.invalid">Sačuvaj</button>

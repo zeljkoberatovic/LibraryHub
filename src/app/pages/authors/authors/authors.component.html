@@ -28,11 +28,13 @@
       @for (author of pagedAuthors; track author; let i = $index) {
       <tr>
         <td>
-          <img
-            [src]="author.picture || 'assets/default-user.png'"
-            alt="Slika autora"
-            class="avatar"
-          />
+         <img
+  [src]="getAuthorImageUrl(author.picture ?? undefined)"
+  alt="Slika autora"
+  class="avatar"
+  
+/>
+
         </td>
         <td>{{ author.first_name }} {{ author.last_name }}</td>
         <td>{{ author.biography || 'Nema biografije' }}</td>

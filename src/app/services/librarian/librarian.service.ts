@@ -38,8 +38,16 @@ export class LibrarianService {
 
   uploadImage(id: number, file: File): Observable<any> {
     const formData = new FormData();
-      formData.append('profile_picture', file);
+      formData.append('picture', file);
         return this.http.post(`${this.baseUrl}/${id}/upload-picture`, formData);
   }
+
+  getLibrarianImageUrl(picturePath?: string | null): string {
+  if (!picturePath) {
+    return 'assets/default-user.png';
+  }
+  return `${environment.imageBaseUrl}${picturePath}`;
+}
+
 
 }

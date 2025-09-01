@@ -2,7 +2,6 @@
   max-width: 900px;
   margin: 0 auto;
   padding: 20px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: #333;
 }
 
@@ -19,14 +18,14 @@
 
 .profile-picture-section p {
   font-weight: 600;
-  color: #283593; /* tamno plava */
+  color: #283593; 
   margin-bottom: 10px;
 }
 
 .profile-picture {
   max-width: 200px;
   border-radius: 8px;
-  border: 2px solid #f0c419; /* zlatna */
+  border: 2px solid #f0c419; 
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
@@ -46,10 +45,8 @@
   color: #283593;
 }
 
-.form-group input[type="text"],
-.form-group input[type="email"],
-.form-group input[type="file"],
-.form-group input {
+.form-group input,
+.form-group textarea {
   padding: 8px 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -57,12 +54,13 @@
   transition: border-color 0.2s;
 }
 
-.form-group input:focus {
+.form-group input:focus,
+.form-group textarea:focus {
   border-color: #f0c419;
   outline: none;
 }
 
-.error {
+.error-text {
   color: #d32f2f;
   font-size: 12px;
   margin-top: 3px;
@@ -74,9 +72,16 @@
   font-weight: 600;
 }
 
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  margin-top: 20px;
+}
+
 .save-btn {
-  background-color: #2a3f54; /* tamno plava */
-  color: #f9c846; /* zlatna */
+  background-color: #2a3f54; 
+  color: #f9c846;
   border: none;
   padding: 12px 20px;
   font-size: 16px;
@@ -86,19 +91,30 @@
 }
 
 .save-btn:disabled {
-  background-color: #9fa8da; /* svijetlija plava */
+  background-color: #9fa8da; 
   cursor: not-allowed;
 }
 
 .save-btn:hover:not(:disabled) {
-  background-color: #1a237e; /* još tamnija plava */
+  background-color: #1a237e; 
 }
 
-.readonly-input {
-  background-color: #f0f4f8; /* svetlo plavo-sivo, kao padajući meni */
-  border: 1px solid #999999; /* tamnosiva */
-  padding: 8px 10px;
-  border-radius: 4px;
-  color: #444; /* tamnosiva tekst */
-  font-style: italic;
+.cancel-btn {
+  background-color: #2a3f54;
+  color: #f9c846; 
+  border: none;
+  padding: 12px 20px;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.cancel-btn:hover {
+  background-color: #1a237e; 
+}
+
+.cancel-btn:disabled {
+  background-color: #9fa8da; 
+  cursor: not-allowed;
 }

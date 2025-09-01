@@ -1,105 +1,135 @@
-import { Component, OnInit, inject } from '@angular/core';
-import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Component, inject, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-
-
 import { StudentService } from '../../../services/student/student.service';
 import { User } from '../../../models/user.model';
-import { catchError, map, of, switchMap } from 'rxjs';
+import { switchMap, of } from 'rxjs';
+import { CommonModule } from '@angular/common';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-edit-student',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, CommonModule, FormsModule],
   templateUrl: './edit-student.component.html',
   styleUrls: ['./edit-student.component.css']
 })
 export class EditStudent implements OnInit {
-  private studentService = inject(StudentService);
-  private route = inject(ActivatedRoute);
-  private router = inject(Router);
   private fb = inject(FormBuilder);
+  private studentService = inject(StudentService);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
 
-  studentId!: number;
-  student?: User;
+  studentForm: FormGroup;
+  student?: User | null;
+  photoPreview: string | null = null; 
   selectedFile?: File;
-  errorMessage = '';
-  photoPreview: string | ArrayBuffer | null = null;
+  studentId!: number;
+  errorMessage?: string;
+  isSaving = false;
 
-
-  form = this.fb.group({
-    first_name: ['', [Validators.required, Validators.minLength(2)]],
-    last_name: ['', [Validators.required, Validators.minLength(2)]],
-    username: ['', [Validators.required, Validators.minLength(4)]],
-    email: ['', [Validators.required, Validators.email]],
-    jmbg: ['', [Validators.required, Validators.pattern(/^\d{13}$/)]],
-  });
+  constructor() {
+    this.studentForm = this.fb.group({
+      first_name: ['', Validators.required],
+      last_name: ['', Validators.required],
+      username: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      jmbg: ['', Validators.required],
+      password: [''],
+      confirmPassword: [''],
+    });
+  }
 
   ngOnInit() {
-    const resolvedStudent = this.route.snapshot.data['student'] as User | null;
-    
-    if (resolvedStudent) {
-      this.student = resolvedStudent;
-      this.studentId = resolvedStudent.id!;
-      this.form.patchValue({
-        first_name: resolvedStudent.first_name,
-        last_name: resolvedStudent.last_name,
-        username: resolvedStudent.username,
-        email: resolvedStudent.email,
-        jmbg: resolvedStudent.jmbg,
-      });
-    } else {
-      this.errorMessage = 'Neuspjelo učitavanje podataka studenta.';
-      this.router.navigate(['/students']);
+    this.route.data.subscribe(({ student }) => {
+      this.student = student;
+      if (student) {
+        this.studentId = student.id;
+        this.studentForm.patchValue({
+          first_name: student.first_name,
+          last_name: student.last_name,
+          username: student.username,
+          email: student.email,
+          jmbg: student.jmbg,
+        });
+        this.photoPreview = null;
+      } else {
+        this.errorMessage = 'Greška pri učitavanju podataka o studentu.';
+      }
+    });
+  }
+
+  getProfilePictureUrl(): string {
+    if (this.photoPreview) return this.photoPreview;
+    if (this.student?.profile_picture) {
+      return `${environment.imageBaseUrl}${this.student.profile_picture}`;
     }
+    return 'assets/default-user.png';
   }
 
   onFileSelected(event: Event) {
-  const input = event.target as HTMLInputElement;
-  if (input.files && input.files.length > 0) {
-    this.selectedFile = input.files[0];
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      this.photoPreview = reader.result;
-    };
-    reader.readAsDataURL(this.selectedFile);
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.selectedFile = input.files[0];
+      const reader = new FileReader();
+      reader.onload = () => this.photoPreview = reader.result as string;
+      reader.readAsDataURL(this.selectedFile);
+    }
   }
-}
 
+  removeSelectedFile() {
+    this.selectedFile = undefined;
+    this.photoPreview = null;
+    const fileInput = document.getElementById('fileInput') as HTMLInputElement;
+    if (fileInput) fileInput.value = '';
+  }
 
+  onSubmit() {
+    if (this.studentForm.invalid || !this.studentId) return;
 
-  save() {
-    if (this.form.invalid) return;
+    const form = this.studentForm.value;
 
-    const updateData = {
-      ...this.form.value,
-      role_id: this.student?.role_id ?? 1  
-    } as User;
+    if (form.password && form.password !== form.confirmPassword) {
+      this.errorMessage = 'Šifre se ne poklapaju!';
+      return;
+    }
 
-    this.studentService.updateStudent(this.studentId, updateData).pipe(
-      switchMap(() => {
-        if (this.selectedFile) {
-          return this.studentService.uploadImage(this.studentId, this.selectedFile).pipe(
-            map(() => true),
-            catchError(() => of(false))
-          );
-        } else {
-          return of(true);
-        }
-      })
+    const updatedUser: Partial<User> = {
+      first_name: form.first_name,
+      last_name: form.last_name,
+      username: form.username,
+      email: form.email,
+      jmbg: form.jmbg,
+      ...(form.password ? { password: form.password } : {})
+    };
+
+    this.isSaving = true;
+    this.errorMessage = undefined;
+
+    this.studentService.updateStudent(this.studentId, updatedUser as User).pipe(
+      switchMap(user =>
+        this.selectedFile
+          ? this.studentService.uploadImage(this.studentId, this.selectedFile).pipe(
+              switchMap(() => of({ user, imageUploaded: true }))
+            )
+          : of({ user, imageUploaded: false })
+      )
     ).subscribe({
-      next: (imageUploaded) => {
-        if (imageUploaded) {
-          alert('Student uspešno ažuriran sa slikom.');
-        } else {
-          alert('Student ažuriran, ali slika nije poslata.');
-        }
+      next: ({ imageUploaded }) => {
+        this.isSaving = false;
+        alert(imageUploaded
+          ? 'Student uspešno ažuriran i slika uploadovana!'
+          : 'Student uspešno ažuriran!');
         this.router.navigate(['/students']);
       },
-      error: () => {
-        this.errorMessage = 'Greška pri ažuriranju studenta.';
+      error: (err) => {
+        this.isSaving = false;
+        this.errorMessage = 'Došlo je do greške. Pokušajte ponovo.';
       }
     });
+  }
+
+  onCancel() {
+    this.router.navigate(['/students']);
   }
 }

@@ -8,34 +8,32 @@
   <form [formGroup]="authorForm" (ngSubmit)="onSubmit()">
     <div class="form-content">
       <div class="form-left">
+        <!-- Ime -->
         <label>
           Ime
           <input formControlName="first_name" type="text" required />
         </label>
+        @if (authorForm.get('first_name')?.invalid && authorForm.get('first_name')?.touched) {
+          <div class="error-text">Ime je obavezno i mora imati najmanje 2 karaktera.</div>
+        }
 
+        <!-- Prezime -->
         <label>
           Prezime
           <input formControlName="last_name" type="text" required />
         </label>
+        @if (authorForm.get('last_name')?.invalid && authorForm.get('last_name')?.touched) {
+          <div class="error-text">Prezime je obavezno i mora imati najmanje 2 karaktera.</div>
+        }
 
+        <!-- Biografija -->
         <label>
           Biografija
           <textarea formControlName="biography" required></textarea>
         </label>
-      </div>
-
-      <div class="form-right">
-        <div class="photo-upload" (click)="fileInput.click()">
-          <input #fileInput type="file" (change)="onFileSelected($event)" hidden />
-          @if (photoPreview) {
-            <img [src]="photoPreview" alt="Preview" />
-          } @else {
-            <div class="add-photo-placeholder">
-              <span class="material-icons">image</span>
-              <p>Dodaj fotografiju</p>
-            </div>
-          }
-        </div>
+        @if (authorForm.get('biography')?.invalid && authorForm.get('biography')?.touched) {
+          <div class="error-text">Biografija je obavezna i mora imati najmanje 10 karaktera.</div>
+        }
       </div>
     </div>
 
@@ -45,4 +43,3 @@
     </div>
   </form>
 </div>
-
