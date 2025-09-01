@@ -1,57 +1,65 @@
 <div class="edit-container">
   <h2>Izmjena bibliotekara</h2>
 
-  <div *ngIf="librarian; else loading" class="edit-content">
+  @if (librarian) {
+    <div class="edit-content">
 
-    <div class="profile-picture-section">
-      <p>Profilna slika:</p>
-      <img *ngIf="getProfilePictureUrl()" [src]="getProfilePictureUrl()" alt="Profilna slika" class="profile-picture" />
-      <p *ngIf="!getProfilePictureUrl()">Nema profilne slike.</p>
+      <div class="profile-picture-section">
+        <p>Profilna slika:</p>
+
+        @if (getProfilePictureUrl()) {
+          <img [src]="getProfilePictureUrl()" alt="Profilna slika" class="profile-picture" />
+        } @else {
+          <p>Nema profilne slike.</p>
+        }
+      </div>
+
+      <form [formGroup]="librarianForm" (ngSubmit)="onSubmit()" novalidate class="edit-form">
+        <div class="form-group">
+          <label for="first_name">Ime</label>
+          <input id="first_name" formControlName="first_name" />
+        </div>
+
+        <div class="form-group">
+          <label for="last_name">Prezime</label>
+          <input id="last_name" formControlName="last_name" />
+        </div>
+
+        <div class="form-group">
+          <label for="username">Korisničko ime</label>
+          <input id="username" formControlName="username" />
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input id="email" type="email" formControlName="email" />
+        </div>
+
+        <div class="form-group">
+          <label for="jmbg">JMBG</label>
+          <input id="jmbg" formControlName="jmbg" />
+        </div>
+
+        <div class="form-group">
+          <label>Izmijeni profilnu sliku</label>
+          <input id="fileInput" type="file" (change)="onFileSelected($event)" accept="image/*" />
+
+          @if (selectedFile) {
+            <button type="button" class="remove-btn" (click)="removeSelectedFile()">Ukloni odabranu sliku</button>
+          }
+        </div>
+
+        @if (errorMessage) {
+          <div class="error-message">{{ errorMessage }}</div>
+        }
+
+        <button type="submit" [disabled]="librarianForm.invalid || isSaving" class="save-btn">
+          {{ isSaving ? 'Čuvanje...' : 'Sačuvaj izmjene' }}
+        </button>
+        <button type="button" class="cancel-btn" (click)="onCancel()">Odustani</button>
+      </form>
     </div>
-
-    <form [formGroup]="librarianForm" (ngSubmit)="onSubmit()" novalidate class="edit-form">
-      <div class="form-group">
-        <label for="first_name">Ime</label>
-        <input id="first_name" formControlName="first_name" />
-      </div>
-
-      <div class="form-group">
-        <label for="last_name">Prezime</label>
-        <input id="last_name" formControlName="last_name" />
-      </div>
-
-      <div class="form-group">
-        <label for="username">Korisničko ime</label>
-        <input id="username" formControlName="username" />
-      </div>
-
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input id="email" type="email" formControlName="email" />
-      </div>
-
-      <div class="form-group">
-        <label for="jmbg">JMBG</label>
-        <input id="jmbg" formControlName="jmbg" />
-      </div>
-
-      <div class="form-group">
-        <label>Izmijeni profilnu sliku</label>
-        <input id="fileInput" type="file" (change)="onFileSelected($event)" accept="image/*" />
-        <button *ngIf="selectedFile" type="button" class="remove-btn" (click)="removeSelectedFile()">Ukloni odabranu sliku</button>
-      </div>
-
-      <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
-
-      <button type="submit" [disabled]="librarianForm.invalid || isSaving" class="save-btn">
-        {{ isSaving ? 'Čuvanje...' : 'Sačuvaj izmjene' }}
-      </button>
-      <button type="button" class="cancel-btn" (click)="onCancel()">Odustani</button>
-    </form>
-
-  </div>
-
-  <ng-template #loading>
+  } @else {
     <div class="loading">Učitavanje podataka o bibliotekaru...</div>
-  </ng-template>
+  }
 </div>

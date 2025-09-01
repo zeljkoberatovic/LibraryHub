@@ -13,8 +13,12 @@
           Ime
           <input formControlName="first_name" type="text" required />
         </label>
-        <div class="error" *ngIf="librarianForm.get('first_name')?.touched">
-          <small *ngIf="librarianForm.get('first_name')?.errors?.['required']">Ime je obavezno.</small>
+        <div class="error">
+          @if (librarianForm.get('first_name')?.touched) {
+            @if (librarianForm.get('first_name')?.errors?.['required']) {
+              <small>Ime je obavezno.</small>
+            }
+          }
         </div>
 
         <!-- Prezime -->
@@ -22,8 +26,12 @@
           Prezime
           <input formControlName="last_name" type="text" required />
         </label>
-        <div class="error" *ngIf="librarianForm.get('last_name')?.touched">
-          <small *ngIf="librarianForm.get('last_name')?.errors?.['required']">Prezime je obavezno.</small>
+        <div class="error">
+          @if (librarianForm.get('last_name')?.touched) {
+            @if (librarianForm.get('last_name')?.errors?.['required']) {
+              <small>Prezime je obavezno.</small>
+            }
+          }
         </div>
 
         <!-- JMBG -->
@@ -31,12 +39,18 @@
           JMBG
           <input formControlName="jmbg" type="text" required maxlength="13" />
         </label>
-        <div class="error" *ngIf="librarianForm.get('jmbg')?.touched">
-          <small *ngIf="librarianForm.get('jmbg')?.errors?.['required']">JMBG je obavezan.</small>
-          <small *ngIf="librarianForm.get('jmbg')?.errors?.['minlength'] || librarianForm.get('jmbg')?.errors?.['maxlength']">
-            JMBG mora imati 13 cifara.
-          </small>
-          <small *ngIf="librarianForm.get('jmbg')?.errors?.['jmbgTaken']">Ovaj JMBG je već zauzet.</small>
+        <div class="error">
+          @if (librarianForm.get('jmbg')?.touched) {
+            @if (librarianForm.get('jmbg')?.errors?.['required']) {
+              <small>JMBG je obavezan.</small>
+            }
+            @if (librarianForm.get('jmbg')?.errors?.['minlength'] || librarianForm.get('jmbg')?.errors?.['maxlength']) {
+              <small>JMBG mora imati 13 cifara.</small>
+            }
+            @if (librarianForm.get('jmbg')?.errors?.['jmbgTaken']) {
+              <small>Ovaj JMBG je već zauzet.</small>
+            }
+          }
         </div>
 
         <!-- E-mail -->
@@ -44,10 +58,18 @@
           E-mail
           <input formControlName="email" type="email" required />
         </label>
-        <div class="error" *ngIf="librarianForm.get('email')?.touched">
-          <small *ngIf="librarianForm.get('email')?.errors?.['required']">E-mail je obavezan.</small>
-          <small *ngIf="librarianForm.get('email')?.errors?.['email']">Unesite validan e-mail.</small>
-          <small *ngIf="librarianForm.get('email')?.errors?.['emailTaken']">Ovaj e-mail je već zauzet.</small>
+        <div class="error">
+          @if (librarianForm.get('email')?.touched) {
+            @if (librarianForm.get('email')?.errors?.['required']) {
+              <small>E-mail je obavezan.</small>
+            }
+            @if (librarianForm.get('email')?.errors?.['email']) {
+              <small>Unesite validan e-mail.</small>
+            }
+            @if (librarianForm.get('email')?.errors?.['emailTaken']) {
+              <small>Ovaj e-mail je već zauzet.</small>
+            }
+          }
         </div>
 
         <!-- Username -->
@@ -55,9 +77,15 @@
           Korisničko ime
           <input formControlName="username" type="text" required />
         </label>
-        <div class="error" *ngIf="librarianForm.get('username')?.touched">
-          <small *ngIf="librarianForm.get('username')?.errors?.['required']">Korisničko ime je obavezno.</small>
-          <small *ngIf="librarianForm.get('username')?.errors?.['usernameTaken']">Ovo korisničko ime je već zauzeto.</small>
+        <div class="error">
+          @if (librarianForm.get('username')?.touched) {
+            @if (librarianForm.get('username')?.errors?.['required']) {
+              <small>Korisničko ime je obavezno.</small>
+            }
+            @if (librarianForm.get('username')?.errors?.['usernameTaken']) {
+              <small>Ovo korisničko ime je već zauzeto.</small>
+            }
+          }
         </div>
 
         <!-- Šifra -->
@@ -65,9 +93,15 @@
           Šifra
           <input formControlName="password" type="password" required minlength="6" />
         </label>
-        <div class="error" *ngIf="librarianForm.get('password')?.touched">
-          <small *ngIf="librarianForm.get('password')?.errors?.['required']">Šifra je obavezna.</small>
-          <small *ngIf="librarianForm.get('password')?.errors?.['minlength']">Šifra mora imati barem 6 karaktera.</small>
+        <div class="error">
+          @if (librarianForm.get('password')?.touched) {
+            @if (librarianForm.get('password')?.errors?.['required']) {
+              <small>Šifra je obavezna.</small>
+            }
+            @if (librarianForm.get('password')?.errors?.['minlength']) {
+              <small>Šifra mora imati barem 6 karaktera.</small>
+            }
+          }
         </div>
 
         <!-- Ponovi šifru -->
@@ -75,9 +109,15 @@
           Ponovi šifru
           <input formControlName="confirmPassword" type="password" required />
         </label>
-        <div class="error" *ngIf="librarianForm.get('confirmPassword')?.touched">
-          <small *ngIf="librarianForm.get('confirmPassword')?.errors?.['required']">Potvrda šifre je obavezna.</small>
-          <small *ngIf="librarianForm.get('confirmPassword')?.errors?.['mismatch']">Šifre se ne poklapaju.</small>
+        <div class="error">
+          @if (librarianForm.get('confirmPassword')?.touched) {
+            @if (librarianForm.get('confirmPassword')?.errors?.['required']) {
+              <small>Potvrda šifre je obavezna.</small>
+            }
+            @if (librarianForm.get('confirmPassword')?.errors?.['mismatch']) {
+              <small>Šifre se ne poklapaju.</small>
+            }
+          }
         </div>
       </div>
     </div>

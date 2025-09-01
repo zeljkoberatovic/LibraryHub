@@ -8,83 +8,107 @@
   <form [formGroup]="studentForm" (ngSubmit)="onSubmit()">
     <div class="form-content">
       <div class="form-left">
-        <!-- Ime -->
+        
         <label>
           Ime
           <input formControlName="first_name" type="text" required />
         </label>
-        <div class="error" *ngIf="studentForm.get('first_name')?.touched">
-          <small *ngIf="studentForm.get('first_name')?.errors?.['required']">Ime je obavezno.</small>
-        </div>
+        @if (studentForm.get('first_name')?.touched) {
+          @if (studentForm.get('first_name')?.errors?.['required']) {
+            <div class="error"><small>Ime je obavezno.</small></div>
+          }
+        }
 
-        <!-- Prezime -->
+       
         <label>
           Prezime
           <input formControlName="last_name" type="text" required />
         </label>
-        <div class="error" *ngIf="studentForm.get('last_name')?.touched">
-          <small *ngIf="studentForm.get('last_name')?.errors?.['required']">Prezime je obavezno.</small>
-        </div>
+        @if (studentForm.get('last_name')?.touched) {
+          @if (studentForm.get('last_name')?.errors?.['required']) {
+            <div class="error"><small>Prezime je obavezno.</small></div>
+          }
+        }
 
-        <!-- JMBG -->
+      
         <label>
           JMBG
           <input formControlName="jmbg" type="text" required maxlength="13" />
         </label>
-        <div class="error" *ngIf="studentForm.get('jmbg')?.touched">
-          <small *ngIf="studentForm.get('jmbg')?.errors?.['required']">JMBG je obavezan.</small>
-          <small *ngIf="studentForm.get('jmbg')?.errors?.['minlength'] || studentForm.get('jmbg')?.errors?.['maxlength']">
-            JMBG mora imati 13 cifara.
-          </small>
-          <small *ngIf="studentForm.get('jmbg')?.errors?.['jmbgTaken']">Ovaj JMBG je već zauzet.</small>
-        </div>
+        @if (studentForm.get('jmbg')?.touched) {
+          @if (studentForm.get('jmbg')?.errors?.['required']) {
+            <div class="error"><small>JMBG je obavezan.</small></div>
+          }
+          @if (studentForm.get('jmbg')?.errors?.['minlength'] || studentForm.get('jmbg')?.errors?.['maxlength']) {
+            <div class="error"><small>JMBG mora imati 13 cifara.</small></div>
+          }
+          @if (studentForm.get('jmbg')?.errors?.['jmbgTaken']) {
+            <div class="error"><small>Ovaj JMBG je već zauzet.</small></div>
+          }
+        }
 
-        <!-- E-mail -->
+        
         <label>
           E-mail
           <input formControlName="email" type="email" required />
         </label>
-        <div class="error" *ngIf="studentForm.get('email')?.touched">
-          <small *ngIf="studentForm.get('email')?.errors?.['required']">E-mail je obavezan.</small>
-          <small *ngIf="studentForm.get('email')?.errors?.['email']">Unesite validan e-mail.</small>
-          <small *ngIf="studentForm.get('email')?.errors?.['emailTaken']">Ovaj e-mail je već zauzet.</small>
-        </div>
+        @if (studentForm.get('email')?.touched) {
+          @if (studentForm.get('email')?.errors?.['required']) {
+            <div class="error"><small>E-mail je obavezan.</small></div>
+          }
+          @if (studentForm.get('email')?.errors?.['email']) {
+            <div class="error"><small>Unesite validan e-mail.</small></div>
+          }
+          @if (studentForm.get('email')?.errors?.['emailTaken']) {
+            <div class="error"><small>Ovaj e-mail je već zauzet.</small></div>
+          }
+        }
 
-        <!-- Username -->
+        
         <label>
           Korisničko ime
           <input formControlName="username" type="text" required />
         </label>
-        <div class="error" *ngIf="studentForm.get('username')?.touched">
-          <small *ngIf="studentForm.get('username')?.errors?.['required']">Korisničko ime je obavezno.</small>
-          <small *ngIf="studentForm.get('username')?.errors?.['usernameTaken']">Ovo korisničko ime je već zauzeto.</small>
-        </div>
+        @if (studentForm.get('username')?.touched) {
+          @if (studentForm.get('username')?.errors?.['required']) {
+            <div class="error"><small>Korisničko ime je obavezno.</small></div>
+          }
+          @if (studentForm.get('username')?.errors?.['usernameTaken']) {
+            <div class="error"><small>Ovo korisničko ime je već zauzeto.</small></div>
+          }
+        }
 
-        <!-- Šifra -->
+      
         <label>
           Šifra
           <input formControlName="password" type="password" required minlength="6" />
         </label>
-        <div class="error" *ngIf="studentForm.get('password')?.touched">
-          <small *ngIf="studentForm.get('password')?.errors?.['required']">Šifra je obavezna.</small>
-          <small *ngIf="studentForm.get('password')?.errors?.['minlength']">Šifra mora imati barem 6 karaktera.</small>
-        </div>
+        @if (studentForm.get('password')?.touched) {
+          @if (studentForm.get('password')?.errors?.['required']) {
+            <div class="error"><small>Šifra je obavezna.</small></div>
+          }
+          @if (studentForm.get('password')?.errors?.['minlength']) {
+            <div class="error"><small>Šifra mora imati barem 6 karaktera.</small></div>
+          }
+        }
 
-        <!-- Ponovi šifru -->
+        
         <label>
           Ponovi šifru
           <input formControlName="confirmPassword" type="password" required />
         </label>
-        <div class="error" *ngIf="studentForm.get('confirmPassword')?.touched">
-          <small *ngIf="studentForm.get('confirmPassword')?.errors?.['required']">Potvrda šifre je obavezna.</small>
-          <small *ngIf="studentForm.get('confirmPassword')?.errors?.['mismatch']">Šifre se ne poklapaju.</small>
-        </div>
+        @if (studentForm.get('confirmPassword')?.touched) {
+          @if (studentForm.get('confirmPassword')?.errors?.['required']) {
+            <div class="error"><small>Potvrda šifre je obavezna.</small></div>
+          }
+          @if (studentForm.get('confirmPassword')?.errors?.['mismatch']) {
+            <div class="error"><small>Šifre se ne poklapaju.</small></div>
+          }
+        }
       </div>
-
-      
     </div>
 
-    <!-- BUTTONS -->
+    
     <div class="form-actions">
       <button type="button" class="cancel" (click)="onCancel()">Poništi</button>
       <button type="submit" class="save" [disabled]="studentForm.invalid">Sačuvaj</button>
