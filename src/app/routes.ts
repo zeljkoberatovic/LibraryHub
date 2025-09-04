@@ -14,8 +14,6 @@ import { LanguageComponent } from './pages/settings/languages/languages.componen
 import { authorResolver } from './resolvers/author/author-resolver';
 import { authGuard } from './core/guards/auth.guard';
 
-
-
 export const routes: Route[] = [
   // Auth routes
   {
@@ -137,7 +135,25 @@ export const routes: Route[] = [
   {
     path: 'books/new',
     canActivate: [authGuard],
-    loadComponent: () => import('./pages/books/new-book/new-book.component').then(m => m.NewBook),
+    loadComponent: () => import('./pages/books/new-book/new-book.component').then(m => m.BookCreateComponent),
+    children: [
+      {
+        path: 'detalji',
+        loadComponent: () =>
+          import('../app/pages/books/new-book/book-details-form/book-details-form.component').then(m => m.BookDetailsFormComponent)
+      },
+      {
+        path: 'specifikacija',
+        loadComponent: () =>
+          import('../app/pages/books/new-book/book-spec-form/book-spec-form.component').then(m => m.BookSpecFormComponent)
+      },
+      {
+        path: 'multimedija',
+        loadComponent: () =>
+          import('../app/pages/books/new-book/book-media-form/book-media-form.component').then(m => m.BookMediaFormComponent)
+      },
+      { path: '', redirectTo: 'detalji', pathMatch: 'full' }
+    ]
   },
   {
     path: 'books/edit/:id',

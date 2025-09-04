@@ -11,32 +11,25 @@ export class BookService {
 
   // Vraća niz knjiga iz response.data.data
   getAllBooks(): Observable<Book[]> {
-    return this.http.get<{ data: { meta: any; data: Book[] } }>(`${this.baseUrl}`)
-      .pipe(
-        map(response => response.data.data)
-      );
+    return this.http.get<{ status: string; data: { meta: any; data: Book[] } }>(`${this.baseUrl}`)
+      .pipe(map(res => res.data.data));
   }
+
+  // Vraća jednu knjigu iz response.data.data[0]
   getBook(id: number): Observable<Book> {
-    return this.http.get<{ status: string, data: Book }>(`${this.baseUrl}/${id}`)
-      .pipe(
-        map(res => res.data)
-      );
+    return this.http.get<{ status: string; data: { meta: any; data: Book[] } }>(`${this.baseUrl}/${id}`)
+      .pipe(map(res => res.data.data[0]));
   }
 
   createBook(book: Book): Observable<Book> {
-    return this.http.post<{ data: Book }>(this.baseUrl, book)
-      .pipe(
-        map(res => res.data)
-      );
+    return this.http.post<{ status: string; data: { data: Book[] } }>(this.baseUrl, book)
+      .pipe(map(res => res.data.data[0]));
   }
 
   updateBook(id: number, book: Book): Observable<Book> {
-    return this.http.put<{ data: Book }>(`${this.baseUrl}/${id}`, book)
-      .pipe(
-        map(res => res.data)
-      );
+    return this.http.put<{ status: string; data: { data: Book[] } }>(`${this.baseUrl}/${id}`, book)
+      .pipe(map(res => res.data.data[0]));
   }
-  
 
   deleteBook(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);

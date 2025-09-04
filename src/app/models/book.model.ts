@@ -9,8 +9,9 @@ export interface Book {
   script: string;
   binding: string;
   dimensions: string;
+
   categories?: number[] | null;
   genres?: number[] | null;
   publishers?: number[] | null;
-  authors?: number[] | null; 
+  authors: number[] | null; 
 }
