@@ -1,64 +1,20 @@
 <div class="new-book-container">
-  <!-- Naslov i breadcrumb -->
-  <h2>Nova knjiga</h2>
+  <!-- Naslov -->
+  <h2 class="page-title">Nova knjiga</h2>
+
+  <!-- Breadcrumb navigacija -->
   <nav class="breadcrumb">
-    <a routerLink="/books">Evidencija knjiga</a> /
-    <a>Nova knjiga</a>
+    <a routerLink="/books" class="breadcrumb-link">Evidencija knjiga</a> /
+    <span class="breadcrumb-current">Nova knjiga</span>
   </nav>
 
   <!-- Tab navigacija -->
   <nav class="tab-nav">
-    <a routerLink="detalji" routerLinkActive="active-tab">Osnovni detalji</a>
-    <a routerLink="specifikacija" routerLinkActive="active-tab">Specifikacija</a>
-    <a routerLink="multimedija" routerLinkActive="active-tab">Multimedija</a>
+    <a routerLink="details" routerLinkActive="active-tab" [routerLinkActiveOptions]="{ exact: true }">Osnovni detalji</a>
+    <a routerLink="specification" routerLinkActive="active-tab">Specifikacija</a>
+    <a routerLink="media" routerLinkActive="active-tab">Multimedija</a>
   </nav>
 
-  <!-- Reactive forma (za detalje knjige) -->
-  <form [formGroup]="bookForm" (ngSubmit)="onSubmit()">
-    <div class="form-content">
-      <label>
-        Naziv knjige
-        <input formControlName="name" type="text" required />
-      </label>
-
-      <label>
-        Opis
-        <textarea formControlName="description"></textarea>
-      </label>
-
-      <label>
-        Broj strana
-        <input formControlName="number_of_pages" type="number" required />
-      </label>
-
-      <label>
-        Broj primjeraka
-        <input formControlName="number_of_copies" type="number" required />
-      </label>
-
-      <label>
-        ISBN
-        <input formControlName="isbn" type="text" required />
-      </label>
-
-      <label>
-        Jezik
-        <input formControlName="language" type="text" required />
-      </label>
-
-      <label>
-        Autori (ID, odvojeni zarezom)
-        <input formControlName="authors" type="text" />
-      </label>
-    </div>
-
-    <div class="form-actions">
-      <button type="button" class="cancel" (click)="onCancel()">Poništi</button>
-      <button type="submit" class="save" [disabled]="bookForm.invalid">
-        Sačuvaj
-      </button>
-    </div>
-  </form>
-
-
+  
+  <router-outlet></router-outlet>
 </div>

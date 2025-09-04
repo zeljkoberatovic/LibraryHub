@@ -138,17 +138,17 @@ export const routes: Route[] = [
     loadComponent: () => import('./pages/books/new-book/new-book.component').then(m => m.BookCreateComponent),
     children: [
       {
-        path: 'detalji',
+        path: 'details',
         loadComponent: () =>
           import('../app/pages/books/new-book/book-details-form/book-details-form.component').then(m => m.BookDetailsFormComponent)
       },
       {
-        path: 'specifikacija',
+        path: 'specification',
         loadComponent: () =>
           import('../app/pages/books/new-book/book-spec-form/book-spec-form.component').then(m => m.BookSpecFormComponent)
       },
       {
-        path: 'multimedija',
+        path: 'media',
         loadComponent: () =>
           import('../app/pages/books/new-book/book-media-form/book-media-form.component').then(m => m.BookMediaFormComponent)
       },

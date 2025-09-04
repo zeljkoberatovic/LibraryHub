@@ -2,20 +2,29 @@
   background: #fff;
   padding: 32px;
   border-radius: 12px;
-  max-width: 700px;
-  margin: 40px auto;
+  width: 100%; 
+  max-width: 1200px; 
+  min-height: 100vh; 
+  margin: 0 auto; 
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+
+  
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
+/* Naslov */
 h2 {
   color: #36454f;
   font-weight: 600;
-  font-size: 28px; /* malo veći font od studenta */
+  font-size: 28px;
   margin: 0 0 12px;
   font-family: 'Segoe UI', sans-serif;
-  text-align: left; /* naslov lijevo */
+  text-align: left;
 }
 
+/* Breadcrumb */
 .breadcrumb {
   margin-bottom: 24px;
   font-size: 14px;
@@ -44,8 +53,8 @@ h2 {
 .tab-nav a {
   text-decoration: none;
   color: #333;
-  font-size: 18px; /* veći font */
-  font-weight: 600; /* bold */
+  font-size: 18px;
+  font-weight: 600;
   padding-bottom: 6px;
 }
 
@@ -58,6 +67,7 @@ h2 {
   color: #0056b3;
 }
 
+/* Forma i inputi */
 .form-content {
   display: flex;
   flex-direction: column;
@@ -87,6 +97,7 @@ textarea:focus {
   box-shadow: 0 0 4px rgba(73, 96, 122, 0.3);
 }
 
+/* Dugmad */
 .form-actions {
   display: flex;
   justify-content: flex-end;

@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink, RouterModule } from '@angular/router';
 import { BookService } from '../../../services/book/book.service';
 import { Book } from '../../../models/book.model';
 
@@ -10,15 +10,15 @@ import { Book } from '../../../models/book.model';
   standalone: true,
   templateUrl: './new-book.component.html',
   styleUrls: ['./new-book.component.css'],
-  imports: [CommonModule, ReactiveFormsModule]
+  imports: [CommonModule, ReactiveFormsModule, RouterLink, RouterModule]
 })
 export class BookCreateComponent {
-  // ✅ koristimo inject API umesto konstruktora
+  
   private fb = inject(FormBuilder);
   private bookService = inject(BookService);
   private router = inject(Router);
 
-  // ✅ forma se pravi odmah bez greške "before initialization"
+ 
   bookForm = this.fb.group({
     name: ['', Validators.required],
     description: [''],
@@ -29,14 +29,14 @@ export class BookCreateComponent {
     script: [''],
     binding: [''],
     dimensions: [''],
-    authors: [''] // unos ID-eva kao string, npr. "1, 2, 3"
+    authors: [''] 
   });
 
   onSubmit() {
     if (this.bookForm.valid) {
       const formValue = this.bookForm.value;
 
-      // parsiranje autora u niz brojeva
+      
       const authors = formValue.authors
         ? (formValue.authors as string)
             .split(',')
