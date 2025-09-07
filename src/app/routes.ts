@@ -135,7 +135,7 @@ export const routes: Route[] = [
   {
     path: 'books/new',
     canActivate: [authGuard],
-    loadComponent: () => import('./pages/books/new-book/new-book.component').then(m => m.BookCreateComponent),
+    loadComponent: () => import('./pages/books/new-book/new-book.component').then(m => m.NewBookComponent),
     children: [
       {
         path: 'details',
@@ -152,7 +152,7 @@ export const routes: Route[] = [
         loadComponent: () =>
           import('../app/pages/books/new-book/book-media-form/book-media-form.component').then(m => m.BookMediaFormComponent)
       },
-      { path: '', redirectTo: 'detalji', pathMatch: 'full' }
+      { path: '', redirectTo: 'details', pathMatch: 'full' }
     ]
   },
   {

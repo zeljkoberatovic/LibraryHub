@@ -1,1 +1,16 @@
-<p>book-media-form works!</p>
+<div class="media-container" [formGroup]="mediaForm">
+  <h3>Multimedia</h3>
+
+  <label>
+    Dodaj slike:
+    <input type="file" (change)="onFileChange($event)" multiple />
+  </label>
+
+  <div class="image-preview">
+    <img *ngFor="let src of imagePreviews" [src]="src" />
+  </div>
+
+  <div class="form-actions">
+    <button type="button" class="save" (click)="onSubmit()">Sačuvaj slike</button>
+  </div>
+</div>

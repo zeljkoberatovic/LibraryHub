@@ -1,20 +1,51 @@
 <div class="new-book-container">
-  <!-- Naslov -->
   <h2 class="page-title">Nova knjiga</h2>
 
-  <!-- Breadcrumb navigacija -->
   <nav class="breadcrumb">
     <a routerLink="/books" class="breadcrumb-link">Evidencija knjiga</a> /
     <span class="breadcrumb-current">Nova knjiga</span>
   </nav>
 
-  <!-- Tab navigacija -->
   <nav class="tab-nav">
-    <a routerLink="details" routerLinkActive="active-tab" [routerLinkActiveOptions]="{ exact: true }">Osnovni detalji</a>
-    <a routerLink="specification" routerLinkActive="active-tab">Specifikacija</a>
-    <a routerLink="media" routerLinkActive="active-tab">Multimedija</a>
+    <a [class.active]="activeTab === 'details'" (click)="changeTab('details')" 
+       [class.completed]="detailsCompleted">Osnovni detalji</a>
+    <a [class.active]="activeTab === 'specification'" (click)="changeTab('specification')"
+       [class.completed]="specCompleted">Specifikacija</a>
+    <a [class.active]="activeTab === 'media'" (click)="changeTab('media')"
+       [class.completed]="mediaCompleted">Multimedija</a>
   </nav>
 
-  
-  <router-outlet></router-outlet>
+  <div *ngIf="activeTab === 'details'">
+    <app-book-details-form 
+      (detailsSubmitted)="onDetailsSubmit($event)">
+    </app-book-details-form>
+  </div>
+
+  <div *ngIf="activeTab === 'specification'">
+    <app-book-spec-form 
+      (specSubmitted)="onSpecSubmit($event)">
+    </app-book-spec-form>
+  </div>
+
+  <div *ngIf="activeTab === 'media'">
+    <app-book-media-form 
+      (mediaSubmitted)="onMediaSubmit($event)">
+    </app-book-media-form>
+  </div>
+
+  <div class="form-actions">
+    <button type="button" class="btn-restart" (click)="restartForm()">Restartuj formu</button>
+    <button type="button" class="btn-cancel" (click)="onCancel()">Poništi</button>
+    <button type="button" class="btn-save" (click)="submitBook()" 
+            [disabled]="!detailsCompleted || !specCompleted">Sačuvaj knjigu</button>
+  </div>
+
+  <!-- Debug info (možete ukloniti kasnije) -->
+  <div style="margin-top: 20px; padding: 10px; background: #f5f5f5; border-radius: 5px;">
+    <h3>Debug podaci:</h3>
+    <pre>{{ bookData | json }}</pre>
+    <p>Details completed: {{ detailsCompleted }}</p>
+    <p>Spec completed: {{ specCompleted }}</p>
+    <p>Media completed: {{ mediaCompleted }}</p>
+  </div>
 </div>

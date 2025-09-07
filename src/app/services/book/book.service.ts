@@ -34,4 +34,11 @@ export class BookService {
   deleteBook(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }
+
+  getBookImageUrl(picturePath?: string): string {
+    if (!picturePath) {
+      return 'assets/default-user.png';
+    }
+    return `${environment.imageBaseUrl}${picturePath}`;
+  }
 }

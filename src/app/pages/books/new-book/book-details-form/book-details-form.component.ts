@@ -1,36 +1,62 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, Output, EventEmitter, OnInit } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AuthorService } from '../../../../services/author/author.service';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
-import { BookService } from '../../../../services/book/book.service';
-import { Router } from '@angular/router';
-import { Book } from '../../../../models/book.model';
 
 @Component({
   selector: 'app-book-details-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './book-details-form.component.html',
+  styleUrls: ['./book-details-form.component.css'],
+  imports: [ReactiveFormsModule, CommonModule],
 })
-export class BookDetailsFormComponent {
+export class BookDetailsFormComponent implements OnInit {
   private fb = inject(FormBuilder);
-  private bookService = inject(BookService);
-  private router = inject(Router);
+  private authorService = inject(AuthorService);
 
-  detailsForm = this.fb.group({
+  @Output() detailsSubmitted = new EventEmitter<any>();
+
+  bookForm = this.fb.group({
     name: ['', Validators.required],
     description: [''],
-    number_of_pages: [0, Validators.required],
-    number_of_copies: [1, Validators.required],
-    isbn: ['', Validators.required],
+    number_of_copies: [1, [Validators.required, Validators.min(1)]],
     language: ['', Validators.required],
-    authors: ['']
+    authors: [[] as number[], Validators.required],
+    publish_year: [new Date().getFullYear(), [Validators.required, Validators.min(1900), Validators.max(new Date().getFullYear())]]
   });
 
+  authors: any[] = [];
+  currentYear = new Date().getFullYear();
+  selectedAuthorIds: number[] = [];
+
+  ngOnInit() {
+    this.loadAuthors();
+  }
+
+  loadAuthors() {
+    this.authorService.getAuthors().subscribe({
+      next: (authors) => {
+        this.authors = authors;
+        console.log('Učitani autori:', this.authors);
+      },
+      error: (error) => {
+        console.error('Greška pri učitavanju autora', error);
+      }
+    });
+  }
+
+  onAuthorChange(event: any) {
+    const selectedOptions = event.target.selectedOptions;
+    this.selectedAuthorIds = Array.from(selectedOptions).map((option: any) => parseInt(option.value));
+    this.bookForm.patchValue({ authors: this.selectedAuthorIds });
+  }
+
   onSubmit() {
-    if (this.detailsForm.valid) {
-      // Parsiranje i logika za osnovne detalje
-      console.log(this.detailsForm.value);
-      // Možeš poslati podatke u BookService ako želiš
+    if (this.bookForm.valid) {
+      this.detailsSubmitted.emit(this.bookForm.value);
+    } else {
+      this.bookForm.markAllAsTouched();
+      alert('Molimo popunite sva obavezna polja u detaljima knjige');
     }
   }
 }
