@@ -1,10 +1,11 @@
+import { CommonModule } from '@angular/common';
 import { Component, inject, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-book-spec-form',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './book-spec-form.component.html',
   styleUrls: ['./book-spec-form.component.css']
 })
@@ -12,6 +13,7 @@ export class BookSpecFormComponent {
   private fb = inject(FormBuilder);
 
   @Output() specSubmitted = new EventEmitter<any>();
+  formats: string[] = ['PDF', 'EPUB', 'MOBI', 'Hardcover', 'Paperback'];
 
   bookForm = this.fb.group({
     number_of_pages: [null, [Validators.required, Validators.min(1)]],

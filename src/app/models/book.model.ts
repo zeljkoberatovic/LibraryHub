@@ -14,4 +14,10 @@ export interface Book {
   genres?: number[] | null;
   publishers?: number[] | null;
   authors: number[] | null; 
+
+   
+  available?: number;
+  reserved?: number;
+  issued?: number;
+  overdue?: number;
 }
