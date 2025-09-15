@@ -164,13 +164,36 @@ export const routes: Route[] = [
     }
   },
   {
-    path: 'books/view/:id',
-    canActivate: [authGuard],
-    loadComponent: () => import('./pages/books/view-book/view-book.component').then(m => m.ViewBook),
-    resolve: {
-      book: bookResolver
-    }
+  path: 'books/view/:id',
+  canActivate: [authGuard],
+  loadComponent: () => import('./pages/books/view-book/view-book.component').then(m => m.ViewBook),
+  resolve: {
+    book: bookResolver
   },
+  children: [
+    {
+      path: 'details',
+      loadComponent: () =>
+        import('../app/pages/books/view-book/book-details/book-details.component').then(m => m.BookDetails)
+    },
+    {
+      path: 'specification',
+      loadComponent: () =>
+        import('../app/pages/books/view-book/book-spec/book-spec.component').then(m => m.BookSpec)
+    },
+    {
+      path: 'records',
+      loadComponent: () =>
+        import('../app/pages/books/view-book/book-records/book-records.component').then(m => m.BookRecords)
+    },
+    {
+      path: 'media',
+      loadComponent: () =>
+        import('../app/pages/books/view-book/book-media/book-media.component').then(m => m.BookMedia)
+    },
+    { path: '', redirectTo: 'details', pathMatch: 'full' }
+  ]
+},
 
   // Catch-all (404)
   { path: '**', redirectTo: '/dashboard' }

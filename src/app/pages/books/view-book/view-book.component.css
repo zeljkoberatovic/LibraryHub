@@ -1,0 +1,170 @@
+/* ==================== Book Card ==================== */
+.book-card {
+  max-width: 100%;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #2c3e50;
+  background-color: #fff;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+/* ==================== Header ==================== */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: 12px;
+}
+
+.left {
+  display: flex;
+  flex-direction: column;
+}
+
+.book-name {
+  font-weight: 700;
+  font-size: 24px;
+  color: #2c3e50;
+}
+
+.book-info {
+  font-size: 14px;
+  color: #34495e;
+  margin-top: 4px;
+}
+
+/* ==================== Right Actions ==================== */
+.right-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  background: #f2f2f2;
+  text-decoration: none;
+  color: #2c3e50;
+  font-weight: 600;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+.action-btn:hover {
+  background-color: #34495e;
+  color: #FFD700;
+}
+
+/* ==================== Dropdown Dots ==================== */
+.right {
+  position: relative;
+}
+
+.dots {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #2c3e50;
+}
+
+.dots:hover {
+  color: #FFD700;
+}
+
+.dropdown {
+  position: absolute;
+  right: 0;
+  top: 28px;
+  background: #fff;
+  border: 1px solid #34495e;
+  border-radius: 8px;
+  min-width: 140px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  z-index: 10;
+}
+
+.dropdown a {
+  padding: 8px 12px;
+  text-decoration: none;
+  color: #2c3e50;
+  font-weight: 500;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+.dropdown a:hover {
+  background-color: #34495e;
+  color: #FFD700;
+}
+
+/* ==================== Navbar ==================== */
+.navbar-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-top: 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.book-navbar {
+  display: flex;
+  gap: 20px;
+  border-bottom: 2px solid #34495e;
+  padding-bottom: 8px;
+  max-width: 70%;
+  flex-shrink: 1;
+}
+
+.nav-item {
+  text-decoration: none;
+  color: #2c3e50;
+  font-weight: 600;
+  font-size: 16px;
+  padding: 6px 12px;
+  transition: color 0.25s ease, border-bottom 0.25s ease;
+  border-bottom: 2px solid transparent;
+}
+
+.nav-item:hover {
+  color: #FFD700;
+}
+
+.nav-item.active {
+  border-bottom: 2px solid #FFD700;
+  color: #2c3e50;
+}
+
+/* ==================== Navbar Extra ==================== */
+.navbar-extra {
+  width: 30%;
+  height: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+  border: 1px solid red;
+}
+
+/* ==================== Child Content ==================== */
+.book-content {
+  margin-top: 20px;
+  padding: 10px;
+  border-top: 1px solid #ccc;
+  min-height: 300px; /* opcionalno, za vizuelni prostor */
+}
+
+

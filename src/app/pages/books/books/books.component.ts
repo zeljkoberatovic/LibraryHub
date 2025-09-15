@@ -90,15 +90,7 @@ export class Books implements OnInit {
   }
 
   // --- akcije ---
-  showDetails(book: Book): void {
-    this.router.navigate(['/books/view', book.id]);
-    this.openMenuIndex = null;
-  }
-
-  editBook(book: Book): void {
-    this.router.navigate(['/books/edit', book.id]);
-    this.openMenuIndex = null;
-  }
+  
 
   writeOffBook(book: Book) {
     console.log('Otpiši knjigu:', book);
