@@ -104,27 +104,50 @@ export const routes: Route[] = [
   },
 
   // Settings routes (zaštićeno)
-  {
-    path: 'settings',
-    component: SettingsComponent,
-    canActivate: [authGuard],
-    children: [
-      { path: '', redirectTo: 'kategorije', pathMatch: 'full' },
-      {
-        path: 'kategorije',
-        loadComponent: () =>
-          import('./pages/settings/categories/categories.component').then(
-            (m) => m.CategoryComponent
-          ),
-        canActivate: [authGuard]
-      },
-      { path: 'zanrovi', component: GenreComponent, canActivate: [authGuard] },
-      { path: 'izdavac', component: PublisherComponent, canActivate: [authGuard] },
-      { path: 'povez', component: BindingComponent, canActivate: [authGuard] },
-      { path: 'format', component: FormatComponent, canActivate: [authGuard] },
-      { path: 'pismo', component: LanguageComponent, canActivate: [authGuard] },
-    ],
-  },
+{
+  path: 'settings',
+  component: SettingsComponent,
+  canActivate: [authGuard],
+  children: [
+    { path: '', redirectTo: 'categories', pathMatch: 'full' },
+    {
+      path: 'categories',
+      canActivate: [authGuard],
+      loadComponent: () =>
+        import('./pages/settings/categories/categories.component').then(
+          (m) => m.CategoryComponent
+        ),
+      
+    },
+    {
+      path: 'genres',
+      component: GenreComponent,
+      canActivate: [authGuard]
+
+    },
+    {
+      path: 'publishers',
+      component: PublisherComponent,
+      canActivate: [authGuard]
+    },
+    {
+      path: 'bindings',
+      component: BindingComponent,
+      canActivate: [authGuard]
+    },
+    {
+      path: 'formats',
+      component: FormatComponent,
+      canActivate: [authGuard]
+    },
+    {
+      path: 'languages',
+      component: LanguageComponent,
+      canActivate: [authGuard]
+    },
+  ],
+},
+
 
   // Books routes (zaštićeno)
   {

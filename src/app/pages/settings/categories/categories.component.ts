@@ -1,141 +1,94 @@
-import { Component, OnInit } from '@angular/core';
-
-import {
-  ReactiveFormsModule,
-  FormBuilder,
-  FormGroup,
-  Validators
-} from '@angular/forms';
-import { CategoryService, Category } from '../../../shared/services/category.service';
+import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { CategoryService } from '../../../services/settings/category/category.service';
+import { Category } from '../../../models/category.model';
+import { PaginationService } from '../../../shared/pagination/pagination.service';
+import { PaginationComponent } from '../../../shared/pagination/pagination.component';
 
 @Component({
-  selector: 'app-categories',
+  selector: 'app-category',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, PaginationComponent],
   templateUrl: './categories.component.html',
   styleUrls: ['./categories.component.css']
 })
 export class CategoryComponent implements OnInit {
+  private categoryService = inject(CategoryService);
+  public paginationService = inject(PaginationService);
+
   categories: Category[] = [];
-  loading = false;
-  error: string | null = null;
-
-  categoryForm: FormGroup;
-  editingId: number | null = null;
-  iconPreviewUrl: string | null = null;
-
-  constructor(
-    private categoryService: CategoryService,
-    private fb: FormBuilder
-  ) {
-    this.categoryForm = this.fb.group({
-      name: ['', Validators.required],
-      description: [''],
-      icon: [null]       // we'll set a File here
-    });
-  }
+  displayedCategories: Category[] = [];
+  selectedCategory: Category | null = null;
+  searchTerm: string = '';
+  openMenuIndex: number | null = null;
 
   ngOnInit(): void {
     this.loadCategories();
   }
 
-  private loadCategories(): void {
-    this.loading = true;
-    this.error = null;
-    this.categoryService.list().subscribe({
-      next: cats => {
-        this.categories = cats;
-        this.loading = false;
-      },
-      error: () => {
-        this.error = 'Could not load categories.';
-        this.loading = false;
-      }
+  loadCategories() {
+    this.categoryService.getCategories().subscribe(res => {
+      this.categories = res.data.data;
+      this.applyPagination();
     });
   }
 
-  onCreate(): void {
-    if (this.categoryForm.invalid) return;
+  applyPagination() {
+    const filtered = this.filteredCategories;
+    this.paginationService.updateTotal(filtered.length);
+    this.displayedCategories = this.paginationService.getPageSlice(filtered);
+  }
 
-    const formData = new FormData();
-    formData.append('name', this.categoryForm.value.name);
-    formData.append('description', this.categoryForm.value.description);
-    const iconFile: File = this.categoryForm.value.icon;
-    if (iconFile) {
-      formData.append('icon', iconFile, iconFile.name);
-    }
+  selectCategory(category: Category) {
+    this.selectedCategory = { ...category };
+    this.openMenuIndex = null;
+  }
 
-    this.categoryService.create(formData).subscribe({
-      next: () => {
-        this.categoryForm.reset();
-        this.iconPreviewUrl = null;
+  saveCategory(category: Category) {
+    if (!category.name) return alert('Naziv je obavezan');
+
+    const action = category.id
+      ? this.categoryService.updateCategory(category.id, category)
+      : this.categoryService.createCategory(category);
+
+    action.subscribe(() => {
+      this.loadCategories();
+      this.selectedCategory = null;
+    });
+  }
+
+  deleteCategory(id: number) {
+    if (confirm('Da li ste sigurni da želite da obrišete kategoriju?')) {
+      this.categoryService.deleteCategory(id).subscribe(() => {
         this.loadCategories();
-      },
-      error: () => {
-        this.error = 'Failed to create category.';
-      }
-    });
-  }
-
-  onEdit(cat: Category): void {
-    this.editingId = cat.id;
-    this.categoryForm.patchValue({
-      name: cat.name,
-      description: cat.description,
-      icon: null
-    });
-    this.iconPreviewUrl = cat.icon || null;
-  }
-
-  onUpdate(): void {
-    if (this.categoryForm.invalid || this.editingId === null) return;
-
-    const formData = new FormData();
-    formData.append('name', this.categoryForm.value.name);
-    formData.append('description', this.categoryForm.value.description);
-    const iconFile: File = this.categoryForm.value.icon;
-    if (iconFile) {
-      formData.append('icon', iconFile, iconFile.name);
+        if (this.selectedCategory?.id === id) this.selectedCategory = null;
+      });
     }
-
-    this.categoryService.update(this.editingId, formData).subscribe({
-      next: () => {
-        this.editingId = null;
-        this.categoryForm.reset();
-        this.iconPreviewUrl = null;
-        this.loadCategories();
-      },
-      error: () => {
-        this.error = 'Failed to update category.';
-      }
-    });
   }
 
-  onDelete(cat: Category): void {
-    if (!confirm(`Delete "${cat.name}"?`)) return;
-    this.categoryService.delete(cat.id).subscribe({
-      next: () => this.loadCategories(),
-      error: () => this.error = 'Failed to delete category.'
-    });
+  cancelEdit() {
+    this.selectedCategory = null;
   }
 
-  onFileChange(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    if (!input.files?.length) return;
-    const file = input.files[0];
-    this.categoryForm.patchValue({ icon: file });
-
-    // Preview
-    const reader = new FileReader();
-    reader.onload = () => this.iconPreviewUrl = reader.result as string;
-    reader.readAsDataURL(file);
+  toggleMenu(index: number) {
+    this.openMenuIndex = this.openMenuIndex === index ? null : index;
   }
 
-   showForm = false;
+  editCategory(category: Category) {
+    this.selectedCategory = { ...category };
+    this.openMenuIndex = null;
+  }
 
-  onCancelEdit(): void {
-    this.editingId = null;
-    this.categoryForm.reset();
-    this.iconPreviewUrl = null;
+  get filteredCategories() {
+    if (!this.searchTerm) return this.categories;
+    return this.categories.filter(cat =>
+      cat.name.toLowerCase().includes(this.searchTerm.toLowerCase())
+    );
+  }
+
+  onPageChange(page: number) {
+    this.paginationService.currentPage = page;
+    this.applyPagination();
   }
 }
