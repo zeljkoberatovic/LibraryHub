@@ -1,1 +1,23 @@
-<p>book-details works!xaxaxaxaxaxax</p>
+<div *ngIf="book; else notFound" class="book-card">
+  <h2>Naziv knjige</h2>
+  <p>{{ book.name }}</p>
+
+  <h2>Kategorija</h2>
+  <p>{{ categoryNames }}</p>
+
+  <h2>Žanr</h2>
+  <p>{{ genreNames }}</p>
+
+  <h2>Autor/ri</h2>
+  <p>{{ authorNames }}</p>
+
+  <h2>Izdavač</h2>
+  <p>{{ publisherNames }}</p>
+
+  <h2>Godina izdavanja</h2>
+  <p>{{ year }}</p>
+</div>
+
+<ng-template #notFound>
+  <p>Knjiga nije pronađena.</p>
+</ng-template>

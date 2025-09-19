@@ -7,7 +7,7 @@ import { catchError } from 'rxjs/operators';
 
 export const bookResolver: ResolveFn<Book | null> = (route) => {
   const service = inject(BookService);
-  const id = Number(route.paramMap.get('id'));
+  const id = Number(route.paramMap.get('id')); 
 
   if (!id) return of(null);
 
