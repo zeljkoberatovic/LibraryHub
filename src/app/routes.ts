@@ -7,10 +7,7 @@ import { bookResolver } from '../app/resolvers/book/book-resolver';
 
 import { SettingsComponent } from './pages/settings/settings.component';
 import { GenreComponent } from './pages/settings/genre/genres.component';
-import { PublisherComponent } from './pages/settings/publishers/publishers.component';
-import { BindingComponent } from './pages/settings/bindings/bindings.component';
-import { FormatComponent } from './pages/settings/formats/formats.component';
-import { LanguageComponent } from './pages/settings/languages/languages.component';
+
 import { authorResolver } from './resolvers/author/author-resolver';
 import { authGuard } from './core/guards/auth.guard';
 
@@ -117,36 +114,21 @@ export const routes: Route[] = [
         import('./pages/settings/categories/categories.component').then(
           (m) => m.CategoryComponent
         ),
-      
     },
     {
       path: 'genres',
-      component: GenreComponent,
-      canActivate: [authGuard]
-
+      canActivate: [authGuard],
+      loadComponent: () =>
+        import('./pages/settings/genre/genres.component').then(
+          (m) => m.GenreComponent
+        ),
     },
-    {
-      path: 'publishers',
-      component: PublisherComponent,
-      canActivate: [authGuard]
-    },
-    {
-      path: 'bindings',
-      component: BindingComponent,
-      canActivate: [authGuard]
-    },
-    {
-      path: 'formats',
-      component: FormatComponent,
-      canActivate: [authGuard]
-    },
-    {
-      path: 'languages',
-      component: LanguageComponent,
-      canActivate: [authGuard]
-    },
+     
   ],
 },
+    
+ 
+
 
 
   // Books routes (zaštićeno)

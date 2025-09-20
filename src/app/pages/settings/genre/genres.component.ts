@@ -1,96 +1,94 @@
-import { Component, OnInit } from '@angular/core';
-
-import {
-  ReactiveFormsModule,
-  FormBuilder,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
-import { GenreService, Genre } from '../../../shared/services/genre.service';
+import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { GenreService } from '@/app/services/settings/genre/genre.service';
+import { Genre } from '@/app/models/genre.model';
+import { PaginationService } from '@/app/shared/pagination/pagination.service';
+import { PaginationComponent } from '@/app/shared/pagination/pagination.component';
 
 @Component({
-  selector: 'app-genres',
-  imports: [ReactiveFormsModule],
+  selector: 'app-genre',
+  standalone: true,
+  imports: [CommonModule, FormsModule, PaginationComponent],
   templateUrl: './genres.component.html',
-  styleUrls: ['./genres.component.css'],
+  styleUrls: ['./genres.component.css']
 })
 export class GenreComponent implements OnInit {
+  private genreService = inject(GenreService);
+  public paginationService = inject(PaginationService);
+
   genres: Genre[] = [];
-  loading = false;
-  error: string | null = null;
+  displayedGenres: Genre[] = [];
+  selectedGenre: Genre | null = null;
+  searchTerm: string = '';
+  openMenuIndex: number | null = null;
 
-  form: FormGroup;
-  editingId: number | null = null;
-  showForm = false;
+  ngOnInit(): void {
+    this.loadGenres();
+  }
 
-  constructor(private svc: GenreService, private fb: FormBuilder) {
-    this.form = this.fb.group({
-      name: ['', Validators.required],
-      description: [''],
+  loadGenres() {
+    this.genreService.getGenres().subscribe(res => {
+      this.genres = res.data.data;
+      this.applyPagination();
     });
   }
 
-  ngOnInit() {
-    this.load();
+  applyPagination() {
+    const filtered = this.filteredGenres;
+    this.paginationService.updateTotal(filtered.length);
+    this.displayedGenres = this.paginationService.getPageSlice(filtered);
   }
 
-  private load() {
-    this.loading = true;
-    this.error = null;
-    this.svc.list().subscribe({
-      next: (data) => {
-        this.genres = data;
-        this.loading = false;
-      },
-      error: () => {
-        this.error = 'Failed to load genres';
-        this.loading = false;
-      },
+  selectGenre(genre: Genre) {
+    this.selectedGenre = { ...genre };
+    this.openMenuIndex = null;
+  }
+
+  saveGenre(genre: Genre) {
+    if (!genre.name) return alert('Naziv je obavezan');
+
+    const action = genre.id
+      ? this.genreService.updateGenre(genre.id, genre)
+      : this.genreService.createGenre(genre);
+
+    action.subscribe(() => {
+      this.loadGenres();
+      this.selectedGenre = null;
     });
   }
 
-  onNew() {
-    this.editingId = null;
-    this.form.reset();
-    this.showForm = true;
+  deleteGenre(id: number) {
+    if (confirm('Da li ste sigurni da želite da obrišete žanr?')) {
+      this.genreService.deleteGenre(id).subscribe(() => {
+        this.loadGenres();
+        if (this.selectedGenre?.id === id) this.selectedGenre = null;
+      });
+    }
   }
 
-  onEdit(item: Genre) {
-    this.editingId = item.id;
-    this.form.patchValue({ name: item.name, description: item.description });
-    this.showForm = true;
+  cancelEdit() {
+    this.selectedGenre = null;
   }
 
-  onCancel() {
-    this.showForm = false;
-    this.editingId = null;
-    this.form.reset();
+  toggleMenu(index: number) {
+    this.openMenuIndex = this.openMenuIndex === index ? null : index;
   }
 
-  onSubmit() {
-    if (this.form.invalid) return;
-
-    const payload = this.form.value;
-    const obs = this.editingId
-      ? this.svc.update(this.editingId, payload)
-      : this.svc.create(payload);
-
-    obs.subscribe({
-      next: () => {
-        this.showForm = false;
-        this.load();
-      },
-      error: () => {
-        this.error = this.editingId ? 'Update failed' : 'Create failed';
-      },
-    });
+  editGenre(genre: Genre) {
+    this.selectedGenre = { ...genre };
+    this.openMenuIndex = null;
   }
 
-  onDelete(item: Genre) {
-    if (!confirm(`Delete "${item.name}"?`)) return;
-    this.svc.delete(item.id).subscribe({
-      next: () => this.load(),
-      error: () => (this.error = 'Delete failed'),
-    });
+  get filteredGenres() {
+    if (!this.searchTerm) return this.genres;
+    return this.genres.filter(g =>
+      g.name.toLowerCase().includes(this.searchTerm.toLowerCase())
+    );
+  }
+
+  onPageChange(page: number) {
+    this.paginationService.currentPage = page;
+    this.applyPagination();
   }
 }
