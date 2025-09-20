@@ -1,10 +1,10 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { CategoryService } from '../../../services/settings/category/category.service';
-import { Category } from '../../../models/category.model';
-import { PaginationService } from '../../../shared/pagination/pagination.service';
-import { PaginationComponent } from '../../../shared/pagination/pagination.component';
+import { CategoryService } from '@/app/services/settings/category/category.service';
+import { Category } from '@/app/models/category.model';
+import { PaginationService } from '@/app/shared/pagination/pagination.service';
+import { PaginationComponent } from '@/app/shared/pagination/pagination.component';
 
 @Component({
   selector: 'app-category',

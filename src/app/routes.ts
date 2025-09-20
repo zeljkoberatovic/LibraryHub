@@ -4,12 +4,15 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { librarianResolver } from '../app/resolvers/librarian/librarian.resolver'; 
 import { studentResolver } from '../app/resolvers/student/student-resolver';
 import { bookResolver } from '../app/resolvers/book/book-resolver';
+import { authorResolver } from './resolvers/author/author-resolver';
+
+import { authGuard } from './core/guards/auth.guard';
 
 import { SettingsComponent } from './pages/settings/settings.component';
-import { GenreComponent } from './pages/settings/genre/genres.component';
 
-import { authorResolver } from './resolvers/author/author-resolver';
-import { authGuard } from './core/guards/auth.guard';
+
+
+
 
 export const routes: Route[] = [
   // Auth routes
