@@ -11,6 +11,7 @@ import { authGuard } from './core/guards/auth.guard';
 import { SettingsComponent } from './pages/settings/settings.component';
 import { PublishersResolver } from './resolvers/settings/publishers/publisher-resolver';
 import { GenresResolver } from './resolvers/settings/genre/genre-resolver';
+import { CategoryResolver } from './resolvers/settings/category/category-resolver';
 
 
 
@@ -115,6 +116,7 @@ export const routes: Route[] = [
     {
       path: 'categories',
       canActivate: [authGuard],
+      resolve: { categories: CategoryResolver },
       loadComponent: () =>
         import('./pages/settings/categories/categories.component').then(
           (m) => m.CategoryComponent
