@@ -9,6 +9,7 @@ import { authorResolver } from './resolvers/author/author-resolver';
 import { authGuard } from './core/guards/auth.guard';
 
 import { SettingsComponent } from './pages/settings/settings.component';
+import { PublishersResolver } from './resolvers/publishers/publisher-resolver';
 
 
 
@@ -126,15 +127,17 @@ export const routes: Route[] = [
           (m) => m.GenreComponent
         ),
     },
-     
+    {
+      path: 'publishers',
+      loadComponent: () =>
+        import('./pages/settings/publishers/publishers.component').then(m => m.PublishersComponent),
+      resolve: { publishers: PublishersResolver },
+      canActivate: [authGuard]
+    },
   ],
 },
     
- 
-
-
-
-  // Books routes (zaštićeno)
+ // Books routes (zaštićeno)
   {
     path: 'books',
     canActivate: [authGuard],
