@@ -12,6 +12,7 @@ import { SettingsComponent } from './pages/settings/settings.component';
 import { PublishersResolver } from './resolvers/settings/publishers/publisher-resolver';
 import { GenresResolver } from './resolvers/settings/genre/genre-resolver';
 import { CategoryResolver } from './resolvers/settings/category/category-resolver';
+import { BookSettingsComponent } from './pages/settings/book-settings/book-settings.component';
 
 
 
@@ -124,20 +125,49 @@ export const routes: Route[] = [
     },
     {
       path: 'genres',
-      loadComponent: () =>
-        import('./pages/settings/genre/genres.component').then(m => m.GenreComponent),
+      canActivate: [authGuard],
       resolve: { genres: GenresResolver },
-      canActivate: [authGuard]
+      loadComponent: () =>
+        import('./pages/settings/genre/genres.component').then(
+          (m) => m.GenreComponent
+        ),
     },
     {
       path: 'publishers',
-      loadComponent: () =>
-        import('./pages/settings/publishers/publishers.component').then(m => m.PublishersComponent),
+      canActivate: [authGuard],
       resolve: { publishers: PublishersResolver },
-      canActivate: [authGuard]
+      loadComponent: () =>
+        import('./pages/settings/publishers/publishers.component').then(
+          (m) => m.PublishersComponent
+        ),
+    },
+    {
+      path: 'bindings',
+      canActivate: [authGuard],
+      loadComponent: () =>
+        import('./pages/settings/book-settings/book-settings.component').then(
+          (m) => m.BookSettingsComponent
+        ),
+    },
+    {
+      path: 'formats',
+      canActivate: [authGuard],
+      loadComponent: () =>
+        import('./pages/settings/book-settings/book-settings.component').then(
+          (m) => m.BookSettingsComponent
+        ),
+    },
+    {
+      path: 'languages',
+      canActivate: [authGuard],
+      loadComponent: () =>
+        import('./pages/settings/book-settings/book-settings.component').then(
+          (m) => m.BookSettingsComponent
+        ),
     },
   ],
 },
+
     
  // Books routes (zaštićeno)
   {

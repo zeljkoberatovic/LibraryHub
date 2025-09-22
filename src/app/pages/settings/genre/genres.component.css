@@ -64,7 +64,8 @@ th, td {
 }
 
 .actions-cell {
-  position: relative;
+  position: relative;  
+  text-align: right;   
 }
 
 .menu-icon {
