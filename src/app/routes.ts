@@ -9,7 +9,8 @@ import { authorResolver } from './resolvers/author/author-resolver';
 import { authGuard } from './core/guards/auth.guard';
 
 import { SettingsComponent } from './pages/settings/settings.component';
-import { PublishersResolver } from './resolvers/publishers/publisher-resolver';
+import { PublishersResolver } from './resolvers/settings/publishers/publisher-resolver';
+import { GenresResolver } from './resolvers/settings/genre/genre-resolver';
 
 
 
@@ -121,11 +122,10 @@ export const routes: Route[] = [
     },
     {
       path: 'genres',
-      canActivate: [authGuard],
       loadComponent: () =>
-        import('./pages/settings/genre/genres.component').then(
-          (m) => m.GenreComponent
-        ),
+        import('./pages/settings/genre/genres.component').then(m => m.GenreComponent),
+      resolve: { genres: GenresResolver },
+      canActivate: [authGuard]
     },
     {
       path: 'publishers',

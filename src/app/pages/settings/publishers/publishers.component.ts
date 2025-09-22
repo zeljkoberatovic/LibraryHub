@@ -6,6 +6,7 @@ import { Publisher } from '@/app/models/publisher.model';
 import { PaginationService } from '@/app/shared/pagination/pagination.service';
 import { PaginationComponent } from '@/app/shared/pagination/pagination.component';
 import { ActivatedRoute } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-publishers',
@@ -18,6 +19,7 @@ export class PublishersComponent implements OnInit {
   private publisherService = inject(PublisherService);
   public paginationService = inject(PaginationService);
   private route = inject(ActivatedRoute);
+  private snackBar = inject(MatSnackBar);
 
   publishers: Publisher[] = [];
   displayedPublishers: Publisher[] = [];
@@ -109,6 +111,9 @@ export class PublishersComponent implements OnInit {
       next: () => {
         this.loadPublishers();
         this.selectedPublisher = null;
+        this.snackBar.open('Promjene su uspješno sačuvane.', 'Zatvori', {
+      duration: 3000
+    });
       },
       error: (err: any) => {
         console.error(err);
@@ -119,13 +124,27 @@ export class PublishersComponent implements OnInit {
   }
 
   deletePublisher(id: number) {
-    if (confirm('Da li ste sigurni da želite da obrišete izdavača?')) {
-      this.publisherService.deletePublisher(id).subscribe(() => {
+  if (confirm('Da li ste sigurni da želite da obrišete izdavača?')) {
+    this.publisherService.deletePublisher(id).subscribe({
+      next: () => {
         this.loadPublishers();
         if (this.selectedPublisher?.id === id) this.selectedPublisher = null;
-      });
-    }
+
+        // Snackbar feedback
+        this.snackBar.open('Izdavač je uspješno obrisan.', 'Zatvori', {
+          duration: 3000,
+          horizontalPosition: 'center', 
+          verticalPosition: 'bottom'   
+        });
+      },
+      error: (err) => {
+        console.error(err);
+        alert('Greška pri brisanju izdavača.');
+      }
+    });
   }
+}
+
 
   cancelEdit() {
     this.selectedPublisher = null;

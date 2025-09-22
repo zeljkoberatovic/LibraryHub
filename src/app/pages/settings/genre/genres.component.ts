@@ -5,16 +5,20 @@ import { GenreService } from '@/app/services/settings/genre/genre.service';
 import { Genre } from '@/app/models/genre.model';
 import { PaginationService } from '@/app/shared/pagination/pagination.service';
 import { PaginationComponent } from '@/app/shared/pagination/pagination.component';
+import { ActivatedRoute } from '@angular/router';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-genre',
   standalone: true,
-  imports: [CommonModule, FormsModule, PaginationComponent],
+  imports: [CommonModule, FormsModule, PaginationComponent, MatSnackBarModule],
   templateUrl: './genres.component.html',
   styleUrls: ['./genres.component.css']
 })
 export class GenreComponent implements OnInit {
   private genreService = inject(GenreService);
+  private route = inject(ActivatedRoute);
+  private snackBar = inject(MatSnackBar);
   public paginationService = inject(PaginationService);
 
   genres: Genre[] = [];
@@ -24,14 +28,8 @@ export class GenreComponent implements OnInit {
   openMenuIndex: number | null = null;
 
   ngOnInit(): void {
-    this.loadGenres();
-  }
-
-  loadGenres() {
-    this.genreService.getGenres().subscribe(res => {
-      this.genres = res.data.data;
-      this.applyPagination();
-    });
+    this.genres = this.route.snapshot.data['genres'].data.data;
+    this.applyPagination();
   }
 
   applyPagination() {
@@ -52,20 +50,53 @@ export class GenreComponent implements OnInit {
       ? this.genreService.updateGenre(genre.id, genre)
       : this.genreService.createGenre(genre);
 
-    action.subscribe(() => {
-      this.loadGenres();
-      this.selectedGenre = null;
+    action.subscribe({
+      next: () => {
+        this.genreService.getGenres().subscribe(res => {
+          this.genres = res.data.data;
+          this.applyPagination();
+        });
+
+        this.selectedGenre = null;
+        // snackbar feedback
+        this.snackBar.open(
+          genre.id ? 'Žanr je uspješno ažuriran.' : 'Novi žanr je uspješno kreiran.',
+          'Zatvori',
+          { duration: 3000,  horizontalPosition: 'center', verticalPosition: 'bottom' }
+        );
+      },
+      error: (err) => {
+        console.error(err);
+        alert('Greška pri čuvanju žanra.');
+      }
     });
   }
 
   deleteGenre(id: number) {
-    if (confirm('Da li ste sigurni da želite da obrišete žanr?')) {
-      this.genreService.deleteGenre(id).subscribe(() => {
-        this.loadGenres();
+  if (confirm('Da li ste sigurni da želite da obrišete žanr?')) {
+    this.genreService.deleteGenre(id).subscribe({
+      next: () => {
+        this.genreService.getGenres().subscribe(res => {
+          this.genres = res.data.data;
+          this.applyPagination();
+        });
         if (this.selectedGenre?.id === id) this.selectedGenre = null;
-      });
-    }
+
+        // Snackbar feedback za brisanje
+        this.snackBar.open('Žanr je uspješno obrisan.', 'Zatvori', {
+          duration: 3000,
+          horizontalPosition: 'center', 
+          verticalPosition: 'bottom'   
+        });
+      },
+      error: (err) => {
+        console.error(err);
+        alert('Greška pri brisanju žanra.');
+      }
+    });
   }
+}
+
 
   cancelEdit() {
     this.selectedGenre = null;
@@ -76,7 +107,7 @@ export class GenreComponent implements OnInit {
   }
 
   editGenre(genre: Genre) {
-    this.selectedGenre = { ...genre };
+    this.selectGenre(genre);
     this.openMenuIndex = null;
   }
 
