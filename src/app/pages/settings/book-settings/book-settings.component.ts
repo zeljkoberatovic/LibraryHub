@@ -1,12 +1,12 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { ActivatedRoute } from '@angular/router';
 import { BookSettingService } from '@/app/services/settings/book-setting/book-settings.service';
 
 @Component({
   selector: 'app-book-settings',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './book-settings.component.html',
   styleUrls: ['./book-settings.component.css']
 })

@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { GenreService } from '@/app/services/settings/genre/genre.service';
 import { Genre } from '@/app/models/genre.model';
@@ -11,7 +11,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-genre',
   standalone: true,
-  imports: [CommonModule, FormsModule, PaginationComponent, MatSnackBarModule],
+  imports: [FormsModule, PaginationComponent, MatSnackBarModule],
   templateUrl: './genres.component.html',
   styleUrls: ['./genres.component.css']
 })

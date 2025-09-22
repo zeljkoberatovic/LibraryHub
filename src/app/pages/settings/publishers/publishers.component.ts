@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { PublisherService } from '@/app/services/settings/publisher/publisher.service';
 import { Publisher } from '@/app/models/publisher.model';
@@ -11,7 +11,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-publishers',
   standalone: true,
-  imports: [CommonModule, FormsModule, PaginationComponent],
+  imports: [FormsModule, PaginationComponent],
   templateUrl: './publishers.component.html',
   styleUrls: ['./publishers.component.css'],
 })

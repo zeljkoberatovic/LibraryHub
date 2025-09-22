@@ -7,91 +7,102 @@
       [(ngModel)]="searchTerm"
       (ngModelChange)="applyPagination()"
       class="search-input"
-    />
-  </div>
-
-  <!-- Forma za dodavanje / izmjene -->
-  <div *ngIf="selectedPublisher" class="publisher-form">
-
-    <input [(ngModel)]="selectedPublisher.name" 
-           (ngModelChange)="onFieldChange('name')" 
-           placeholder="Naziv" />
-    <div class="error" *ngIf="errors.name">{{ errors.name }}</div>
-
-    <input [(ngModel)]="selectedPublisher.address" 
-           (ngModelChange)="onFieldChange('address')" 
-           placeholder="Adresa" />
-    <div class="error" *ngIf="errors.address">{{ errors.address }}</div>
-
-    <input [(ngModel)]="selectedPublisher.website" 
-           (ngModelChange)="onFieldChange('website')" 
-           placeholder="Website" />
-    <div class="error" *ngIf="errors.website">{{ errors.website }}</div>
-
-    <input [(ngModel)]="selectedPublisher.email" 
-           (ngModelChange)="onFieldChange('email')" 
-           placeholder="Email" />
-    <div class="error" *ngIf="errors.email">{{ errors.email }}</div>
-
-    <input [(ngModel)]="selectedPublisher.phone_number" 
-           (ngModelChange)="onFieldChange('phone_number')" 
-           placeholder="Telefon" />
-    <div class="error" *ngIf="errors.phone_number">{{ errors.phone_number }}</div>
-
-    <input [(ngModel)]="selectedPublisher.established_year" 
-           (ngModelChange)="onFieldChange('established_year')" 
-           placeholder="Godina osnivanja" />
-    <div class="error" *ngIf="errors.established_year">{{ errors.established_year }}</div>
-
-    <div class="form-buttons">
-      <button (click)="savePublisher(selectedPublisher)">Sačuvaj</button>
-      <button (click)="cancelEdit()">Otkaži</button>
+      />
     </div>
-  </div>
 
-  <button class="add-button" (click)="selectPublisher(emptyPublisher())">
-    + Novi izdavač
-  </button>
+    <!-- Forma za dodavanje / izmjene -->
+    @if (selectedPublisher) {
+      <div class="publisher-form">
+        <input [(ngModel)]="selectedPublisher.name"
+          (ngModelChange)="onFieldChange('name')"
+          placeholder="Naziv" />
+          @if (errors.name) {
+            <div class="error">{{ errors.name }}</div>
+          }
+          <input [(ngModel)]="selectedPublisher.address"
+            (ngModelChange)="onFieldChange('address')"
+            placeholder="Adresa" />
+            @if (errors.address) {
+              <div class="error">{{ errors.address }}</div>
+            }
+            <input [(ngModel)]="selectedPublisher.website"
+              (ngModelChange)="onFieldChange('website')"
+              placeholder="Website" />
+              @if (errors.website) {
+                <div class="error">{{ errors.website }}</div>
+              }
+              <input [(ngModel)]="selectedPublisher.email"
+                (ngModelChange)="onFieldChange('email')"
+                placeholder="Email" />
+                @if (errors.email) {
+                  <div class="error">{{ errors.email }}</div>
+                }
+                <input [(ngModel)]="selectedPublisher.phone_number"
+                  (ngModelChange)="onFieldChange('phone_number')"
+                  placeholder="Telefon" />
+                  @if (errors.phone_number) {
+                    <div class="error">{{ errors.phone_number }}</div>
+                  }
+                  <input [(ngModel)]="selectedPublisher.established_year"
+                    (ngModelChange)="onFieldChange('established_year')"
+                    placeholder="Godina osnivanja" />
+                    @if (errors.established_year) {
+                      <div class="error">{{ errors.established_year }}</div>
+                    }
+                    <div class="form-buttons">
+                      <button (click)="savePublisher(selectedPublisher)">Sačuvaj</button>
+                      <button (click)="cancelEdit()">Otkaži</button>
+                    </div>
+                  </div>
+                }
 
-  <!-- Tabela -->
-  <table>
-    <thead>
-      <tr>
-        <th>Naziv</th>
-        <th>Adresa</th>
-        <th>Website</th>
-        <th>Email</th>
-        <th>Telefon</th>
-        <th>Godina osnivanja</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let pub of displayedPublishers; let i = index">
-        <td>{{ pub.name }}</td>
-        <td>{{ pub.address }}</td>
-        <td>{{ pub.website }}</td>
-        <td>{{ pub.email }}</td>
-        <td>{{ pub.phone_number }}</td>
-        <td>{{ pub.established_year }}</td>
-        <td class="actions-cell">
-          <span class="menu-icon" (click)="toggleMenu(i)">⋮</span>
-          <div class="menu" *ngIf="openMenuIndex === i">
-            <button (click)="editPublisher(pub)">
-              <span class="material-icons">edit</span> Izmjeni
-            </button>
-            <button (click)="deletePublisher(pub.id!)">
-              <span class="material-icons">delete</span> Obriši
-            </button>
-          </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+                <button class="add-button" (click)="selectPublisher(emptyPublisher())">
+                  + Novi izdavač
+                </button>
 
-  <app-pagination
-    [totalPages]="paginationService.totalPages"
-    [currentPage]="paginationService.currentPage"
-    (pageChange)="onPageChange($event)"
-  ></app-pagination>
-</div>
+                <!-- Tabela -->
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Naziv</th>
+                      <th>Adresa</th>
+                      <th>Website</th>
+                      <th>Email</th>
+                      <th>Telefon</th>
+                      <th>Godina osnivanja</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (pub of displayedPublishers; track pub; let i = $index) {
+                      <tr>
+                        <td>{{ pub.name }}</td>
+                        <td>{{ pub.address }}</td>
+                        <td>{{ pub.website }}</td>
+                        <td>{{ pub.email }}</td>
+                        <td>{{ pub.phone_number }}</td>
+                        <td>{{ pub.established_year }}</td>
+                        <td class="actions-cell">
+                          <span class="menu-icon" (click)="toggleMenu(i)">⋮</span>
+                          @if (openMenuIndex === i) {
+                            <div class="menu">
+                              <button (click)="editPublisher(pub)">
+                                <span class="material-icons">edit</span> Izmjeni
+                              </button>
+                              <button (click)="deletePublisher(pub.id!)">
+                                <span class="material-icons">delete</span> Obriši
+                              </button>
+                            </div>
+                          }
+                        </td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+
+                <app-pagination
+                  [totalPages]="paginationService.totalPages"
+                  [currentPage]="paginationService.currentPage"
+                  (pageChange)="onPageChange($event)"
+                ></app-pagination>
+              </div>

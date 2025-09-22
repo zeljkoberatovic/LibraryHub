@@ -7,59 +7,64 @@
       [(ngModel)]="searchTerm"
       (ngModelChange)="applyPagination()"
       class="search-input"
-    />
-  </div>
-
-  <!-- Forma za dodavanje / izmjene -->
-  <div *ngIf="selectedGenre">
-    <div class="category-form">
-      <input [(ngModel)]="selectedGenre.name" placeholder="Naziv" />
-      <input [(ngModel)]="selectedGenre.description" placeholder="Opis" />
-
-      <div class="form-buttons">
-        <button (click)="saveGenre(selectedGenre)">Sačuvaj</button>
-        <button (click)="cancelEdit()">Otkaži</button>
-      </div>
+      />
     </div>
-  </div>
 
-  <button class="add-button" (click)="selectGenre({ name: '', description: '' })">
-    + Novi žanr
-  </button>
-
-  <table>
-    <thead>
-      <tr>
-        <th>Naziv</th>
-        <th>Opis</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let genre of displayedGenres; let i = index">
-        <td>{{ genre.name }}</td>
-        <td>{{ genre.description }}</td>
-        <td class="actions-cell">
-          <span class="menu-icon" (click)="toggleMenu(i)">⋮</span>
-          <div class="menu" *ngIf="openMenuIndex === i">
-            <button (click)="editGenre(genre)">
-              <span class="material-icons">edit</span>
-              Izmjeni
-            </button>
-            <button (click)="deleteGenre(genre.id!)">
-              <span class="material-icons">delete</span>
-              Obriši
-            </button>
+    <!-- Forma za dodavanje / izmjene -->
+    @if (selectedGenre) {
+      <div>
+        <div class="category-form">
+          <input [(ngModel)]="selectedGenre.name" placeholder="Naziv" />
+          <input [(ngModel)]="selectedGenre.description" placeholder="Opis" />
+          <div class="form-buttons">
+            <button (click)="saveGenre(selectedGenre)">Sačuvaj</button>
+            <button (click)="cancelEdit()">Otkaži</button>
           </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+        </div>
+      </div>
+    }
 
-  <!-- Pagination -->
-  <app-pagination
-    [totalPages]="paginationService.totalPages"
-    [currentPage]="paginationService.currentPage"
-    (pageChange)="onPageChange($event)"
-  ></app-pagination>
-</div>
+    <button class="add-button" (click)="selectGenre({ name: '', description: '' })">
+      + Novi žanr
+    </button>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Naziv</th>
+          <th>Opis</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (genre of displayedGenres; track genre; let i = $index) {
+          <tr>
+            <td>{{ genre.name }}</td>
+            <td>{{ genre.description }}</td>
+            <td class="actions-cell">
+              <span class="menu-icon" (click)="toggleMenu(i)">⋮</span>
+              @if (openMenuIndex === i) {
+                <div class="menu">
+                  <button (click)="editGenre(genre)">
+                    <span class="material-icons">edit</span>
+                    Izmjeni
+                  </button>
+                  <button (click)="deleteGenre(genre.id!)">
+                    <span class="material-icons">delete</span>
+                    Obriši
+                  </button>
+                </div>
+              }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+
+    <!-- Pagination -->
+    <app-pagination
+      [totalPages]="paginationService.totalPages"
+      [currentPage]="paginationService.currentPage"
+      (pageChange)="onPageChange($event)"
+    ></app-pagination>
+  </div>

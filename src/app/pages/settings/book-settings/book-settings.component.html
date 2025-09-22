@@ -4,6 +4,8 @@
   </div>
 
   <ul class="book-settings-list">
-    <li *ngFor="let item of items">{{ item }}</li>
+    @for (item of items; track item) {
+      <li>{{ item }}</li>
+    }
   </ul>
 </div>

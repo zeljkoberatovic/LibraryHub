@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { CategoryService } from '@/app/services/settings/category/category.service';
 import { Category } from '@/app/models/category.model';
@@ -11,7 +11,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-category',
   standalone: true,
-  imports: [CommonModule, FormsModule, PaginationComponent, MatSnackBarModule],
+  imports: [FormsModule, PaginationComponent, MatSnackBarModule],
   templateUrl: './categories.component.html',
   styleUrls: ['./categories.component.css']
 })
