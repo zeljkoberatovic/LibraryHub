@@ -1,12 +1,17 @@
-/* ==================== Book Card ==================== */
+/* ==================== Glavni Book Card ==================== */
 .book-card {
   max-width: 100%;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: #2c3e50;
-  background-color: #fff;
-  padding: 16px;
+  background-color: #ffffff;
+  padding: 20px;
   box-sizing: border-box;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0,0,1,0.08);
+  transition: transform 0.2s, box-shadow 0.2s;
 }
+
+
 
 /* ==================== Header ==================== */
 .header {
@@ -14,8 +19,8 @@
   justify-content: space-between;
   align-items: center;
   gap: 16px;
-  border-bottom: 2px solid #e0e0e0;
   padding-bottom: 12px;
+  border-bottom: 1px solid #2c3e50; /* suptilna linija */
 }
 
 .left {
@@ -25,7 +30,7 @@
 
 .book-name {
   font-weight: 700;
-  font-size: 24px;
+  font-size: 26px;
   color: #2c3e50;
 }
 
@@ -51,18 +56,20 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 6px 12px;
-  border-radius: 6px;
-  background: #f2f2f2;
+  padding: 8px 14px;
+  border-radius: 8px;
+  background: #f8f9fa;
   text-decoration: none;
-  color: #2c3e50;
+  color: #335374;
   font-weight: 600;
-  transition: background-color 0.25s ease, color 0.25s ease;
+  transition: background-color 0.25s ease, color 0.25s ease, transform 0.2s;
+
 }
 
 .action-btn:hover {
-  background-color: #34495e;
+  background-color: #2c3e50;
   color: #FFD700;
+  transform: translateY(-1px);
 }
 
 /* ==================== Dropdown Dots ==================== */
@@ -76,6 +83,7 @@
   font-size: 20px;
   cursor: pointer;
   color: #2c3e50;
+  transition: color 0.2s;
 }
 
 .dots:hover {
@@ -85,27 +93,27 @@
 .dropdown {
   position: absolute;
   right: 0;
-  top: 28px;
-  background: #fff;
-  border: 1px solid #34495e;
-  border-radius: 8px;
-  min-width: 140px;
+  top: 36px;
+  background: #ffffff;
+  border-radius: 10px;
+  min-width: 150px;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  z-index: 10;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  z-index: 1000;
 }
 
 .dropdown a {
-  padding: 8px 12px;
+  padding: 10px 16px;
   text-decoration: none;
   color: #2c3e50;
   font-weight: 500;
   transition: background-color 0.25s ease, color 0.25s ease;
+  border-radius: 6px;
 }
 
 .dropdown a:hover {
-  background-color: #34495e;
+  background-color: #2c3e50;
   color: #FFD700;
 }
 
@@ -115,26 +123,25 @@
   justify-content: space-between;
   align-items: flex-start;
   gap: 16px;
-  margin-top: 20px;
+  margin-top: 24px;
   width: 100%;
-  box-sizing: border-box;
 }
 
-/* ==================== Book Navbar (lijeva strana 70%) ==================== */
+/* ==================== Book Navbar ==================== */
 .book-navbar {
   display: flex;
-  flex-direction: column; /* linkovi gore, content ispod */
-  width: 70%;
-  border: 1px solid #34495e;
-  padding-bottom: 8px;
-  flex-shrink: 0;
+  flex-direction: column;
+  width: 75%;
+  background: #f9f9f9;
+  border-radius: 10px;
+  padding: 12px 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 
-/* Linkovi u book-navbar */
 .nav-links {
   display: flex;
   gap: 20px;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 .nav-item {
@@ -156,21 +163,29 @@
   color: #2c3e50;
 }
 
-/* ==================== Navbar Extra (desna strana 30%) ==================== */
+/* ==================== Navbar Extra ==================== */
 .navbar-extra {
-  width: 30%;
+  width: 25%;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   gap: 12px;
-  border: 1px solid red; /* samo za debug */
-  height: 550px;
+   background: #e8eaf0; 
+  border-radius: 10px;
+  padding: 16px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08); 
+  height: 50vh;
 }
+
 
 /* ==================== Child Content ==================== */
 .book-content {
-  margin-top: 20px;
-  padding: 10px;
-  border-top: 1px solid #ccc;
-  min-height: 460px; /* opcionalno */
+  margin-top: 24px;
+  padding: 14px;
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  min-height: 480px;
 }
+
+

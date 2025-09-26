@@ -1,0 +1,46 @@
+.book-spec-container {
+  padding: 24px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  max-width: 700px;
+  margin: 20px auto;
+  font-family: 'Segoe UI', sans-serif;
+  color: #36454f;
+}
+
+/* Naslov knjige */
+.book-spec-container h2 {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: #36454f;
+}
+
+/* Sekcije za podatke */
+.book-spec-container p {
+  font-size: 15px;
+  line-height: 1.5;
+  margin: 6px 0;
+}
+
+/* Label bold */
+.book-spec-container p strong {
+  font-weight: 600;
+  color: #49607a;
+  margin-right: 6px;
+}
+
+/* Fallback za N/A vrednosti */
+.book-spec-container p em {
+  color: #a0a0a0;
+  font-style: italic;
+}
+
+/* Opcionalna linija između sekcija */
+.book-spec-container .section-divider {
+  height: 1px;
+  background: #ddd;
+  margin: 12px 0;
+}
+
