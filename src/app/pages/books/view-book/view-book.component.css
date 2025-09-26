@@ -109,7 +109,7 @@
   color: #FFD700;
 }
 
-/* ==================== Navbar ==================== */
+/* ==================== Navbar Wrapper ==================== */
 .navbar-wrapper {
   display: flex;
   justify-content: space-between;
@@ -120,13 +120,21 @@
   box-sizing: border-box;
 }
 
+/* ==================== Book Navbar (lijeva strana 70%) ==================== */
 .book-navbar {
   display: flex;
-  gap: 20px;
-  border-bottom: 2px solid #34495e;
+  flex-direction: column; /* linkovi gore, content ispod */
+  width: 70%;
+  border: 1px solid #34495e;
   padding-bottom: 8px;
-  max-width: 70%;
-  flex-shrink: 1;
+  flex-shrink: 0;
+}
+
+/* Linkovi u book-navbar */
+.nav-links {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 10px;
 }
 
 .nav-item {
@@ -148,15 +156,15 @@
   color: #2c3e50;
 }
 
-/* ==================== Navbar Extra ==================== */
+/* ==================== Navbar Extra (desna strana 30%) ==================== */
 .navbar-extra {
   width: 30%;
-  height: 600px;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   gap: 12px;
-  border: 1px solid red;
+  border: 1px solid red; /* samo za debug */
+  height: 550px;
 }
 
 /* ==================== Child Content ==================== */
@@ -164,7 +172,5 @@
   margin-top: 20px;
   padding: 10px;
   border-top: 1px solid #ccc;
-  min-height: 300px; /* opcionalno, za vizuelni prostor */
+  min-height: 460px; /* opcionalno */
 }
-
-

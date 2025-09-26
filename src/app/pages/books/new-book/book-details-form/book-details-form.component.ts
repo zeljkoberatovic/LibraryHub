@@ -1,14 +1,14 @@
 import { Component, inject, Output, EventEmitter, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthorService } from '../../../../services/author/author.service';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-book-details-form',
   standalone: true,
   templateUrl: './book-details-form.component.html',
   styleUrls: ['./book-details-form.component.css'],
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule],
 })
 export class BookDetailsFormComponent implements OnInit {
   private fb = inject(FormBuilder);

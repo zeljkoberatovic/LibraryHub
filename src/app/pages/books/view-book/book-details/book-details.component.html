@@ -1,1 +1,19 @@
-<p>book-details works!xaxaxaxaxaxax</p>
+@if (book) {
+  <div>
+    <p><strong>Naziv:</strong> {{ book.name }}</p>
+
+    @if (book.authors.length) {
+      <p><strong>Autor:</strong> {{ book.authors[0].first_name }} {{ book.authors[0].last_name }}</p>
+    } @else {
+      <p><strong>Autor:</strong> N/A</p>
+    }
+
+    @if (book.publishers.length) {
+      <p><strong>Izdavač:</strong> {{ book.publishers[0].name }}</p>
+    } @else {
+      <p><strong>Izdavač:</strong> N/A</p>
+    }
+
+    <p><strong>ISBN:</strong> {{ book.isbn }}</p>
+  </div>
+}

@@ -1,7 +1,7 @@
 export interface Book {
-  id?: number;  
+  id: number;
   name: string;
-  description: string;
+  description?: string;
   number_of_pages: number;
   number_of_copies: number;
   isbn: string;
@@ -9,15 +9,40 @@ export interface Book {
   script: string;
   binding: string;
   dimensions: string;
+  
+  images: string[];
+  categories: Category[];
+  publishers: Publisher[];
+  authors: Author[];
+  genres: Genre[];
 
-  categories?: number[] | null;
-  genres?: number[] | null;
-  publishers?: number[] | null;
-  authors: number[] | null; 
-
-   
   available?: number;
   reserved?: number;
   issued?: number;
   overdue?: number;
+
 }
+
+export interface Category {
+  id: number;
+  name: string;
+  description?: string;
+}
+
+export interface Publisher {
+  id: number;
+  name: string;
+}
+
+export interface Author {
+  id: number;
+  first_name: string;
+  last_name: string;
+}
+
+export interface Genre {
+  id: number;
+  name: string;
+}
+
+ 

@@ -16,10 +16,16 @@ export class BookService {
   }
 
   // Vraća jednu knjigu iz response.data.data[0]
+  //getBook(id: number): Observable<Book> {
+   // return this.http.get<{ status: string; data: { meta: any; data: Book[] } }>(`${this.baseUrl}/${id}`)
+     // .pipe(map(res => res.data.data[0]));
+  //}
+
   getBook(id: number): Observable<Book> {
-    return this.http.get<{ status: string; data: { meta: any; data: Book[] } }>(`${this.baseUrl}/${id}`)
-      .pipe(map(res => res.data.data[0]));
-  }
+  return this.http.get<{ status: string; data: Book }>(`${this.baseUrl}/${id}`)
+    .pipe(map(res => res.data));
+}
+
 
   createBook(book: Book): Observable<Book> {
     return this.http.post<{ status: string; data: { data: Book[] } }>(this.baseUrl, book)

@@ -1,0 +1,180 @@
+[1mdiff --git a/src/app/models/book.model.ts b/src/app/models/book.model.ts[m
+[1mindex 44e8b69..175b6c2 100644[m
+[1m--- a/src/app/models/book.model.ts[m
+[1m+++ b/src/app/models/book.model.ts[m
+[36m@@ -1,7 +1,7 @@[m
+ export interface Book {[m
+[31m-  id?: number;  [m
+[32m+[m[32m  id: number;[m
+   name: string;[m
+[31m-  description: string;[m
+[32m+[m[32m  description?: string;[m
+   number_of_pages: number;[m
+   number_of_copies: number;[m
+   isbn: string;[m
+[36m@@ -9,15 +9,40 @@[m [mexport interface Book {[m
+   script: string;[m
+   binding: string;[m
+   dimensions: string;[m
+[32m+[m[41m  [m
+[32m+[m[32m  images: string[];[m
+[32m+[m[32m  categories: Category[];[m
+[32m+[m[32m  publishers: Publisher[];[m
+[32m+[m[32m  authors: Author[];[m
+[32m+[m[32m  genres: Genre[];[m
+ [m
+[31m-  categories?: number[] | null;[m
+[31m-  genres?: number[] | null;[m
+[31m-  publishers?: number[] | null;[m
+[31m-  authors: number[] | null; [m
+[31m-[m
+[31m-   [m
+   available?: number;[m
+   reserved?: number;[m
+   issued?: number;[m
+   overdue?: number;[m
+[32m+[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mexport interface Category {[m
+[32m+[m[32m  id: number;[m
+[32m+[m[32m  name: string;[m
+[32m+[m[32m  description?: string;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mexport interface Publisher {[m
+[32m+[m[32m  id: number;[m
+[32m+[m[32m  name: string;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mexport interface Author {[m
+[32m+[m[32m  id: number;[m
+[32m+[m[32m  first_name: string;[m
+[32m+[m[32m  last_name: string;[m
+ }[m
+[32m+[m
+[32m+[m[32mexport interface Genre {[m
+[32m+[m[32m  id: number;[m
+[32m+[m[32m  name: string;[m
+[32m+[m[32m}[m
+[41m+[m
+[41m+ [m
+\ No newline at end of file[m
+[1mdiff --git a/src/app/pages/books/books/books.component.html b/src/app/pages/books/books/books.component.html[m
+[1mindex 7172cf9..d197908 100644[m
+[1m--- a/src/app/pages/books/books/books.component.html[m
+[1m+++ b/src/app/pages/books/books/books.component.html[m
+[36m@@ -35,10 +35,10 @@[m
+       @for (book of paged; track book; let i = $index) {[m
+         <tr>[m
+           <td>{{ book.name }}</td>[m
+[31m-          <td>{{ getAuthorNames(book.authors ?? []) }}</td>[m
+[31m-          <td>{{ getCategoryNames(book.categories ?? []) }}</td>[m
+[31m-          <td>{{ getPublisherNames(book.publishers ?? []) }}</td>[m
+[31m-          <td>{{ getGenreNames(book.genres ?? []) }}</td>[m
+[32m+[m[32m          <td>{{ getAuthorNames(book.authors) }}</td>[m
+[32m+[m[32m          <td>{{ getCategoryNames(book.categories) }}</td>[m
+[32m+[m[32m          <td>{{ getPublisherNames(book.publishers) }}</td>[m
+[32m+[m[32m          <td>{{ getGenreNames(book.genres) }}</td>[m
+           <td>{{ book.language }}</td>[m
+           <td>{{ book.number_of_copies }}</td>[m
+           <td>{{ book.available ?? 0 }}</td>[m
+[1mdiff --git a/src/app/pages/books/new-book/book-details-form/book-details-form.component.html b/src/app/pages/books/new-book/book-details-form/book-details-form.component.html[m
+[1mindex 0fff4fa..3769459 100644[m
+[1m--- a/src/app/pages/books/new-book/book-details-form/book-details-form.component.html[m
+[1m+++ b/src/app/pages/books/new-book/book-details-form/book-details-form.component.html[m
+[36m@@ -2,9 +2,11 @@[m
+   <div class="form-group">[m
+     <label for="name">Naziv knjige *</label>[m
+     <input type="text" id="name" formControlName="name" class="form-control">[m
+[31m-    <div *ngIf="bookForm.get('name')?.invalid && bookForm.get('name')?.touched" class="error">[m
+[31m-      Naziv knjige je obavezan[m
+[31m-    </div>[m
+[32m+[m[32m    @if (bookForm.get('name')?.invalid && bookForm.get('name')?.touched) {[m
+[32m+[m[32m      <div class="error">[m
+[32m+[m[32m        Naziv knjige je obavezan[m
+[32m+[m[32m      </div>[m
+[32m+[m[32m    }[m
+   </div>[m
+ [m
+   <div class="form-group">[m
+[36m@@ -15,43 +17,53 @@[m
+   <div class="form-group">[m
+     <label for="number_of_copies">Broj primeraka *</label>[m
+     <input type="number" id="number_of_copies" formControlName="number_of_copies" class="form-control" min="1">[m
+[31m-    <div *ngIf="bookForm.get('number_of_copies')?.invalid && bookForm.get('number_of_copies')?.touched" class="error">[m
+[31m-      Broj primeraka je obavezan (minimum 1)[m
+[31m-    </div>[m
+[32m+[m[32m    @if (bookForm.get('number_of_copies')?.invalid && bookForm.get('number_of_copies')?.touched) {[m
+[32m+[m[32m      <div class="error">[m
+[32m+[m[32m        Broj primeraka je obavezan (minimum 1)[m
+[32m+[m[32m      </div>[m
+[32m+[m[32m    }[m
+   </div>[m
+ [m
+   <div class="form-group">[m
+     <label for="language">Jezik *</label>[m
+     <input type="text" id="language" formControlName="language" class="form-control">[m
+[31m-    <div *ngIf="bookForm.get('language')?.invalid && bookForm.get('language')?.touched" class="error">[m
+[31m-      Jezik je obavezan[m
+[31m-    </div>[m
+[32m+[m[32m    @if (bookForm.get('language')?.invalid && bookForm.get('language')?.touched) {[m
+[32m+[m[32m      <div class="error">[m
+[32m+[m[32m        Jezik je obavezan[m
+[32m+[m[32m      </div>[m
+[32m+[m[32m    }[m
+   </div>[m
+ [m
+   <div class="form-group">[m
+     <label for="publish_year">Godina izdanja *</label>[m
+[31m-    <input type="number" id="publish_year" formControlName="publish_year" class="form-control" [m
+[31m-           [min]="1900" [max]="currentYear">[m
+[31m-    <div *ngIf="bookForm.get('publish_year')?.invalid && bookForm.get('publish_year')?.touched" class="error">[m
+[31m-      Godina izdanja je obavezna (1900-{{currentYear}})[m
+[32m+[m[32m    <input type="number" id="publish_year" formControlName="publish_year" class="form-control"[m
+[32m+[m[32m      [min]="1900" [max]="currentYear">[m
+[32m+[m[32m      @if (bookForm.get('publish_year')?.invalid && bookForm.get('publish_year')?.touched) {[m
+[32m+[m[32m        <div class="error">[m
+[32m+[m[32m          Godina izdanja je obavezna (1900-{{currentYear}})[m
+[32m+[m[32m        </div>[m
+[32m+[m[32m      }[m
+     </div>[m
+[31m-  </div>[m
+ [m
+[31m-  <div class="form-group">[m
+[31m-    <label for="authors">Autori *</label>[m
+[31m-    <select id="authors" formControlName="authors" class="form-control" multiple[m
+[31m-            (change)="onAuthorChange($event)">[m
+[31m-      <option *ngFor="let author of authors" [value]="author.id">[m
+[31m-        {{author.first_name}} {{author.last_name}}[m
+[31m-      </option>[m
+[31m-    </select>[m
+[31m-    <div *ngIf="bookForm.get('authors')?.invalid && bookForm.get('authors')?.touched" class="error">[m
+[31m-      Morate odabrati bar jednog autora[m
+[32m+[m[32m    <div class="form-group">[m
+[32m+[m[32m      <label for="authors">Autori *</label>[m
+[32m+[m[32m      <select id="authors" formControlName="authors" class="form-control" multiple[m
+[32m+[m[32m        (change)="onAuthorChange($event)">[m
+[32m+[m[32m        @for (author of authors; track author) {[m
+[32m+[m[32m          <option [value]="author.id">[m
+[32m+[m[32m            {{author.first_name}} {{author.last_name}}[m
+[32m+[m[32m          </option>[m
+[32m+[m[32m        }[m
+[32m+[m[32m      </select>[m
+[32m+[m[32m      @if (bookForm.get('authors')?.invalid && bookForm.get('authors')?.touched) {[m
+[32m+[m[32m        <div class="error">[m
+[32m+[m[32m          Morate odabrati bar jednog autora[m
+[32m+[m[32m        </div>[m
+[32m+[m[32m      }[m
+[32m+[m[32m      <small class="form-text text-muted">Držite Ctrl (ili Cmd na Macu) za višestruki odabir</small>[m
+     </div>[m
+[31m-    <small class="form-text text-muted">Držite Ctrl (ili Cmd na Macu) za višestruki odabir</small>[m
+[31m-  </div>[m
+ [m
+[31m-  <div class="form-actions">[m
+[31m-    <button type="submit" class="btn-primary">Sačuvaj detalje</button>[m
+[31m-  </div>[m
+[31m-</form>[m
+\ No newline at end of file[m
+[32m+[m[32m    <div class="form-actions">[m
+[32m+[m[32m      <button type="submit" cla

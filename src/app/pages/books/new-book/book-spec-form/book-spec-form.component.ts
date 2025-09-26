@@ -1,11 +1,11 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, inject, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-book-spec-form',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule],
   templateUrl: './book-spec-form.component.html',
   styleUrls: ['./book-spec-form.component.css']
 })

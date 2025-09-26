@@ -15,30 +15,35 @@
 
       <div class="right">
         <button class="dots" (click)="toggleDropdown()">⋮</button>
-        <div class="dropdown" *ngIf="dropdownOpen">
-          <a (click)="closeDropdown()">Pogledaj knjigu</a>
-          <a (click)="closeDropdown()">Izmijeni knjigu</a>
-        </div>
+        @if (dropdownOpen) {
+          <div class="dropdown">
+            <a (click)="closeDropdown()">Pogledaj knjigu</a>
+            <a (click)="closeDropdown()">Izmijeni knjigu</a>
+          </div>
+        }
       </div>
     </div>
   </div>
 
-  <!-- Navbar i extra u jednom redu -->
   <div class="navbar-wrapper">
-    <nav class="book-navbar">
-      <a routerLink="details" routerLinkActive="active" class="nav-item">Osnovni detalji</a>
-      <a routerLink="specification" routerLinkActive="active" class="nav-item">Specifikacija</a>
-      <a routerLink="records" routerLinkActive="active" class="nav-item">Evidencija iznajmljivanja</a>
-      <a routerLink="media" routerLinkActive="active" class="nav-item">Multimedia</a>
-    </nav>
+    <div class="book-navbar">
+      <nav class="nav-links">
+        <a routerLink="details" routerLinkActive="active" class="nav-item">Osnovni detalji</a>
+        <a routerLink="specification" routerLinkActive="active" class="nav-item">Specifikacija</a>
+        <a routerLink="records" routerLinkActive="active" class="nav-item">Evidencija iznajmljivanja</a>
+        <a routerLink="media" routerLinkActive="active" class="nav-item">Multimedia</a>
+      </nav>
+
+      <!-- Child content sada unutar book-navbar -->
+      <div class="book-content">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+
     <div class="navbar-extra">
-      <span>Status: {{ book?.available ? 'Dostupno' : 'Nedostupno' }}</span>
+      <span>Status: </span>
       <button class="extra-btn">Akcija</button>
     </div>
   </div>
 
-  <!-- Child content -->
-  <div class="book-content">
-    <router-outlet></router-outlet>
-  </div>
 </div>
