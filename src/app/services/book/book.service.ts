@@ -6,6 +6,12 @@ import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class BookService {
+  getCategories() {
+    throw new Error('Method not implemented.');
+  }
+  getAuthors() {
+    throw new Error('Method not implemented.');
+  }
   private http = inject(HttpClient);
   private baseUrl = environment.apiUrl + '/books';
 

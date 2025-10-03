@@ -1,11 +1,18 @@
-import { Component, inject, ViewChild } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { ReactiveFormsModule } from '@angular/forms';
+
 import { BookService } from '../../../services/book/book.service';
+import { AuthorService } from '../../../services/author/author.service';
+import { CategoryService } from '../../../services/settings/category/category.service';
+import { GenreService } from '../../../services/settings/genre/genre.service';
+import { PublisherService } from '../../../services/settings/publisher/publisher.service';
+
 import { BookDetailsFormComponent } from './book-details-form/book-details-form.component';
 import { BookSpecFormComponent } from './book-spec-form/book-spec-form.component';
 import { BookMediaFormComponent } from './book-media-form/book-media-form.component';
-import { Book, CreateBookDto } from '../../../models/book.model';
+import { CreateBookDto } from '../../../models/book.model';
 
 @Component({
   selector: 'app-new-book',
@@ -14,35 +21,63 @@ import { Book, CreateBookDto } from '../../../models/book.model';
   styleUrls: ['./new-book.component.css'],
   imports: [
     CommonModule,
+    ReactiveFormsModule,
     BookDetailsFormComponent,
     BookSpecFormComponent,
     BookMediaFormComponent
   ]
 })
-export class NewBookComponent {
+export class NewBookComponent implements OnInit {
   private bookService = inject(BookService);
+  private authorService = inject(AuthorService);
+  private categoryService = inject(CategoryService);
+  private genreService = inject(GenreService);
+  private publisherService = inject(PublisherService);
   private router = inject(Router);
 
-  // Child references
-  @ViewChild(BookDetailsFormComponent) detailsForm!: BookDetailsFormComponent;
-  @ViewChild(BookSpecFormComponent) specForm!: BookSpecFormComponent;
-  @ViewChild(BookMediaFormComponent) mediaForm!: BookMediaFormComponent;
-
-  bookData: any = {};
-  activeTab: string = 'details';
-
+  activeTab = 'details';
   detailsCompleted = false;
   specCompleted = false;
   mediaCompleted = false;
 
-  // ---------------- Child Events ----------------
+  bookData: any = {};
+
+  authorsList: any[] = [];
+  categoriesList: any[] = [];
+  genresList: any[] = [];
+  publishersList: any[] = [];
+
+  isLoading = true;
+
+  ngOnInit() {
+    this.loadLists();
+  }
+
+  private loadLists() {
+    this.authorService.getAuthors().subscribe(a => this.authorsList = a);
+
+    this.categoryService.getCategories().subscribe(res => {
+      this.categoriesList = res.data?.data || [];
+    });
+
+    this.genreService.getGenres().subscribe(res => {
+      this.genresList = res.data?.data || [];
+    });
+
+    this.publisherService.getPublishers().subscribe(res => {
+      this.publishersList = res.data?.data || [];
+    });
+  }
+
   onDetailsSubmit(details: any) {
+    console.log('Details submitted:', details);
     this.bookData = { ...this.bookData, ...details };
     this.detailsCompleted = true;
     this.activeTab = 'specification';
   }
 
   onSpecSubmit(spec: any) {
+    console.log('Spec submitted:', spec);
     this.bookData = { ...this.bookData, ...spec };
     this.specCompleted = true;
     this.activeTab = 'media';
@@ -53,66 +88,86 @@ export class NewBookComponent {
     this.mediaCompleted = true;
   }
 
-  // ---------------- Submit ----------------
   submitBook() {
-    if (!this.detailsCompleted || !this.specCompleted) {
-      alert('Molimo popunite sve obavezne podatke u svim formama');
-      return;
-    }
-
-    const dto: CreateBookDto = {
-      name: this.bookData.name,
-      description: this.bookData.description,
-      number_of_pages: Number(this.bookData.number_of_pages),
-      number_of_copies: Number(this.bookData.number_of_copies),
-      isbn: this.bookData.isbn,
-      language: this.bookData.language,
-      script: this.bookData.script,
-      binding: this.bookData.binding,
-      dimensions: this.bookData.dimensions,
-      images: this.bookData.images || [],
-      category_ids: this.bookData.categories || [],
-      genre_ids: this.bookData.genres || [],
-      publisher_ids: this.bookData.publishers || [],
-      author_ids: this.bookData.authors || []
-    };
-
-    this.bookService.createBook(dto).subscribe({
-      next: (createdBook: Book) => {
-        alert('Knjiga uspešno kreirana!');
-        this.router.navigate(['/books']);
-      },
-      error: (err) => {
-        alert('Greška pri kreiranju knjige: ' + err.message);
-      }
-    });
+  if (!this.detailsCompleted) {
+    return alert('Popunite osnovne podatke');
   }
 
-  // ---------------- UI Helpers ----------------
-  changeTab(tab: string) {
-    this.activeTab = tab;
+  console.log('Book Data before sending:', this.bookData);
+
+  // Priprema podataka za API - BEZ SLIKA
+  const dto: CreateBookDto = {
+    name: this.bookData.name || '',
+    description: this.bookData.description || '',
+    number_of_pages: Number(this.bookData.number_of_pages) || 0,
+    number_of_copies: Number(this.bookData.number_of_copies) || 0,
+    isbn: this.bookData.isbn || '',
+    language: this.bookData.language || '',
+    script: this.bookData.script || '',
+    binding: this.bookData.binding || '',
+    dimensions: this.bookData.dimensions || '',
+    author_ids: Array.isArray(this.bookData.authors) ? this.bookData.authors : [],
+    category_ids: Array.isArray(this.bookData.categories) ? this.bookData.categories : [],
+    genre_ids: Array.isArray(this.bookData.genres) ? this.bookData.genres : [],
+    publisher_ids: Array.isArray(this.bookData.publishers) ? this.bookData.publishers : []
+  };
+
+  console.log('DTO being sent to API:', dto);
+
+  // Provera obaveznih polja pre slanja
+  const requiredFields = [
+    'name', 'number_of_pages', 'number_of_copies', 'isbn', 
+    'language', 'script', 'binding', 'dimensions'
+  ];
+
+  const missingFields = requiredFields.filter(field => !dto[field as keyof CreateBookDto]);
+  if (missingFields.length > 0) {
+    alert(`Popunite obavezna polja: ${missingFields.join(', ')}`);
+    return;
   }
 
-  restartForm() {
-    if (confirm('Da li ste sigurni da želite da restartujete formu? Svi podaci će biti izgubljeni.')) {
-      this.bookData = {};
-      this.detailsCompleted = false;
-      this.specCompleted = false;
-      this.mediaCompleted = false;
-      this.activeTab = 'details';
-
-      if (this.detailsForm) this.detailsForm.bookForm.reset();
-      if (this.specForm) this.specForm.bookForm.reset();
-      if (this.mediaForm) {
-        this.mediaForm.mediaForm.reset();
-        this.mediaForm.imagePreview = [];
-      }
-    }
+  // Provera da li su nizovi popunjeni
+  if (dto.author_ids.length === 0) {
+    alert('Odaberite bar jednog autora');
+    return;
+  }
+  if (dto.category_ids.length === 0) {
+    alert('Odaberite bar jednu kategoriju');
+    return;
+  }
+  if (dto.genre_ids.length === 0) {
+    alert('Odaberite bar jedan žanr');
+    return;
+  }
+  if (dto.publisher_ids.length === 0) {
+    alert('Odaberite bar jednog izdavača');
+    return;
   }
 
-  onCancel() {
-    if (confirm('Da li ste sigurni da želite da otkažete?')) {
+  this.bookService.createBook(dto).subscribe({
+    next: (response) => {
+      console.log('Book created successfully:', response);
+      alert('Knjiga je uspešno kreirana!');
       this.router.navigate(['/books']);
+    },
+    error: (err) => {
+      console.error('Full error:', err);
+      
+      if (err.status === 422) {
+        const validationErrors = err.error?.errors || err.error?.data?.errors;
+        if (validationErrors) {
+          let errorMessage = 'Greška validacije:\n';
+          Object.keys(validationErrors).forEach(key => {
+            errorMessage += `${key}: ${validationErrors[key].join(', ')}\n`;
+          });
+          alert(errorMessage);
+        } else {
+          alert('Došlo je do greške pri validaciji podataka. Proverite sva polja.');
+        }
+      } else {
+        alert('Greška: ' + (err.message || 'Došlo je do greške prilikom kreiranja knjige'));
+      }
     }
-  }
+  });
+}
 }

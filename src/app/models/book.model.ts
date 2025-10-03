@@ -57,7 +57,7 @@ export interface CreateBookDto {
   script: string;
   binding: string;
   dimensions: string;
-  images: string[];
+  images?: string[];
 
   category_ids: number[];
   publisher_ids: number[];
