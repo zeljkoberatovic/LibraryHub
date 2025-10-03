@@ -45,4 +45,23 @@ export interface Genre {
   name: string;
 }
 
+export interface CreateBookDto {
+  name: string;
+  description?: string;
+  number_of_pages: number;
+  number_of_copies: number;
+  isbn: string;
+  language: string;
+  script: string;
+  binding: string;
+  dimensions: string;
+  images: string[];
+
+  category_ids: number[];
+  publisher_ids: number[];
+  author_ids: number[];
+  genre_ids: number[];
+}
+
+
  

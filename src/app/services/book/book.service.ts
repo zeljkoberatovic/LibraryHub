@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
-import { Book } from '../../models/book.model';
+import { Book, CreateBookDto } from '../../models/book.model';
 import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
@@ -27,7 +27,7 @@ export class BookService {
 }
 
 
-  createBook(book: Book): Observable<Book> {
+  createBook(book: CreateBookDto): Observable<Book> {
     return this.http.post<{ status: string; data: { data: Book[] } }>(this.baseUrl, book)
       .pipe(map(res => res.data.data[0]));
   }
