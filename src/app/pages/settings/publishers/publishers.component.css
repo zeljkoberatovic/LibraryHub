@@ -1,0 +1,167 @@
+.container {
+  padding: 24px;
+  background: #fff;
+  border-radius: 8px;
+}
+
+.header-with-search {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+h2 {
+  color: #36454f;
+  font-weight: 600;
+  font-size: 24px;
+  margin: 0;
+  font-family: 'Segoe UI';
+}
+
+.search-input {
+  padding: 8px 42px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  min-width: 200px;
+  max-width: 300px;
+}
+
+.add-button {
+  background-color: #49607a;
+  color: #d4af37;
+  padding: 10px 20px;
+  font-size: 14px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(73, 96, 122, 0.6);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+}
+.add-button:hover {
+  background-color: #435971;
+  box-shadow: 0 6px 12px rgba(67, 89, 113, 0.7);
+}
+.add-button:active {
+  background-color: #3a4f62;
+  box-shadow: 0 3px 6px rgba(58, 79, 98, 0.8);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+  margin-top: 16px;
+}
+
+th, td {
+  text-align: left;
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+}
+
+.actions-cell {
+  position: relative;
+}
+
+.menu-icon {
+  cursor: pointer;
+  font-size: 22px;
+  user-select: none;
+  padding: 4px 8px;
+  border-radius: 50%;
+  transition: background 0.2s;
+}
+.menu-icon:hover {
+  background: #f0f0f0;
+}
+
+.menu {
+  position: absolute;
+  top: 28px;
+  right: 0;
+  background: #2c3e50;
+  border: 1px solid #f1c40f;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(241, 196, 15, 0.4);
+  display: flex;
+  flex-direction: column;
+  min-width: 200px;
+  z-index: 1000;
+}
+
+.menu button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: none;
+  border: none;
+  padding: 10px 20px;
+  text-align: left;
+  cursor: pointer;
+  font-size: 14px;
+  color: #f1c40f;
+  transition: background 0.3s, color 0.3s;
+}
+
+.menu button .material-icons {
+  font-size: 18px;
+  color: #f1c40f;
+}
+
+.menu button:hover {
+  background: #34495e;
+  color: #ffd700;
+}
+
+.menu button:hover .material-icons {
+  color: #ffd700;
+}
+
+/* Forma za edit/add */
+.publisher-form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.publisher-form input {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  flex: 1 1 200px;
+}
+
+.form-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.form-buttons button {
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  color: #fff;
+  background-color: #49607a;
+}
+
+.form-buttons button:hover {
+  background-color: #435971;
+}
+.error {
+  color: red;
+  font-size: 13px;
+  margin-top: 2px;
+}
+.publisher-form input.ng-invalid.ng-touched {
+  border-color: red;
+}
+input.ng-invalid.ng-touched {
+  border: 1px solid red;
+}

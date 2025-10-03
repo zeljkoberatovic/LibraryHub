@@ -1,0 +1,32 @@
+.container {
+  padding: 24px;
+  background: #fff;
+  border-radius: 8px;
+}
+
+.header-with-search {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+h2 {
+  color: #36454f;
+  font-weight: 600;
+  font-size: 24px;
+  margin: 0;
+  font-family: 'Segoe UI';
+}
+
+.book-settings-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.book-settings-list li {
+  padding: 10px 12px;
+  border-bottom: 1px solid #ddd;
+  font-size: 15px;
+  color: #36454f;
+}

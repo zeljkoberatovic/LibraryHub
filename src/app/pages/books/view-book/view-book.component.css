@@ -40,7 +40,7 @@
   margin-top: 4px;
 }
 
-/* ==================== Right Actions ==================== */
+
 .right-wrapper {
   display: flex;
   align-items: center;
@@ -72,7 +72,7 @@
   transform: translateY(-1px);
 }
 
-/* ==================== Dropdown Dots ==================== */
+
 .right {
   position: relative;
 }
@@ -163,7 +163,7 @@
   color: #2c3e50;
 }
 
-/* ==================== Navbar Extra ==================== */
+
 .navbar-extra {
   width: 25%;
   display: flex;
