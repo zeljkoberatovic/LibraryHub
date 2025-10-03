@@ -1,0 +1,54 @@
+.tab-nav a.completed {
+  color: green;
+  font-weight: bold;
+}
+
+.tab-nav a.completed::after {
+  content: " ✓";
+}
+
+.btn-restart {
+  background-color: #ffc107;
+  color: #212529;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.btn-restart:hover {
+  background-color: #e0a800;
+}
+
+.btn-cancel {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.btn-cancel:hover {
+  background-color: #c82333;
+}
+
+.btn-save {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-save:hover:not([disabled]) {
+  background-color: #218838;
+}
+
+.btn-save:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}

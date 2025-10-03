@@ -4,15 +4,17 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { librarianResolver } from '../app/resolvers/librarian/librarian.resolver'; 
 import { studentResolver } from '../app/resolvers/student/student-resolver';
 import { bookResolver } from '../app/resolvers/book/book-resolver';
+import { authorResolver } from './resolvers/author/author-resolver';
+
+import { authGuard } from './core/guards/auth.guard';
 
 import { SettingsComponent } from './pages/settings/settings.component';
-import { GenreComponent } from './pages/settings/genre/genres.component';
-import { PublisherComponent } from './pages/settings/publishers/publishers.component';
-import { BindingComponent } from './pages/settings/bindings/bindings.component';
-import { FormatComponent } from './pages/settings/formats/formats.component';
-import { LanguageComponent } from './pages/settings/languages/languages.component';
-import { authorResolver } from './resolvers/author/author-resolver';
-import { authGuard } from './core/guards/auth.guard';
+import { PublishersResolver } from './resolvers/settings/publishers/publisher-resolver';
+import { GenresResolver } from './resolvers/settings/genre/genre-resolver';
+import { CategoryResolver } from './resolvers/settings/category/category-resolver';
+import { BookSettingsComponent } from './pages/settings/book-settings/book-settings.component';
+
+
 
 
 
@@ -106,29 +108,68 @@ export const routes: Route[] = [
   },
 
   // Settings routes (zaštićeno)
-  {
-    path: 'settings',
-    component: SettingsComponent,
-    canActivate: [authGuard],
-    children: [
-      { path: '', redirectTo: 'kategorije', pathMatch: 'full' },
-      {
-        path: 'kategorije',
-        loadComponent: () =>
-          import('./pages/settings/categories/categories.component').then(
-            (m) => m.CategoryComponent
-          ),
-        canActivate: [authGuard]
-      },
-      { path: 'zanrovi', component: GenreComponent, canActivate: [authGuard] },
-      { path: 'izdavac', component: PublisherComponent, canActivate: [authGuard] },
-      { path: 'povez', component: BindingComponent, canActivate: [authGuard] },
-      { path: 'format', component: FormatComponent, canActivate: [authGuard] },
-      { path: 'pismo', component: LanguageComponent, canActivate: [authGuard] },
-    ],
-  },
+{
+  path: 'settings',
+  component: SettingsComponent,
+  canActivate: [authGuard],
+  children: [
+    { path: '', redirectTo: 'categories', pathMatch: 'full' },
+    {
+      path: 'categories',
+      canActivate: [authGuard],
+      resolve: { categories: CategoryResolver },
+      loadComponent: () =>
+        import('./pages/settings/categories/categories.component').then(
+          (m) => m.CategoryComponent
+        ),
+    },
+    {
+      path: 'genres',
+      canActivate: [authGuard],
+      resolve: { genres: GenresResolver },
+      loadComponent: () =>
+        import('./pages/settings/genre/genres.component').then(
+          (m) => m.GenreComponent
+        ),
+    },
+    {
+      path: 'publishers',
+      canActivate: [authGuard],
+      resolve: { publishers: PublishersResolver },
+      loadComponent: () =>
+        import('./pages/settings/publishers/publishers.component').then(
+          (m) => m.PublishersComponent
+        ),
+    },
+    {
+      path: 'bindings',
+      canActivate: [authGuard],
+      loadComponent: () =>
+        import('./pages/settings/book-settings/book-settings.component').then(
+          (m) => m.BookSettingsComponent
+        ),
+    },
+    {
+      path: 'formats',
+      canActivate: [authGuard],
+      loadComponent: () =>
+        import('./pages/settings/book-settings/book-settings.component').then(
+          (m) => m.BookSettingsComponent
+        ),
+    },
+    {
+      path: 'languages',
+      canActivate: [authGuard],
+      loadComponent: () =>
+        import('./pages/settings/book-settings/book-settings.component').then(
+          (m) => m.BookSettingsComponent
+        ),
+    },
+  ],
+},
 
-  // Books routes (zaštićeno)
+    
+ // Books routes (zaštićeno)
   {
     path: 'books',
     canActivate: [authGuard],
@@ -137,7 +178,25 @@ export const routes: Route[] = [
   {
     path: 'books/new',
     canActivate: [authGuard],
-    loadComponent: () => import('./pages/books/new-book/new-book.component').then(m => m.NewBook),
+    loadComponent: () => import('./pages/books/new-book/new-book.component').then(m => m.NewBookComponent),
+    children: [
+      {
+        path: 'details',
+        loadComponent: () =>
+          import('../app/pages/books/new-book/book-details-form/book-details-form.component').then(m => m.BookDetailsFormComponent)
+      },
+      {
+        path: 'specification',
+        loadComponent: () =>
+          import('../app/pages/books/new-book/book-spec-form/book-spec-form.component').then(m => m.BookSpecFormComponent)
+      },
+      {
+        path: 'media',
+        loadComponent: () =>
+          import('../app/pages/books/new-book/book-media-form/book-media-form.component').then(m => m.BookMediaFormComponent)
+      },
+      { path: '', redirectTo: 'details', pathMatch: 'full' }
+    ]
   },
   {
     path: 'books/edit/:id',
@@ -148,13 +207,36 @@ export const routes: Route[] = [
     }
   },
   {
-    path: 'books/view/:id',
-    canActivate: [authGuard],
-    loadComponent: () => import('./pages/books/view-book/view-book.component').then(m => m.ViewBook),
-    resolve: {
-      book: bookResolver
-    }
+  path: 'books/view/:id',
+  canActivate: [authGuard],
+  loadComponent: () => import('./pages/books/view-book/view-book.component').then(m => m.ViewBook),
+  resolve: {
+    book: bookResolver
   },
+  children: [
+    {
+      path: 'details',
+      loadComponent: () =>
+        import('../app/pages/books/view-book/book-details/book-details.component').then(m => m.BookDetails)
+    },
+    {
+      path: 'specification',
+      loadComponent: () =>
+        import('../app/pages/books/view-book/book-spec/book-spec.component').then(m => m.BookSpec)
+    },
+    {
+      path: 'records',
+      loadComponent: () =>
+        import('../app/pages/books/view-book/book-records/book-records.component').then(m => m.BookRecords)
+    },
+    {
+      path: 'media',
+      loadComponent: () =>
+        import('../app/pages/books/view-book/book-media/book-media.component').then(m => m.BookMedia)
+    },
+    { path: '', redirectTo: 'details', pathMatch: 'full' }
+  ]
+},
 
   // Catch-all (404)
   { path: '**', redirectTo: '/dashboard' }

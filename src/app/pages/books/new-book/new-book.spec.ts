@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NewBook } from './new-book';
+import { NewBook } from '../new-book/new-book.component';
 
 describe('NewBook', () => {
   let component: NewBook;

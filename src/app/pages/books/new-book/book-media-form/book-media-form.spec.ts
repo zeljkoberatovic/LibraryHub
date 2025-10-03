@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BindingsComponent } from './bindings.component';
+import { BookMediaForm } from './book-media-form';
 
-describe('BindingsComponent', () => {
-  let component: BindingsComponent;
-  let fixture: ComponentFixture<BindingsComponent>;
+describe('BookMediaForm', () => {
+  let component: BookMediaForm;
+  let fixture: ComponentFixture<BookMediaForm>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [BindingsComponent]
+      imports: [BookMediaForm]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(BindingsComponent);
+    fixture = TestBed.createComponent(BookMediaForm);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

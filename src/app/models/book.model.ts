@@ -1,3 +1,5 @@
+import { Author } from './author.model';
+
 export interface Book {
   id?: number;  
   name: string;
@@ -9,8 +11,15 @@ export interface Book {
   script: string;
   binding: string;
   dimensions: string;
-  categories?: number[] | null;
-  genres?: number[] | null;
-  publishers?: number[] | null;
-  authors?: number[] | null; 
+
+  categories?: { id: number; name: string }[] | null; // placeholder
+  genres?: { id: number; name: string }[] | null;     // placeholder
+  publishers?: { id: number; name: string; established_year?: string }[] | null; // placeholder
+  authors?: Author[] | null; 
+
+   
+  available?: number;
+  reserved?: number;
+  issued?: number;
+  overdue?: number;
 }

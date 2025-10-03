@@ -1,0 +1,76 @@
+.book-details-container {
+  background: #fff;
+  padding: 5px;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 1100px; 
+  margin: 0 auto;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+h3 {
+  color: #36454f;
+  font-weight: 600;
+  font-size: 22px;
+  font-family: 'Segoe UI', sans-serif;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 6px;
+}
+
+.form-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px 32px;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 500;
+  font-size: 13px;
+  color: #374151;
+  gap: 4px;
+}
+
+input,
+textarea,
+select {
+  padding: 6px 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 13px;
+  font-family: 'Segoe UI', sans-serif;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 60px;
+  max-height: 120px;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: #49607a;
+  outline: none;
+  box-shadow: 0 0 4px rgba(73, 96, 122, 0.3);
+}
+
+.error small {
+  color: #e74c3c;
+  font-size: 11px;
+  margin-top: 2px;
+}
+
+.form-actions {
+  grid-column: span 2; 
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+

@@ -1,74 +1,108 @@
-<div class="px-6 py-4">
-  <div class="flex justify-between items-center mb-6">
-    <button
-      (click)="onNew()"
-      class="bg-[#4558BE] hover:bg-[#3F51B5] text-white px-4 py-2 rounded shadow"
-    >
-      + Novi izdavač
-    </button>
-  </div>
+<div class="container">
+  <div class="header-with-search">
+    <h2>Izdavači</h2>
+    <input
+      type="text"
+      placeholder="Pretraži..."
+      [(ngModel)]="searchTerm"
+      (ngModelChange)="applyPagination()"
+      class="search-input"
+      />
+    </div>
 
-  @if (showForm) {
-<div class="mb-6 bg-white shadow rounded p-6">
-    <h2 class="text-xl font-medium mb-4">
-      {{ editingId ? "Edit Publisher" : "New Publisher" }}
-    </h2>
-    <form
-      [formGroup]="form"
-      (ngSubmit)="onSubmit()"
-      class="grid gap-4 md:grid-cols-2"
-    >
-      <div>
-        <label class="block mb-1 font-medium">Name*</label>
-        <input
-          formControlName="name"
-          class="w-full border border-gray-300 rounded px-3 py-2"
-        />
-      </div>
+    <!-- Forma za dodavanje / izmjene -->
+    @if (selectedPublisher) {
+      <div class="publisher-form">
+        <input [(ngModel)]="selectedPublisher.name"
+          (ngModelChange)="onFieldChange('name')"
+          placeholder="Naziv" />
+          @if (errors.name) {
+            <div class="error">{{ errors.name }}</div>
+          }
+          <input [(ngModel)]="selectedPublisher.address"
+            (ngModelChange)="onFieldChange('address')"
+            placeholder="Adresa" />
+            @if (errors.address) {
+              <div class="error">{{ errors.address }}</div>
+            }
+            <input [(ngModel)]="selectedPublisher.website"
+              (ngModelChange)="onFieldChange('website')"
+              placeholder="Website" />
+              @if (errors.website) {
+                <div class="error">{{ errors.website }}</div>
+              }
+              <input [(ngModel)]="selectedPublisher.email"
+                (ngModelChange)="onFieldChange('email')"
+                placeholder="Email" />
+                @if (errors.email) {
+                  <div class="error">{{ errors.email }}</div>
+                }
+                <input [(ngModel)]="selectedPublisher.phone_number"
+                  (ngModelChange)="onFieldChange('phone_number')"
+                  placeholder="Telefon" />
+                  @if (errors.phone_number) {
+                    <div class="error">{{ errors.phone_number }}</div>
+                  }
+                  <input [(ngModel)]="selectedPublisher.established_year"
+                    (ngModelChange)="onFieldChange('established_year')"
+                    placeholder="Godina osnivanja" />
+                    @if (errors.established_year) {
+                      <div class="error">{{ errors.established_year }}</div>
+                    }
+                    <div class="form-buttons">
+                      <button (click)="savePublisher(selectedPublisher)">Sačuvaj</button>
+                      <button (click)="cancelEdit()">Otkaži</button>
+                    </div>
+                  </div>
+                }
 
-      <div class="md:col-span-2 flex space-x-3 mt-4">
-        <button
-          type="submit"
-          class="bg-[#4558BE] hover:bg-[#3F51B5] text-white px-4 py-2 rounded"
-        >
-          {{ editingId ? "Update" : "Create" }}
-        </button>
-        <button
-          type="button"
-          (click)="onCancel()"
-          class="px-4 py-2 border rounded"
-        >
-          Cancel
-        </button>
-      </div>
-    </form>
-  </div>
-}
+                <button class="add-button" (click)="selectPublisher(emptyPublisher())">
+                  + Novi izdavač
+                </button>
 
-  <div class="bg-white shadow rounded overflow-hidden">
-    <table class="min-w-full">
-      <thead class="bg-gray-100">
-        <tr>
-          <th class="p-4"><input type="checkbox" /></th>
-          <th class="p-4 text-left font-medium">Naziv izdavača</th>
-          <th class="p-4"></th>
-        </tr>
-      </thead>
-      <tbody>
-        @for (p of publishers; track p) {
-<tr class="border-t hover:bg-gray-50">
-          <td class="p-4"><input type="checkbox" /></td>
-          <td class="p-4">{{ p.name }}</td>
-          <td class="p-4 text-right">
-            <button (click)="onEdit(p)">
-              <i
-                class="fas fa-ellipsis-v text-gray-500 hover:text-gray-700"
-              ></i>
-            </button>
-          </td>
-        </tr>
-}
-      </tbody>
-    </table>
-  </div>
-</div>
+                <!-- Tabela -->
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Naziv</th>
+                      <th>Adresa</th>
+                      <th>Website</th>
+                      <th>Email</th>
+                      <th>Telefon</th>
+                      <th>Godina osnivanja</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (pub of displayedPublishers; track pub; let i = $index) {
+                      <tr>
+                        <td>{{ pub.name }}</td>
+                        <td>{{ pub.address }}</td>
+                        <td>{{ pub.website }}</td>
+                        <td>{{ pub.email }}</td>
+                        <td>{{ pub.phone_number }}</td>
+                        <td>{{ pub.established_year }}</td>
+                        <td class="actions-cell">
+                          <span class="menu-icon" (click)="toggleMenu(i)">⋮</span>
+                          @if (openMenuIndex === i) {
+                            <div class="menu">
+                              <button (click)="editPublisher(pub)">
+                                <span class="material-icons">edit</span> Izmjeni
+                              </button>
+                              <button (click)="deletePublisher(pub.id!)">
+                                <span class="material-icons">delete</span> Obriši
+                              </button>
+                            </div>
+                          }
+                        </td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+
+                <app-pagination
+                  [totalPages]="paginationService.totalPages"
+                  [currentPage]="paginationService.currentPage"
+                  (pageChange)="onPageChange($event)"
+                ></app-pagination>
+              </div>
