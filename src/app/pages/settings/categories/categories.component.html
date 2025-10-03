@@ -1,118 +1,73 @@
-<div class="px-6 py-4">
-  <!-- Header with title and Create button -->
-  <div class="flex justify-between items-center mb-6">
-    <button
-      (click)="showForm = true"
-      class="bg-[#4558BE] hover:bg-[#3F51B5] text-white px-4 py-2 rounded shadow"
-    >
+<div class="container">
+  <div class="header-with-search">
+    <h2>Kategorije</h2>
+    <input
+      type="text"
+      placeholder="Pretraži..."
+      [(ngModel)]="searchTerm"
+      (ngModelChange)="applyPagination()"
+      class="search-input"
+      />
+    </div>
+
+    <!-- Forma za dodavanje / izmjene -->
+    @if (selectedCategory) {
+      <div>
+        <div class="category-form">
+          <input [(ngModel)]="selectedCategory.name" placeholder="Naziv" />
+          <input [(ngModel)]="selectedCategory.description" placeholder="Opis" />
+          <input [(ngModel)]="selectedCategory.icon" placeholder="Ikona" />
+          <div class="form-buttons">
+            <button (click)="saveCategory(selectedCategory)">Sačuvaj</button>
+            <button (click)="cancelEdit()">Otkaži</button>
+          </div>
+        </div>
+      </div>
+    }
+
+    <button class="add-button" (click)="selectCategory({ name: '', description: '', icon: '' })">
       + Nova kategorija
     </button>
-  </div>
 
-  @if (showForm) {
-<div class="mb-6 bg-white shadow rounded p-6 relative">
-    <h2 class="text-xl font-medium mb-4">
-      {{ editingId ? "Edit Category" : "New Category" }}
-    </h2>
-    <form
-      [formGroup]="categoryForm"
-      (ngSubmit)="editingId ? onUpdate() : onCreate()"
-      class="grid grid-cols-1 md:grid-cols-2 gap-4"
-    >
-      <div>
-        <label class="block mb-1 font-medium">Name*</label>
-        <input
-          formControlName="name"
-          class="w-full border border-gray-300 rounded px-3 py-2"
-          placeholder="Category name"
-          required
-        />
-      </div>
-
-      <div>
-        <label class="block mb-1 font-medium">Description</label>
-        <textarea
-          formControlName="description"
-          class="w-full border border-gray-300 rounded px-3 py-2"
-          rows="3"
-        ></textarea>
-      </div>
-
-      <div class="md:col-span-2">
-        <label class="block mb-1 font-medium">Icon</label>
-        <input type="file" (change)="onFileChange($event)" />
-        @if (iconPreviewUrl) {
-<div class="mt-2">
-          <img
-            [src]="iconPreviewUrl"
-            alt="Icon preview"
-            class="w-12 h-12 object-contain border rounded"
-          />
-        </div>
-}
-      </div>
-
-      <div class="md:col-span-2 flex space-x-3 mt-4">
-        <button
-          type="submit"
-          class="bg-[#4558BE] hover:bg-[#3F51B5] text-white px-4 py-2 rounded"
-        >
-          {{ editingId ? "Update" : "Create" }}
-        </button>
-        <button
-          type="button"
-          (click)="onCancelEdit()"
-          class="px-4 py-2 border rounded"
-        >
-          Cancel
-        </button>
-      </div>
-    </form>
-  </div>
-}
-
-  <div class="bg-white shadow rounded overflow-hidden">
-    <table class="min-w-full">
-      <thead class="bg-gray-100">
+    <table>
+      <thead>
         <tr>
-          <th class="p-4">
-            <input type="checkbox" />
-          </th>
-          <th class="p-4 text-left font-medium">Naziv kategorije</th>
-          <th class="p-4 text-left font-medium">Opis</th>
-          <th class="p-4"></th>
+          <th>Naziv</th>
+          <th>Opis</th>
+          <th>Ikona</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
-        @for (cat of categories; track cat) {
-<tr class="border-t hover:bg-gray-50">
-          <td class="p-4">
-            <input type="checkbox" />
-          </td>
-          <td class="p-4 flex items-center space-x-3">
-            @if (cat.icon) {
-
-              <img [src]="cat.icon" alt="{{ cat.name }}" class="w-6 h-6" />
-            
-} @else {
-
-              <i class="fas fa-folder-open text-gray-400 w-6"></i>
-            
-}
-            
-            <span>{{ cat.name }}</span>
-          </td>
-          <td class="p-4">{{ cat.description }}</td>
-          <td class="p-4 text-right">
-            <button (click)="onEdit(cat)">
-              <i
-                class="fas fa-ellipsis-v text-gray-500 hover:text-gray-700"
-              ></i>
-            </button>
-          </td>
-        </tr>
-}
+        @for (cat of displayedCategories; track cat; let i = $index) {
+          <tr>
+            <td>{{ cat.name }}</td>
+            <td>{{ cat.description }}</td>
+            <td>{{ cat.icon }}</td>
+            <td class="actions-cell">
+              <span class="menu-icon" (click)="toggleMenu(i)">⋮</span>
+              @if (openMenuIndex === i) {
+                <div class="menu">
+                  <button (click)="editCategory(cat)">
+                    <span class="material-icons">edit</span>
+                    Izmjeni
+                  </button>
+                  <button (click)="deleteCategory(cat.id!)">
+                    <span class="material-icons">delete</span>
+                    Obriši
+                  </button>
+                </div>
+              }
+            </td>
+          </tr>
+        }
       </tbody>
     </table>
+
+    <!-- Pagination -->
+    <app-pagination
+      [totalPages]="paginationService.totalPages"
+      [currentPage]="paginationService.currentPage"
+      (pageChange)="onPageChange($event)"
+    ></app-pagination>
   </div>
-</div>

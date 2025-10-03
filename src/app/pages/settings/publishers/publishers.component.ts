@@ -1,99 +1,174 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 
-import {
-  ReactiveFormsModule,
-  FormBuilder,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
-import {
-  PublisherService,
-  Publisher,
-} from '../../../shared/services/publisher.service';
+import { FormsModule } from '@angular/forms';
+import { PublisherService } from '@/app/services/settings/publisher/publisher.service';
+import { Publisher } from '@/app/models/publisher.model';
+import { PaginationService } from '@/app/shared/pagination/pagination.service';
+import { PaginationComponent } from '@/app/shared/pagination/pagination.component';
+import { ActivatedRoute } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-publishers',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [FormsModule, PaginationComponent],
   templateUrl: './publishers.component.html',
   styleUrls: ['./publishers.component.css'],
 })
-export class PublisherComponent implements OnInit {
+export class PublishersComponent implements OnInit {
+  private publisherService = inject(PublisherService);
+  public paginationService = inject(PaginationService);
+  private route = inject(ActivatedRoute);
+  private snackBar = inject(MatSnackBar);
+
   publishers: Publisher[] = [];
-  loading = false;
-  error: string | null = null;
+  displayedPublishers: Publisher[] = [];
+  selectedPublisher: Publisher | null = null;
+  searchTerm: string = '';
+  openMenuIndex: number | null = null;
 
-  form: FormGroup;
-  editingId: number | null = null;
-  showForm = false;
+  errors: any = {}; // za inline greške
 
-  constructor(private svc: PublisherService, private fb: FormBuilder) {
-    this.form = this.fb.group({
-      name: ['', Validators.required],
+  ngOnInit(): void {
+  this.publishers = this.route.snapshot.data['publishers'].data.data;
+  this.displayedPublishers = [...this.publishers];
+}
+
+  emptyPublisher(): Publisher {
+    return { name: '', address: '', website: '', email: '', phone_number: '', established_year: '' };
+  }
+
+  loadPublishers() {
+    this.publisherService.getPublishers().subscribe(res => {
+      this.publishers = res.data.data;
+      this.applyPagination();
     });
   }
 
-  ngOnInit() {
-    this.load();
+  applyPagination() {
+    const filtered = this.filteredPublishers;
+    this.paginationService.updateTotal(filtered.length);
+    this.displayedPublishers = this.paginationService.getPageSlice(filtered);
   }
 
-  private load() {
-    this.loading = true;
-    this.error = null;
-    this.svc.list().subscribe({
-      next: (data) => {
-        this.publishers = data;
-        this.loading = false;
-      },
-      error: () => {
-        this.error = 'Failed to load publishers';
-        this.loading = false;
-      },
-    });
+  selectPublisher(pub: Publisher) {
+    this.selectedPublisher = { ...pub };
+    this.errors = {};
+    this.openMenuIndex = null;
   }
 
-  onNew() {
-    this.editingId = null;
-    this.form.reset();
-    this.showForm = true;
+  onFieldChange(field: keyof Publisher) {
+    if (!this.selectedPublisher) return;
+    this.validatePublisherField(field, this.selectedPublisher);
   }
 
-  onEdit(item: Publisher) {
-    this.editingId = item.id;
-    this.form.patchValue({ name: item.name });
-    this.showForm = true;
+  validatePublisherField(field: keyof Publisher, pub: Publisher) {
+    switch (field) {
+      case 'name':
+        this.errors.name = pub.name.trim() ? '' : 'Naziv je obavezan';
+        break;
+      case 'address':
+        this.errors.address = pub.address.trim() ? '' : 'Adresa je obavezna';
+        break;
+      case 'email':
+        if (!pub.email.trim()) this.errors.email = 'Email je obavezan';
+        else this.errors.email = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(pub.email) ? '' : 'Email nije validan';
+        break;
+      case 'phone_number':
+        if (!pub.phone_number.trim()) this.errors.phone_number = 'Telefon je obavezan';
+        else this.errors.phone_number = /^\d{3}-\d{3}-\d{4}$/.test(pub.phone_number) ? '' : 'Telefon mora biti u formatu 123-456-7890';
+        break;
+      case 'established_year':
+        if (!pub.established_year.trim()) this.errors.established_year = 'Godina osnivanja je obavezna';
+        else if (isNaN(+pub.established_year) || +pub.established_year < 1000 || +pub.established_year > new Date().getFullYear())
+          this.errors.established_year = 'Godina osnivanja nije validna';
+        else this.errors.established_year = '';
+        break;
+      case 'website':
+        if (pub.website && pub.website.trim()) {
+          try { new URL(pub.website); this.errors.website = ''; } 
+          catch { this.errors.website = 'Website mora biti validan URL'; }
+        } else this.errors.website = '';
+        break;
+    }
   }
 
-  onCancel() {
-    this.showForm = false;
-    this.editingId = null;
-    this.form.reset();
+  validatePublisher(pub: Publisher): boolean {
+    ['name','address','email','phone_number','established_year','website'].forEach(field => 
+      this.validatePublisherField(field as keyof Publisher, pub)
+    );
+    return Object.values(this.errors).every(e => !e);
   }
 
-  onSubmit() {
-    if (this.form.invalid) return;
+  savePublisher(pub: Publisher) {
+    if (!this.validatePublisher(pub)) return;
 
-    const payload = { name: this.form.value.name };
-    const obs = this.editingId
-      ? this.svc.update(this.editingId, payload)
-      : this.svc.create(payload);
+    const action = pub.id
+      ? this.publisherService.updatePublisher(pub.id, pub)
+      : this.publisherService.createPublisher(pub);
 
-    obs.subscribe({
+    action.subscribe({
       next: () => {
-        this.showForm = false;
-        this.load();
+        this.loadPublishers();
+        this.selectedPublisher = null;
+        this.snackBar.open('Promjene su uspješno sačuvane.', 'Zatvori', {
+      duration: 3000
+    });
       },
-      error: () => {
-        this.error = this.editingId ? 'Update failed' : 'Create failed';
-      },
+      error: (err: any) => {
+        console.error(err);
+        if (err.error?.errors?.email) this.errors.email = 'Email već postoji, unesite drugi.';
+        else alert('Greška pri čuvanju izdavača. Provjerite unesene podatke.');
+      }
     });
   }
 
-  onDelete(item: Publisher) {
-    if (!confirm(`Delete "${item.name}"?`)) return;
-    this.svc.delete(item.id).subscribe({
-      next: () => this.load(),
-      error: () => (this.error = 'Delete failed'),
+  deletePublisher(id: number) {
+  if (confirm('Da li ste sigurni da želite da obrišete izdavača?')) {
+    this.publisherService.deletePublisher(id).subscribe({
+      next: () => {
+        this.loadPublishers();
+        if (this.selectedPublisher?.id === id) this.selectedPublisher = null;
+
+        // Snackbar feedback
+        this.snackBar.open('Izdavač je uspješno obrisan.', 'Zatvori', {
+          duration: 3000,
+          horizontalPosition: 'center', 
+          verticalPosition: 'bottom'   
+        });
+      },
+      error: (err) => {
+        console.error(err);
+        alert('Greška pri brisanju izdavača.');
+      }
     });
+  }
+}
+
+
+  cancelEdit() {
+    this.selectedPublisher = null;
+    this.errors = {};
+  }
+
+  toggleMenu(index: number) {
+    this.openMenuIndex = this.openMenuIndex === index ? null : index;
+  }
+
+  editPublisher(pub: Publisher) {
+    this.selectPublisher(pub);
+    this.openMenuIndex = null;
+  }
+
+  get filteredPublishers() {
+    if (!this.searchTerm) return this.publishers;
+    return this.publishers.filter(pub =>
+      pub.name.toLowerCase().includes(this.searchTerm.toLowerCase())
+    );
+  }
+
+  onPageChange(page: number) {
+    this.paginationService.currentPage = page;
+    this.applyPagination();
   }
 }

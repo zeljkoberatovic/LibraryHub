@@ -1,0 +1,11 @@
+<div class="container">
+  <div class="header-with-search">
+    <h2>{{ type }}</h2>
+  </div>
+
+  <ul class="book-settings-list">
+    @for (item of items; track item) {
+      <li>{{ item }}</li>
+    }
+  </ul>
+</div>

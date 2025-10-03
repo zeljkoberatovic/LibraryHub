@@ -1,4 +1,4 @@
-/* ==================== Glavni Book Card ==================== */
+/* ==================== Book Card ==================== */
 .book-card {
   max-width: 100%;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -13,7 +13,7 @@
 
 
 
-/* ==================== Header ==================== */
+
 .header {
   display: flex;
   justify-content: space-between;
@@ -40,7 +40,7 @@
   margin-top: 4px;
 }
 
-/* ==================== Right Actions ==================== */
+
 .right-wrapper {
   display: flex;
   align-items: center;
@@ -72,7 +72,7 @@
   transform: translateY(-1px);
 }
 
-/* ==================== Dropdown Dots ==================== */
+
 .right {
   position: relative;
 }
@@ -117,7 +117,7 @@
   color: #FFD700;
 }
 
-/* ==================== Navbar Wrapper ==================== */
+/* ==================== Navbar ==================== */
 .navbar-wrapper {
   display: flex;
   justify-content: space-between;
@@ -163,9 +163,10 @@
   color: #2c3e50;
 }
 
-/* ==================== Navbar Extra ==================== */
+
 .navbar-extra {
-  width: 25%;
+  width: 30%;
+  height: 600px;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -178,14 +179,11 @@
 }
 
 
-/* ==================== Child Content ==================== */
 .book-content {
-  margin-top: 24px;
-  padding: 14px;
-  border-radius: 10px;
-  background: #ffffff;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-  min-height: 480px;
+  margin-top: 20px;
+  padding: 10px;
+  border-top: 1px solid #ccc;
+  min-height: 300px; /* opcionalno, za vizuelni prostor */
 }
 
 

@@ -1,3 +1,5 @@
+
+
 export interface Book {
   id: number;
   name: string;
@@ -11,16 +13,15 @@ export interface Book {
   dimensions: string;
   
   images: string[];
-  categories: Category[];
-  publishers: Publisher[];
-  authors: Author[];
-  genres: Genre[];
+  categories?: { id: number; name: string; description?: string }[] | null;
+  publishers?: { id: number; name: string; established_year?: string }[] | null;
+  authors?: Author[] | null; 
+  genres?: { id: number; name: string }[] | null;
 
   available?: number;
   reserved?: number;
   issued?: number;
   overdue?: number;
-
 }
 
 export interface Category {
@@ -62,6 +63,3 @@ export interface CreateBookDto {
   author_ids: number[];
   genre_ids: number[];
 }
-
-
- 

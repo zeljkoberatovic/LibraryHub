@@ -1,59 +1,42 @@
-# OnlineBiblioteka
+# Library Hub
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.0.4.
+Aplikacija za upravljanje bibliotekama knjiga, omogućava praćenje izdavanja knjiga, upravljanje korisnicima i postavkama biblioteke.
 
-## Development server
+## Funkcionalnosti
 
-To start a local development server, run:
+### Dashboard
+- Pregled trenutnog stanja biblioteke.
+- Prikaz statusa knjiga: izdane, rezervisane, vraćene.
+- Statistika po kategorijama, žanrovima i izdavačima.
 
-```bash
-ng serve
-```
+### Korisnici
+- Registracija i prijava studenata.
+- Admin panel za bibliotekare koji upravljaju bibliotekom.
+- Različiti nivoi pristupa: student vs. bibliotekar.
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+### Books
+- CRUD operacije nad knjigama.
+- Povezivanje knjiga sa:
+  - Kategorijama
+  - Žanrovima
+  - Izdavačima
+  - Autorima
 
-## Code scaffolding
+### Settings
+- **Kategorije** – pregled, dodavanje, izmjena i brisanje kategorija.
+- **Žanrovi** – pregled, dodavanje, izmjena i brisanje žanrova.
+- **Izdavači** – pregled, dodavanje, izmjena i brisanje izdavača.
+- **Book Settings** – pregled opcija za:
+  - **Povez** – vrste poveza (hardcover, softcover, itd.)
+  - **Format** – formati knjiga (A4, A5, itd.)
+  - **Pismo** – dostupna pisma (Cirilica / Latinica)
+  > Napomena: kod Book Settings trenutno nije moguće dodavati, mijenjati ili brisati stavke, samo pregled.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Tehnologije
+- Angular (standalone components, reactive services, routing, resolvers)
+- RxJS
+- REST API backend
 
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## Napomene
+- Sve promjene u postavkama se odražavaju odmah i koriste Angularove servise.
+- CRUD funkcionalnosti su ograničene na podatke koji se mogu mijenjati u bazi (Categories, Genres, Publishers, Books, Authors).
