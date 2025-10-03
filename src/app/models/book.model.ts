@@ -13,10 +13,11 @@ export interface Book {
   dimensions: string;
   
   images: string[];
-  categories?: { id: number; name: string; description?: string }[] | null;
-  publishers?: { id: number; name: string; established_year?: string }[] | null;
-  authors?: Author[] | null; 
-  genres?: { id: number; name: string }[] | null;
+  categories: Category[];
+  publishers: Publisher[];
+  authors: Author[];
+  genres: Genre[];
+
 
   available?: number;
   reserved?: number;
