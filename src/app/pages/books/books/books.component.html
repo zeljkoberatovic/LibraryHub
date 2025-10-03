@@ -35,10 +35,10 @@
       @for (book of paged; track book; let i = $index) {
         <tr>
           <td>{{ book.name }}</td>
-          <td>{{ getAuthorNames(book.authors ?? []) }}</td>
-          <td>{{ getCategoryNames(book.categories ?? []) }}</td>
-          <td>{{ getPublisherNames(book.publishers ?? []) }}</td>
-          <td>{{ getGenreNames(book.genres ?? []) }}</td>
+          <td>{{ getAuthorNames(book.authors) }}</td>
+          <td>{{ getCategoryNames(book.categories) }}</td>
+          <td>{{ getPublisherNames(book.publishers) }}</td>
+          <td>{{ getGenreNames(book.genres) }}</td>
           <td>{{ book.language }}</td>
           <td>{{ book.number_of_copies }}</td>
           <td>{{ book.available ?? 0 }}</td>

@@ -217,22 +217,26 @@ export const routes: Route[] = [
     {
       path: 'details',
       loadComponent: () =>
-        import('../app/pages/books/view-book/book-details/book-details.component').then(m => m.BookDetails)
+        import('../app/pages/books/view-book/book-details/book-details.component').then(m => m.BookDetails),
+      resolve: { book: bookResolver }
     },
     {
       path: 'specification',
       loadComponent: () =>
-        import('../app/pages/books/view-book/book-spec/book-spec.component').then(m => m.BookSpec)
+        import('../app/pages/books/view-book/book-spec/book-spec.component').then(m => m.BookSpec),
+      resolve: { book: bookResolver}
     },
     {
       path: 'records',
       loadComponent: () =>
-        import('../app/pages/books/view-book/book-records/book-records.component').then(m => m.BookRecords)
+        import('../app/pages/books/view-book/book-records/book-records.component').then(m => m.BookRecords),
+      resolve: { book: bookResolver}
     },
     {
       path: 'media',
       loadComponent: () =>
-        import('../app/pages/books/view-book/book-media/book-media.component').then(m => m.BookMedia)
+        import('../app/pages/books/view-book/book-media/book-media.component').then(m => m.BookMedia),
+      resolve: { book: bookResolver}
     },
     { path: '', redirectTo: 'details', pathMatch: 'full' }
   ]

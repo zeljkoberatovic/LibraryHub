@@ -1,0 +1,60 @@
+.book-media-container {
+  padding: 24px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  max-width: 800px;
+  margin: 20px auto;
+  font-family: 'Segoe UI', sans-serif;
+  color: #36454f;
+}
+
+/* Naslov sekcije */
+.book-media-container h3 {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: #49607a;
+  border-bottom: 2px solid #f0f0f0;
+  padding-bottom: 6px;
+}
+
+.book-media-container h4 {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 12px 0;
+  color: #49607a;
+}
+
+/* Galerija slika */
+.media-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+/* Mini slike */
+.media-thumb {
+  width: 120px;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  transition: transform 0.3s, box-shadow 0.3s;
+  cursor: pointer;
+}
+
+/* Hover efekat */
+.media-thumb:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+}
+
+/* Poruka kada nema medija */
+.book-media-container p {
+  font-size: 15px;
+  color: #a0a0a0;
+  font-style: italic;
+}
+

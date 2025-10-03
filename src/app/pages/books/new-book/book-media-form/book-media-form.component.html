@@ -1,0 +1,25 @@
+<div [formGroup]="mediaForm" class="book-media-form">
+
+  <div class="form-group">
+    <label for="images">Dodajte slike knjige*</label>
+    <input
+      id="images"
+      type="file"
+      multiple
+      (change)="addImage($event)"
+      placeholder="Odaberite slike">
+  </div>
+
+  <!-- Preview -->
+  <div class="image-preview" *ngIf="imagePreview.length">
+    <div *ngFor="let img of imagePreview; index as i" class="preview-item">
+      <img [src]="img" alt="Preview slike knjige">
+      <button type="button" (click)="removeImage(i)">Obriši</button>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <button type="button" (click)="onSubmit()">Sačuvaj medije</button>
+  </div>
+
+</div>

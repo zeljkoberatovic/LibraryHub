@@ -1,1 +1,44 @@
-<p>book-spec works!</p>
+@if (book) {
+  <div class="book-spec-container">
+    <h3>Specifikacije knjige</h3>
+    <div class="spec-row">
+      <span class="label">Broj strana:</span>
+      <span class="value">{{ book.number_of_pages }}</span>
+    </div>
+    <div class="spec-row">
+      <span class="label">Broj primjeraka:</span>
+      <span class="value">{{ book.number_of_copies }}</span>
+    </div>
+    <div class="spec-row">
+      <span class="label">Jezik:</span>
+      <span class="value">{{ book.language }}</span>
+    </div>
+    <div class="spec-row">
+      <span class="label">Pismo:</span>
+      <span class="value">{{ book.script }}</span>
+    </div>
+    <div class="spec-row">
+      <span class="label">Povez:</span>
+      <span class="value">{{ book.binding }}</span>
+    </div>
+    <div class="spec-row">
+      <span class="label">Dimenzije:</span>
+      <span class="value">{{ book.dimensions }}</span>
+    </div>
+    
+    @if (book.categories.length) {
+      <div class="spec-row">
+        <span class="label">Kategorije:</span>
+        <span class="value">{{ getCategoryNames() }}</span>
+      </div>
+    }
+    @if (book.genres.length) {
+      <div class="spec-row">
+        <span class="label">Žanrovi:</span>
+        <span class="value">{{ getGenreNames() }}</span>
+      </div>
+    }
+  </div>
+} @else {
+  <p>Učitavanje specifikacija...</p>
+}

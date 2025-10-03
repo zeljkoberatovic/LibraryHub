@@ -1,0 +1,52 @@
+.book-spec-container {
+  padding: 24px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  max-width: 800px;
+  margin: 20px auto;
+  font-family: 'Segoe UI', sans-serif;
+  color: #36454f;
+}
+
+/* Naslov sekcije */
+.book-spec-container h3 {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: #49607a;
+  border-bottom: 2px solid #f0f0f0;
+  padding-bottom: 6px;
+}
+
+/* Red za svaku specifikaciju */
+.spec-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+  align-items: center;
+}
+
+/* Labela */
+.spec-row .label {
+  font-weight: 600;
+  color: #49607a;
+  min-width: 150px; 
+}
+
+/* Vrijednost */
+.spec-row .value {
+  color: #36454f;
+  text-align: right;
+  flex: 1;
+}
+
+/* Fallback vrednost ako nema podataka */
+.spec-row .value:empty {
+  content: 'N/A';
+  color: #a0a0a0;
+  font-style: italic;
+}
+
+

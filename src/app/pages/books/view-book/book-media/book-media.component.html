@@ -1,1 +1,22 @@
-<p>book-media works!</p>
+@if (book) {
+  <div class="book-media-container">
+    <h3>Multimedia knjige</h3>
+    <!-- Slike -->
+    @if (book.images.length) {
+      <div>
+        <h4>Slike</h4>
+        <div class="media-gallery">
+          @for (img of book.images; track img) {
+            <img [src]="img" alt="Slika knjige" class="media-thumb">
+          }
+        </div>
+      </div>
+    }
+    
+    @if (!book.images.length) {
+      <p>Nema medijskih sadržaja za ovu knjigu.</p>
+    }
+  </div>
+} @else {
+  <p>Učitavanje medija...</p>
+}

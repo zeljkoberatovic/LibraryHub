@@ -1,9 +1,9 @@
 import { Author } from './author.model';
 
 export interface Book {
-  id?: number;  
+  id: number;
   name: string;
-  description: string;
+  description?: string;
   number_of_pages: number;
   number_of_copies: number;
   isbn: string;
@@ -11,15 +11,59 @@ export interface Book {
   script: string;
   binding: string;
   dimensions: string;
+  
+  images: string[];
+  categories: Category[];
+  publishers: Publisher[];
+  authors: Author[];
+  genres: Genre[];
 
-  categories?: { id: number; name: string }[] | null; // placeholder
-  genres?: { id: number; name: string }[] | null;     // placeholder
-  publishers?: { id: number; name: string; established_year?: string }[] | null; // placeholder
-  authors?: Author[] | null; 
-
-   
   available?: number;
   reserved?: number;
   issued?: number;
   overdue?: number;
+
 }
+
+export interface Category {
+  id: number;
+  name: string;
+  description?: string;
+}
+
+export interface Publisher {
+  id: number;
+  name: string;
+}
+
+export interface Author {
+  id: number;
+  first_name: string;
+  last_name: string;
+}
+
+export interface Genre {
+  id: number;
+  name: string;
+}
+
+export interface CreateBookDto {
+  name: string;
+  description?: string;
+  number_of_pages: number;
+  number_of_copies: number;
+  isbn: string;
+  language: string;
+  script: string;
+  binding: string;
+  dimensions: string;
+  images: string[];
+
+  category_ids: number[];
+  publisher_ids: number[];
+  author_ids: number[];
+  genre_ids: number[];
+}
+
+
+ 

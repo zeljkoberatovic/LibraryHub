@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
-import { Book } from '../../models/book.model';
+import { Book, CreateBookDto } from '../../models/book.model';
 import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
@@ -16,12 +16,18 @@ export class BookService {
   }
 
   // Vraća jednu knjigu iz response.data.data[0]
-  getBook(id: number): Observable<Book> {
-    return this.http.get<{ status: string; data: { meta: any; data: Book[] } }>(`${this.baseUrl}/${id}`)
-      .pipe(map(res => res.data.data[0]));
-  }
+  //getBook(id: number): Observable<Book> {
+   // return this.http.get<{ status: string; data: { meta: any; data: Book[] } }>(`${this.baseUrl}/${id}`)
+     // .pipe(map(res => res.data.data[0]));
+  //}
 
-  createBook(book: Book): Observable<Book> {
+  getBook(id: number): Observable<Book> {
+  return this.http.get<{ status: string; data: Book }>(`${this.baseUrl}/${id}`)
+    .pipe(map(res => res.data));
+}
+
+
+  createBook(book: CreateBookDto): Observable<Book> {
     return this.http.post<{ status: string; data: { data: Book[] } }>(this.baseUrl, book)
       .pipe(map(res => res.data.data[0]));
   }

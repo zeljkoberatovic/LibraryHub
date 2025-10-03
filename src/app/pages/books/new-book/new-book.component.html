@@ -6,41 +6,38 @@
     <span class="breadcrumb-current">Nova knjiga</span>
   </nav>
 
+  <!-- Tabs -->
   <nav class="tab-nav">
-    <a [class.active]="activeTab === 'details'" (click)="changeTab('details')" 
-       [class.completed]="detailsCompleted">Osnovni detalji</a>
-    <a [class.active]="activeTab === 'specification'" (click)="changeTab('specification')"
-       [class.completed]="specCompleted">Specifikacija</a>
-    <a [class.active]="activeTab === 'media'" (click)="changeTab('media')"
-       [class.completed]="mediaCompleted">Multimedija</a>
+    <a [class.active]="activeTab === 'details'" (click)="changeTab('details')" [class.completed]="detailsCompleted">Osnovni detalji</a>
+    <a [class.active]="activeTab === 'specification'" (click)="changeTab('specification')" [class.completed]="specCompleted">Specifikacija</a>
+    <a [class.active]="activeTab === 'media'" (click)="changeTab('media')" [class.completed]="mediaCompleted">Multimedija</a>
   </nav>
 
-  <div *ngIf="activeTab === 'details'">
-    <app-book-details-form 
-      (detailsSubmitted)="onDetailsSubmit($event)">
-    </app-book-details-form>
-  </div>
+  <!-- Details Form -->
+  @if (activeTab === 'details') {
+    <app-book-details-form (detailsSubmitted)="onDetailsSubmit($event)"></app-book-details-form>
+  }
 
-  <div *ngIf="activeTab === 'specification'">
-    <app-book-spec-form 
-      (specSubmitted)="onSpecSubmit($event)">
-    </app-book-spec-form>
-  </div>
+  <!-- Spec Form -->
+  @if (activeTab === 'specification') {
+    <app-book-spec-form (specSubmitted)="onSpecSubmit($event)"></app-book-spec-form>
+  }
 
-  <div *ngIf="activeTab === 'media'">
-    <app-book-media-form 
-      (mediaSubmitted)="onMediaSubmit($event)">
-    </app-book-media-form>
-  </div>
+  <!-- Media Form -->
+  @if (activeTab === 'media') {
+    <app-book-media-form (mediaSubmitted)="onMediaSubmit($event)"></app-book-media-form>
+  }
 
+  <!-- Actions -->
   <div class="form-actions">
     <button type="button" class="btn-restart" (click)="restartForm()">Restartuj formu</button>
     <button type="button" class="btn-cancel" (click)="onCancel()">Poništi</button>
-    <button type="button" class="btn-save" (click)="submitBook()" 
-            [disabled]="!detailsCompleted || !specCompleted">Sačuvaj knjigu</button>
+    <button type="button" class="btn-save" (click)="submitBook()" [disabled]="!detailsCompleted || !specCompleted">
+      Sačuvaj knjigu
+    </button>
   </div>
 
-  <!-- Debug info (možete ukloniti kasnije) -->
+  <!-- Debug -->
   <div style="margin-top: 20px; padding: 10px; background: #f5f5f5; border-radius: 5px;">
     <h3>Debug podaci:</h3>
     <pre>{{ bookData | json }}</pre>

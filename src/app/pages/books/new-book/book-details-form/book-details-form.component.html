@@ -1,57 +1,32 @@
-<form [formGroup]="bookForm" (ngSubmit)="onSubmit()">
-  <div class="form-group">
-    <label for="name">Naziv knjige *</label>
-    <input type="text" id="name" formControlName="name" class="form-control">
-    <div *ngIf="bookForm.get('name')?.invalid && bookForm.get('name')?.touched" class="error">
-      Naziv knjige je obavezan
-    </div>
-  </div>
+<div [formGroup]="bookForm" class="book-details-form">
 
-  <div class="form-group">
-    <label for="description">Opis</label>
-    <textarea id="description" formControlName="description" class="form-control" rows="4"></textarea>
-  </div>
+  <label for="name">Naziv knjige*</label>
+  <input id="name" formControlName="name" placeholder="Unesite naziv knjige">
 
-  <div class="form-group">
-    <label for="number_of_copies">Broj primeraka *</label>
-    <input type="number" id="number_of_copies" formControlName="number_of_copies" class="form-control" min="1">
-    <div *ngIf="bookForm.get('number_of_copies')?.invalid && bookForm.get('number_of_copies')?.touched" class="error">
-      Broj primeraka je obavezan (minimum 1)
-    </div>
-  </div>
+  <label for="description">Opis</label>
+  <textarea id="description" formControlName="description" placeholder="Opis knjige"></textarea>
 
-  <div class="form-group">
-    <label for="language">Jezik *</label>
-    <input type="text" id="language" formControlName="language" class="form-control">
-    <div *ngIf="bookForm.get('language')?.invalid && bookForm.get('language')?.touched" class="error">
-      Jezik je obavezan
-    </div>
-  </div>
+  <label for="authors">Autori*</label>
+  <select id="authors" formControlName="authors" multiple>
+    <option *ngFor="let a of authorsList" [value]="a.id">
+      {{ a.first_name }} {{ a.last_name }}
+    </option>
+  </select>
 
-  <div class="form-group">
-    <label for="publish_year">Godina izdanja *</label>
-    <input type="number" id="publish_year" formControlName="publish_year" class="form-control" 
-           [min]="1900" [max]="currentYear">
-    <div *ngIf="bookForm.get('publish_year')?.invalid && bookForm.get('publish_year')?.touched" class="error">
-      Godina izdanja je obavezna (1900-{{currentYear}})
-    </div>
-  </div>
+  <label for="categories">Kategorije*</label>
+  <select id="categories" formControlName="categories" multiple>
+    <option *ngFor="let c of categoriesList" [value]="c.id">{{ c.name }}</option>
+  </select>
 
-  <div class="form-group">
-    <label for="authors">Autori *</label>
-    <select id="authors" formControlName="authors" class="form-control" multiple
-            (change)="onAuthorChange($event)">
-      <option *ngFor="let author of authors" [value]="author.id">
-        {{author.first_name}} {{author.last_name}}
-      </option>
-    </select>
-    <div *ngIf="bookForm.get('authors')?.invalid && bookForm.get('authors')?.touched" class="error">
-      Morate odabrati bar jednog autora
-    </div>
-    <small class="form-text text-muted">Držite Ctrl (ili Cmd na Macu) za višestruki odabir</small>
-  </div>
+  <label for="genres">Žanrovi*</label>
+  <select id="genres" formControlName="genres" multiple>
+    <option *ngFor="let g of genresList" [value]="g.id">{{ g.name }}</option>
+  </select>
 
-  <div class="form-actions">
-    <button type="submit" class="btn-primary">Sačuvaj detalje</button>
-  </div>
-</form>
+  <label for="publishers">Izdavači*</label>
+  <select id="publishers" formControlName="publishers" multiple>
+    <option *ngFor="let p of publishersList" [value]="p.id">{{ p.name }}</option>
+  </select>
+
+  <button type="button" (click)="onSubmit()">Dalje</button>
+</div>

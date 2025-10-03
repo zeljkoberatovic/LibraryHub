@@ -1,11 +1,28 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { BookService } from '../../../../services/book/book.service';
+import { Book } from '../../../../models/book.model';
+
 
 @Component({
   selector: 'app-book-media',
+  standalone: true,
   imports: [],
   templateUrl: './book-media.component.html',
-  styleUrl: './book-media.component.css'
+  styleUrls: ['./book-media.component.css']
 })
-export class BookMedia {
+export class BookMedia implements OnInit {
+  book?: Book;
 
+  
+  private route = inject(ActivatedRoute);
+  private bookService = inject(BookService);
+  private router = inject(Router); 
+
+  ngOnInit(): void {
+    const bookId = Number(this.route.parent?.snapshot.paramMap.get('id'));
+    if (bookId) {
+      this.bookService.getBook(bookId).subscribe(book => this.book = book);
+    }
+  }
 }

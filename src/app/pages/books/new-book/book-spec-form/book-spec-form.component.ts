@@ -1,6 +1,6 @@
-import { CommonModule } from '@angular/common';
 import { Component, inject, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-book-spec-form',
@@ -13,7 +13,18 @@ export class BookSpecFormComponent {
   private fb = inject(FormBuilder);
 
   @Output() specSubmitted = new EventEmitter<any>();
-  formats: string[] = ['PDF', 'EPUB', 'MOBI', 'Hardcover', 'Paperback'];
+
+  scripts = [
+    { id: 'Latin', name: 'Latinica' },
+    { id: 'Cyrillic', name: 'Ćirilica' },
+    { id: 'Arabic', name: 'Arapsko' }
+  ];
+
+  bindings = [
+    { id: 'Hardcover', name: 'Tvrdi povez' },
+    { id: 'Paperback', name: 'Meki povez' },
+    { id: 'Spiral', name: 'Spiralni' }
+  ];
 
   bookForm = this.fb.group({
     number_of_pages: [null, [Validators.required, Validators.min(1)]],
@@ -27,18 +38,6 @@ export class BookSpecFormComponent {
       ]
     ]
   });
-
-  scripts = [
-    { id: 'Latin', name: 'Latinica' },
-    { id: 'Cyrillic', name: 'Ćirilica' },
-    { id: 'Arabic', name: 'Arapsko' },
-  ];
-
-  bindings = [
-    { id: 'Hardcover', name: 'Tvrdi povez' },
-    { id: 'Paperback', name: 'Meki povez' },
-    { id: 'Spiral', name: 'Spiralni' },
-  ];
 
   onSubmit() {
     if (this.bookForm.valid) {
