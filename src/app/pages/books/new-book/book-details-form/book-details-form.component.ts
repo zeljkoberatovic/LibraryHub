@@ -1,34 +1,36 @@
-import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators, FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { Component, EventEmitter, HostListener, Input, Output, inject } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+
+import { Author, Category, Genre, Publisher, BookDetailsPayload } from '@/app/models/book.model';
 
 @Component({
   selector: 'app-book-details-form',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, FormsModule],
+  imports: [ReactiveFormsModule],
   templateUrl: './book-details-form.component.html',
+  styleUrls: ['./book-details-form.component.css']
 })
 export class BookDetailsFormComponent {
   private fb = inject(FormBuilder);
 
-  @Input() authorsList: any[] = [];
-  @Input() categoriesList: any[] = [];
-  @Input() genresList: any[] = [];
-  @Input() publishersList: any[] = [];
+  @Input() authorsList: Author[] = [];
+  @Input() categoriesList: Category[] = [];
+  @Input() genresList: Genre[] = [];
+  @Input() publishersList: Publisher[] = [];
 
-  @Output() detailsSubmitted = new EventEmitter<any>();
+  @Output() detailsSubmitted = new EventEmitter<BookDetailsPayload>();
 
-  // Selektovani ID-jevi
-  selectedAuthors: number[] = [];
-  selectedCategories: number[] = [];
-  selectedGenres: number[] = [];
-  selectedPublishers: number[] = [];
-
-  // Dropdown state
+  // Dropdown states
   showAuthors = false;
   showCategories = false;
   showGenres = false;
   showPublishers = false;
+
+  // Selected items
+  selectedAuthors: number[] = [];
+  selectedCategories: number[] = [];
+  selectedGenres: number[] = [];
+  selectedPublishers: number[] = [];
 
   languages = [
     { id: 'Serbian', name: 'Srpski' },
@@ -40,75 +42,123 @@ export class BookDetailsFormComponent {
     { id: 'Russian', name: 'Ruski' }
   ];
 
-  // Samo osnovna polja u formi
   bookForm = this.fb.group({
-    name: ['', Validators.required],
+    name: ['', [Validators.required, Validators.minLength(2)]],
     description: [''],
-    number_of_copies: [null, [Validators.required, Validators.min(1)]],
+    number_of_copies: [1, [Validators.required, Validators.min(1)]],
     language: ['', Validators.required],
     dimensions: ['', Validators.required],
   });
 
-  // Toggle funkcije
-  toggleAuthor(id: number) { this.toggleItem(this.selectedAuthors, id); }
-  toggleCategory(id: number) { this.toggleItem(this.selectedCategories, id); }
-  toggleGenre(id: number) { this.toggleItem(this.selectedGenres, id); }
-  togglePublisher(id: number) { this.toggleItem(this.selectedPublishers, id); }
-
-  private toggleItem(list: number[], id: number) {
-    const i = list.indexOf(id);
-    if (i > -1) list.splice(i, 1);
-    else list.push(id);
+  // Selection methods
+  toggleAuthor(id: number) {
+    const index = this.selectedAuthors.indexOf(id);
+    if (index > -1) {
+      this.selectedAuthors.splice(index, 1);
+    } else {
+      this.selectedAuthors.push(id);
+    }
   }
 
-  isAuthorSelected(id: number) { return this.selectedAuthors.includes(id); }
-  isCategorySelected(id: number) { return this.selectedCategories.includes(id); }
-  isGenreSelected(id: number) { return this.selectedGenres.includes(id); }
-  isPublisherSelected(id: number) { return this.selectedPublishers.includes(id); }
-
-  getAuthorName(id: number) {
-    const a = this.authorsList.find(x => x.id === id);
-    return a ? `${a.first_name} ${a.last_name}` : '';
-  }
-  getCategoryName(id: number) {
-    const c = this.categoriesList.find(x => x.id === id);
-    return c ? c.name : '';
-  }
-  getGenreName(id: number) {
-    const g = this.genresList.find(x => x.id === id);
-    return g ? g.name : '';
-  }
-  getPublisherName(id: number) {
-    const p = this.publishersList.find(x => x.id === id);
-    return p ? p.name : '';
+  toggleCategory(id: number) {
+    const index = this.selectedCategories.indexOf(id);
+    if (index > -1) {
+      this.selectedCategories.splice(index, 1);
+    } else {
+      this.selectedCategories.push(id);
+    }
   }
 
- onSubmit() {
-  this.bookForm.markAllAsTouched();
-
-  if (this.bookForm.valid &&
-      this.selectedAuthors.length &&
-      this.selectedCategories.length &&
-      this.selectedGenres.length &&
-      this.selectedPublishers.length) {
-
-    
-    this.detailsSubmitted.emit({
-      name: this.bookForm.value.name,
-      description: this.bookForm.value.description,
-      number_of_copies: this.bookForm.value.number_of_copies,
-      language: this.bookForm.value.language,
-      dimensions: this.bookForm.value.dimensions,
-      authors: this.selectedAuthors,
-      categories: this.selectedCategories,
-      genres: this.selectedGenres,
-      publishers: this.selectedPublishers
-
-    });
-
-  } else {
-    alert('Popunite sva obavezna polja i odaberite najmanje po jednu stavku iz svih lista.');
+  toggleGenre(id: number) {
+    const index = this.selectedGenres.indexOf(id);
+    if (index > -1) {
+      this.selectedGenres.splice(index, 1);
+    } else {
+      this.selectedGenres.push(id);
+    }
   }
-}
 
+  togglePublisher(id: number) {
+    const index = this.selectedPublishers.indexOf(id);
+    if (index > -1) {
+      this.selectedPublishers.splice(index, 1);
+    } else {
+      this.selectedPublishers.push(id);
+    }
+  }
+
+  // Check if item is selected
+  isAuthorSelected(id: number): boolean {
+    return this.selectedAuthors.includes(id);
+  }
+
+  isCategorySelected(id: number): boolean {
+    return this.selectedCategories.includes(id);
+  }
+
+  isGenreSelected(id: number): boolean {
+    return this.selectedGenres.includes(id);
+  }
+
+  isPublisherSelected(id: number): boolean {
+    return this.selectedPublishers.includes(id);
+  }
+
+  // Get names for display
+  getAuthorName(id: number): string {
+    const author = this.authorsList.find(a => a.id === id);
+    return author ? `${author.first_name} ${author.last_name}` : '';
+  }
+
+  getCategoryName(id: number): string {
+    const category = this.categoriesList.find(c => c.id === id);
+    return category ? category.name : '';
+  }
+
+  getGenreName(id: number): string {
+    const genre = this.genresList.find(g => g.id === id);
+    return genre ? genre.name : '';
+  }
+
+  getPublisherName(id: number): string {
+    const publisher = this.publishersList.find(p => p.id === id);
+    return publisher ? publisher.name : '';
+  }
+
+  // Close all dropdowns
+  closeDropdowns() {
+    this.showAuthors = true;
+    this.showCategories = false;
+    this.showGenres = false;
+    this.showPublishers = false;
+  }
+  
+
+  onSubmit() {
+    this.bookForm.markAllAsTouched();
+    this.closeDropdowns();
+
+    if (this.bookForm.valid && 
+        this.selectedAuthors.length > 0 && 
+        this.selectedCategories.length > 0 && 
+        this.selectedGenres.length > 0 && 
+        this.selectedPublishers.length > 0) {
+      
+      const payload: BookDetailsPayload = {
+        name: this.bookForm.value.name || '',
+        description: this.bookForm.value.description || '',
+        number_of_copies: Number(this.bookForm.value.number_of_copies) || 0,
+        language: this.bookForm.value.language || '',
+        dimensions: this.bookForm.value.dimensions || '',
+        authors: this.selectedAuthors,
+        categories: this.selectedCategories,
+        genres: this.selectedGenres,
+        publishers: this.selectedPublishers
+      };
+
+      this.detailsSubmitted.emit(payload);
+    } else {
+      alert('Molimo popunite sva obavezna polja i odaberite najmanje po jednu stavku iz svih lista.');
+    }
+  }
 }

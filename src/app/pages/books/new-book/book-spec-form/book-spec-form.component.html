@@ -1,54 +1,94 @@
-<div [formGroup]="bookForm" class="book-spec-form">
-
-  <div class="form-group">
-    <label for="number_of_pages">Broj strana*</label>
-    <input
-      id="number_of_pages"
-      type="number"
-      formControlName="number_of_pages"
-      placeholder="Unesite broj strana"
-      min="1">
-    <div *ngIf="bookForm.get('number_of_pages')?.touched && bookForm.get('number_of_pages')?.invalid" class="error">
-      Polje je obavezno i mora biti veće od 0
-    </div>
+<form [formGroup]="bookForm" class="book-spec-form">
+  <div class="form-header">
+    <h3>Specifikacije knjige</h3>
+    <p>Tehnički detalji i identifikacija</p>
   </div>
 
-  <div class="form-group">
-    <label for="script">Script*</label>
-    <select id="script" formControlName="script">
-      <option value="" disabled>Izaberite script</option>
-      <option *ngFor="let s of scripts" [value]="s.id">{{ s.name }}</option>
-    </select>
-    <div *ngIf="bookForm.get('script')?.touched && bookForm.get('script')?.invalid" class="error">
-      Polje je obavezno
-    </div>
-  </div>
+  <div class="form-grid">
+    <!-- Broj strana -->
+    <div class="form-group">
+      <label for="number_of_pages" class="required">Broj strana</label>
+      <input
+        id="number_of_pages"
+        type="number"
+        formControlName="number_of_pages"
+        placeholder="npr. 256"
+        min="1"
+        max="5000"
+        class="form-control"
+        [class.error]="bookForm.get('number_of_pages')?.touched && bookForm.get('number_of_pages')?.invalid">
+        @if (bookForm.get('number_of_pages')?.touched && bookForm.get('number_of_pages')?.invalid) {
+          <div class="error">
+            Broj strana je obavezan (1-5000)
+          </div>
+        }
+      </div>
 
-  <div class="form-group">
-    <label for="binding">Binding*</label>
-    <select id="binding" formControlName="binding">
-      <option value="" disabled>Izaberite binding</option>
-      <option *ngFor="let b of bindings" [value]="b.id">{{ b.name }}</option>
-    </select>
-    <div *ngIf="bookForm.get('binding')?.touched && bookForm.get('binding')?.invalid" class="error">
-      Polje je obavezno
-    </div>
-  </div>
+      <!-- Script -->
+      <div class="form-group">
+        <label for="script" class="required">Pismo</label>
+        <select
+          id="script"
+          formControlName="script"
+          class="form-control"
+          [class.error]="bookForm.get('script')?.touched && bookForm.get('script')?.invalid">
+          <option value="" disabled selected>Izaberite pismo</option>
+          @for (s of scripts; track s) {
+            <option [value]="s.id">{{ s.name }}</option>
+          }
+        </select>
+        @if (bookForm.get('script')?.touched && bookForm.get('script')?.invalid) {
+          <div class="error">
+            Pismo je obavezno
+          </div>
+        }
+      </div>
 
-  <div class="form-group">
-    <label for="isbn">ISBN*</label>
-    <input
-      id="isbn"
-      type="text"
-      formControlName="isbn"
-      placeholder="Unesite ISBN knjige">
-    <div *ngIf="bookForm.get('isbn')?.touched && bookForm.get('isbn')?.invalid" class="error">
-      Polje je obavezno i mora biti validan ISBN
-    </div>
-  </div>
+      <!-- Binding -->
+      <div class="form-group">
+        <label for="binding" class="required">Povez</label>
+        <select
+          id="binding"
+          formControlName="binding"
+          class="form-control"
+          [class.error]="bookForm.get('binding')?.touched && bookForm.get('binding')?.invalid">
+          <option value="" disabled selected>Izaberite vrstu poveza</option>
+          @for (b of bindings; track b) {
+            <option [value]="b.id">{{ b.name }}</option>
+          }
+        </select>
+        @if (bookForm.get('binding')?.touched && bookForm.get('binding')?.invalid) {
+          <div class="error">
+            Vrsta poveza je obavezna
+          </div>
+        }
+      </div>
 
-  <div class="form-actions">
-    <button type="button" (click)="onSubmit()">Dalje</button>
-  </div>
+      <!-- ISBN -->
+      <div class="form-group full-width">
+        <label for="isbn" class="required">ISBN broj</label>
+        <input
+          id="isbn"
+          type="text"
+          formControlName="isbn"
+          placeholder="npr. 9788661101419"
+          class="form-control"
+          [class.error]="bookForm.get('isbn')?.touched && bookForm.get('isbn')?.invalid">
+          @if (bookForm.get('isbn')?.touched && bookForm.get('isbn')?.invalid) {
+            <div class="error">
+              Validan ISBN broj je obavezan
+            </div>
+          }
+          <div class="hint">
+            Format: 10 ili 13 cifara (npr. 1234567890 ili 9781234567890)
+          </div>
+        </div>
 
-</div>
+        <!-- Submit Button -->
+        <div class="form-actions">
+          <button type="button" (click)="onSubmit()" class="btn btn-primary">
+            Dalje → Mediji
+          </button>
+        </div>
+      </div>
+    </form>

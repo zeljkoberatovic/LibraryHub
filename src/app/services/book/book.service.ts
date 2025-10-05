@@ -34,11 +34,10 @@ export class BookService {
     .pipe(map(res => res.data));
 }
 
-
-  updateBook(id: number, book: Book): Observable<Book> {
-    return this.http.put<{ status: string; data: { data: Book[] } }>(`${this.baseUrl}/${id}`, book)
-      .pipe(map(res => res.data.data[0]));
-  }
+ updateBook(id: number, book: CreateBookDto): Observable<Book> {
+  return this.http.put<{ status: string; data: Book }>(`${this.baseUrl}/${id}`, book)
+    .pipe(map(res => res.data)); 
+}
 
   deleteBook(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);

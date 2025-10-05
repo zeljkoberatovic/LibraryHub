@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+
+import { Router, RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { BookService } from '../../../services/book/book.service';
@@ -8,6 +8,8 @@ import { AuthorService } from '../../../services/author/author.service';
 import { CategoryService } from '../../../services/settings/category/category.service';
 import { GenreService } from '../../../services/settings/genre/genre.service';
 import { PublisherService } from '../../../services/settings/publisher/publisher.service';
+
+import { Book, Author, Category, Genre, Publisher } from '../../../models/book.model';
 
 import { BookDetailsFormComponent } from './book-details-form/book-details-form.component';
 import { BookSpecFormComponent } from './book-spec-form/book-spec-form.component';
@@ -20,12 +22,12 @@ import { CreateBookDto } from '../../../models/book.model';
   templateUrl: './new-book.component.html',
   styleUrls: ['./new-book.component.css'],
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     BookDetailsFormComponent,
     BookSpecFormComponent,
-    BookMediaFormComponent
-  ]
+    BookMediaFormComponent,
+    RouterModule
+]
 })
 export class NewBookComponent implements OnInit {
   private bookService = inject(BookService);
@@ -40,12 +42,13 @@ export class NewBookComponent implements OnInit {
   specCompleted = false;
   mediaCompleted = false;
 
-  bookData: any = {}; // Glavni objekat koji čuva sve podatke
+  bookData: Partial<Book> = {}; 
 
-  authorsList: any[] = [];
-  categoriesList: any[] = [];
-  genresList: any[] = [];
-  publishersList: any[] = [];
+  authorsList: Author[] = [];
+  categoriesList: Category[] = [];
+  genresList: Genre[] = [];
+  publishersList: Publisher[] = [];
+
 
   ngOnInit() {
     this.loadLists();
@@ -58,17 +61,17 @@ export class NewBookComponent implements OnInit {
     this.publisherService.getPublishers().subscribe(res => this.publishersList = res.data?.data || []);
   }
 
-  /** ================== HANDLERS ZA FORM ================== **/
+  // Handlers za formu
 
   onDetailsSubmit(details: any) {
     console.log('Details submitted:', details);
     this.bookData = {
       ...this.bookData,
       ...details,
-      authors: details.authors || [],
-      categories: details.categories || [],
-      genres: details.genres || [],
-      publishers: details.publishers || []
+      authors: this.authorsList.filter(a => details.authors.includes(a.id)),
+      categories: this.categoriesList.filter(c => details.categories.includes(c.id)),
+      genres: this.genresList.filter(g => details.genres.includes(g.id)),
+      publishers: this.publishersList.filter(p => details.publishers.includes(p.id))
     };
     this.detailsCompleted = true;
     this.activeTab = 'specification';
@@ -93,7 +96,7 @@ export class NewBookComponent implements OnInit {
     this.mediaCompleted = true;
   }
 
-  /** ================== KRAJNJA VALIDACIJA I SLANJE ================== **/
+  // Krajna validacija i slanje
 
   submitBook() {
     if (!this.detailsCompleted || !this.specCompleted) {
@@ -113,10 +116,10 @@ export class NewBookComponent implements OnInit {
   script: this.bookData.script || '',
   binding: this.bookData.binding || '',
   dimensions: this.bookData.dimensions || '',
-  authors: this.bookData.authors || [],
-  categories: this.bookData.categories || [],
-  genres: this.bookData.genres || [],
-  publishers: this.bookData.publishers || []
+  authors: (this.bookData.authors || []).map(a => a.id),      
+  categories: (this.bookData.categories || []).map(c => c.id),
+  genres: (this.bookData.genres || []).map(g => g.id),
+  publishers: (this.bookData.publishers || []).map(p => p.id)
 
 };
 

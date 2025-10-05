@@ -1,99 +1,135 @@
-<div class="container">
-  <div class="header-with-search">
-    <h2>Knjige</h2>
-    <input
-      type="text"
-      placeholder="Pretraži knjige..."
-      [(ngModel)]="searchTerm"
-      class="search-input"
-    />
+<div class="books-container">
+  <!-- Header sa pretragom -->
+  <div class="page-header">
+    <div class="header-content">
+      <div class="header-title">
+        <h2>Evidencija knjiga</h2>
+        <p class="page-description">Pregled i upravljanje svim knjigama u sistemu</p>
+      </div>
+      <div class="header-actions">
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input
+            type="text"
+            placeholder="Pretraži knjige..."
+            [(ngModel)]="searchTerm"
+            class="search-input"
+          />
+        </div>
+        <button class="btn btn-primary" [routerLink]="['/books/new']">
+          <span class="btn-icon">➕</span>
+          Nova knjiga
+        </button>
+      </div>
+    </div>
   </div>
 
-  <button class="add-button" [routerLink]="['/books/new']">+ Nova knjiga</button>
-
-  <table>
-    <thead>
-      <tr>
-        <th (click)="sortByName()" style="cursor: pointer;">
-          Naziv knjige
-          <span [ngClass]="sortDirection === 'asc' ? 'arrow down' : 'arrow up'"></span>
-        </th>
-        <th>Autor</th>
-        <th>Kategorija</th>
-        <th>Izdavač</th>
-        <th>Žanr</th>
-        <th>Jezik</th>
-        <th>Ukupna kolicina</th>
-        <th>Na raspolaganju</th>
-        <th>Rezervisano</th>
-        <th>Izdato</th>
-        <th>U prekoracenju</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      @for (book of paged; track book; let i = $index) {
+  <!-- Tabela -->
+  <div class="table-container">
+    <table class="books-table">
+      <thead>
         <tr>
-          <td>{{ book.name }}</td>
-          <td>{{ getAuthorNames(book.authors) }}</td>
-          <td>{{ getCategoryNames(book.categories) }}</td>
-          <td>{{ getPublisherNames(book.publishers) }}</td>
-          <td>{{ getGenreNames(book.genres) }}</td>
-          <td>{{ book.language }}</td>
-          <td>{{ book.number_of_copies }}</td>
-          <td>{{ book.available ?? 0 }}</td>
-          <td>{{ book.reserved ?? 0 }}</td>
-          <td>{{ book.issued ?? 0 }}</td>
-          <td>{{ book.overdue ?? 0 }}</td>
-          <td class="actions-cell" style="position: relative;">
-  <span class="menu-icon" (click)="toggleMenu(i)">⋮</span>
-  @if (openMenuIndex === i) {
-    <div class="menu">
-      <!-- Detalji knjige -->
-      <button [routerLink]="['/books/view', book.id]">
-        <span class="material-icons" style="font-size:16px; vertical-align: middle;">info</span>
-        Detalji knjige
-      </button>
+          <th (click)="sortByName()" class="sortable-header">
+            <div class="header-content">
+              Naziv knjige
+              <span [ngClass]="sortDirection === 'asc' ? 'sort-arrow asc' : 'sort-arrow desc'"></span>
+            </div>
+          </th>
+          <th>Autor</th>
+          <th>Kategorija</th>
+          <th>Izdavač</th>
+          <th>Žanr</th>
+          <th>Jezik</th>
+          <th class="number-column">Ukupno</th>
+          <th class="number-column">Dostupno</th>
+          <th class="number-column">Rezervisano</th>
+          <th class="number-column">Izdato</th>
+          <th class="number-column">Prekoračenje</th>
+          <th class="actions-column"></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (book of paged; track book; let i = $index) {
+          <tr class="table-row">
+            <td class="book-name">{{ book.name }}</td>
+            <td>{{ getAuthorNames(book.authors) }}</td>
+            <td>{{ getCategoryNames(book.categories) }}</td>
+            <td>{{ getPublisherNames(book.publishers) }}</td>
+            <td>{{ getGenreNames(book.genres) }}</td>
+            <td>
+              <span class="language-badge">{{ book.language }}</span>
+            </td>
+            <td class="number-cell">{{ book.number_of_copies }}</td>
+            <td class="number-cell available">{{ book.available ?? 0 }}</td>
+            <td class="number-cell reserved">{{ book.reserved ?? 0 }}</td>
+            <td class="number-cell issued">{{ book.issued ?? 0 }}</td>
+            <td class="number-cell overdue">{{ book.overdue ?? 0 }}</td>
+            <td class="actions-cell">
+              <button class="menu-trigger" (click)="toggleMenu(i)">
+                <span class="menu-icon">⋮</span>
+              </button>
+              @if (openMenuIndex === i) {
+                <div class="dropdown-menu">
+                  <button class="menu-item" [routerLink]="['/books/view', book.id]">
+                    <span class="menu-icon">👁️</span>
+                    Detalji knjige
+                  </button>
+                  <button class="menu-item" [routerLink]="['/books/edit', book.id]">
+                    <span class="menu-icon">✏️</span>
+                    Izmjeni knjigu
+                  </button>
+                  <div class="menu-divider"></div>
+                  <button class="menu-item" (click)="issueBook(book)">
+                    <span class="menu-icon">📤</span>
+                    Izdaj knjigu
+                  </button>
+                  <button class="menu-item" (click)="returnBook(book)">
+                    <span class="menu-icon">📥</span>
+                    Vrati knjigu
+                  </button>
+                  <button class="menu-item" (click)="reserveBook(book)">
+                    <span class="menu-icon">🔖</span>
+                    Rezerviši knjigu
+                  </button>
+                  <div class="menu-divider"></div>
+                  <button class="menu-item" (click)="writeOffBook(book)">
+                    <span class="menu-icon">🗑️</span>
+                    Otpiši knjigu
+                  </button>
+                  <button class="menu-item delete" (click)="deleteBook(book)">
+                    <span class="menu-icon">❌</span>
+                    Izbriši knjigu
+                  </button>
+                </div>
+              }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
 
-      <!-- Izmjeni knjigu -->
-      <button [routerLink]="['/books/edit', book.id]">
-        <span class="material-icons" style="font-size:16px; vertical-align: middle;">edit</span>
-        Izmjeni knjigu
-      </button>
+    <!-- Empty state -->
+    @if (paged.length === 0) {
+      <div class="empty-state">
+        <div class="empty-icon">📚</div>
+        <h3>Nema pronađenih knjiga</h3>
+        <p>Pokušajte da promenite kriterijum pretrage ili dodajte novu knjigu.</p>
+        <button class="btn btn-primary" [routerLink]="['/books/new']">
+          <span class="btn-icon">➕</span>
+          Dodaj prvu knjigu
+        </button>
+      </div>
+    }
+  </div>
 
-      <!-- Ostale akcije -->
-      <button (click)="writeOffBook(book)">
-        <span class="material-icons" style="font-size:16px; vertical-align: middle;">remove_circle</span>
-        Otpiši knjigu
-      </button>
-      <button (click)="issueBook(book)">
-        <span class="material-icons" style="font-size:16px; vertical-align: middle;">assignment_returned</span>
-        Izdaj knjigu
-      </button>
-      <button (click)="returnBook(book)">
-        <span class="material-icons" style="font-size:16px; vertical-align: middle;">assignment_turned_in</span>
-        Vrati knjigu
-      </button>
-      <button (click)="reserveBook(book)">
-        <span class="material-icons" style="font-size:16px; vertical-align: middle;">bookmark</span>
-        Rezerviši knjigu
-      </button>
-      <button (click)="deleteBook(book)">
-        <span class="material-icons" style="font-size:16px; vertical-align: middle;">delete</span>
-        Izbriši knjigu
-      </button>
+  <!-- Paginacija -->
+  @if (paged.length > 0) {
+    <div class="pagination-container">
+      <app-pagination
+        [totalPages]="pagination.totalPages"
+        [currentPage]="pagination.currentPage"
+        (pageChange)="onPageChange($event)"
+      ></app-pagination>
     </div>
   }
-</td>
-
-        </tr>
-      }
-    </tbody>
-  </table>
-
-  <app-pagination
-    [totalPages]="pagination.totalPages"
-    [currentPage]="pagination.currentPage"
-    (pageChange)="onPageChange($event)"
-  ></app-pagination>
 </div>

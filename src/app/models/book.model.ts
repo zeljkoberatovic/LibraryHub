@@ -1,5 +1,3 @@
-
-
 export interface Book {
   id: number;
   name: string;
@@ -17,7 +15,6 @@ export interface Book {
   publishers: Publisher[];
   authors: Author[];
   genres: Genre[];
-
 
   available?: number;
   reserved?: number;
@@ -64,3 +61,22 @@ export interface CreateBookDto {
   genres: number[];
   publishers: number[];
 }
+
+export interface BookDetailsPayload {
+  name: string;
+  description: string;
+  number_of_copies: number;
+  language: string;
+  dimensions: string;
+  authors: number[];
+  categories: number[];
+  genres: number[];
+  publishers: number[];
+}
+
+// Tipovi za dropdown
+export interface DropdownOption {
+  id: string;
+  name: string;
+}
+
