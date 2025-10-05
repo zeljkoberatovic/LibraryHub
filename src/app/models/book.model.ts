@@ -59,8 +59,8 @@ export interface CreateBookDto {
   dimensions: string;
   images?: string[];
 
-  category_ids: number[];
-  publisher_ids: number[];
-  author_ids: number[];
-  genre_ids: number[];
+  authors: number[];
+  categories: number[];
+  genres: number[];
+  publishers: number[];
 }

@@ -40,14 +40,12 @@ export class NewBookComponent implements OnInit {
   specCompleted = false;
   mediaCompleted = false;
 
-  bookData: any = {};
+  bookData: any = {}; // Glavni objekat koji čuva sve podatke
 
   authorsList: any[] = [];
   categoriesList: any[] = [];
   genresList: any[] = [];
   publishersList: any[] = [];
-
-  isLoading = true;
 
   ngOnInit() {
     this.loadLists();
@@ -55,119 +53,112 @@ export class NewBookComponent implements OnInit {
 
   private loadLists() {
     this.authorService.getAuthors().subscribe(a => this.authorsList = a);
-
-    this.categoryService.getCategories().subscribe(res => {
-      this.categoriesList = res.data?.data || [];
-    });
-
-    this.genreService.getGenres().subscribe(res => {
-      this.genresList = res.data?.data || [];
-    });
-
-    this.publisherService.getPublishers().subscribe(res => {
-      this.publishersList = res.data?.data || [];
-    });
+    this.categoryService.getCategories().subscribe(res => this.categoriesList = res.data?.data || []);
+    this.genreService.getGenres().subscribe(res => this.genresList = res.data?.data || []);
+    this.publisherService.getPublishers().subscribe(res => this.publishersList = res.data?.data || []);
   }
+
+  /** ================== HANDLERS ZA FORM ================== **/
 
   onDetailsSubmit(details: any) {
     console.log('Details submitted:', details);
-    this.bookData = { ...this.bookData, ...details };
+    this.bookData = {
+      ...this.bookData,
+      ...details,
+      authors: details.authors || [],
+      categories: details.categories || [],
+      genres: details.genres || [],
+      publishers: details.publishers || []
+    };
     this.detailsCompleted = true;
     this.activeTab = 'specification';
   }
 
   onSpecSubmit(spec: any) {
     console.log('Spec submitted:', spec);
-    this.bookData = { ...this.bookData, ...spec };
+    this.bookData = {
+      ...this.bookData,
+      ...spec
+    };
     this.specCompleted = true;
     this.activeTab = 'media';
   }
 
   onMediaSubmit(media: any) {
-    this.bookData = { ...this.bookData, ...media };
+    console.log('Media submitted:', media);
+    this.bookData = {
+      ...this.bookData,
+      ...media
+    };
     this.mediaCompleted = true;
   }
 
+  /** ================== KRAJNJA VALIDACIJA I SLANJE ================== **/
+
   submitBook() {
-  if (!this.detailsCompleted) {
-    return alert('Popunite osnovne podatke');
-  }
-
-  console.log('Book Data before sending:', this.bookData);
-
-  // Priprema podataka za API - BEZ SLIKA
-  const dto: CreateBookDto = {
-    name: this.bookData.name || '',
-    description: this.bookData.description || '',
-    number_of_pages: Number(this.bookData.number_of_pages) || 0,
-    number_of_copies: Number(this.bookData.number_of_copies) || 0,
-    isbn: this.bookData.isbn || '',
-    language: this.bookData.language || '',
-    script: this.bookData.script || '',
-    binding: this.bookData.binding || '',
-    dimensions: this.bookData.dimensions || '',
-    author_ids: Array.isArray(this.bookData.authors) ? this.bookData.authors : [],
-    category_ids: Array.isArray(this.bookData.categories) ? this.bookData.categories : [],
-    genre_ids: Array.isArray(this.bookData.genres) ? this.bookData.genres : [],
-    publisher_ids: Array.isArray(this.bookData.publishers) ? this.bookData.publishers : []
-  };
-
-  console.log('DTO being sent to API:', dto);
-
-  // Provera obaveznih polja pre slanja
-  const requiredFields = [
-    'name', 'number_of_pages', 'number_of_copies', 'isbn', 
-    'language', 'script', 'binding', 'dimensions'
-  ];
-
-  const missingFields = requiredFields.filter(field => !dto[field as keyof CreateBookDto]);
-  if (missingFields.length > 0) {
-    alert(`Popunite obavezna polja: ${missingFields.join(', ')}`);
-    return;
-  }
-
-  // Provera da li su nizovi popunjeni
-  if (dto.author_ids.length === 0) {
-    alert('Odaberite bar jednog autora');
-    return;
-  }
-  if (dto.category_ids.length === 0) {
-    alert('Odaberite bar jednu kategoriju');
-    return;
-  }
-  if (dto.genre_ids.length === 0) {
-    alert('Odaberite bar jedan žanr');
-    return;
-  }
-  if (dto.publisher_ids.length === 0) {
-    alert('Odaberite bar jednog izdavača');
-    return;
-  }
-
-  this.bookService.createBook(dto).subscribe({
-    next: (response) => {
-      console.log('Book created successfully:', response);
-      alert('Knjiga je uspešno kreirana!');
-      this.router.navigate(['/books']);
-    },
-    error: (err) => {
-      console.error('Full error:', err);
-      
-      if (err.status === 422) {
-        const validationErrors = err.error?.errors || err.error?.data?.errors;
-        if (validationErrors) {
-          let errorMessage = 'Greška validacije:\n';
-          Object.keys(validationErrors).forEach(key => {
-            errorMessage += `${key}: ${validationErrors[key].join(', ')}\n`;
-          });
-          alert(errorMessage);
-        } else {
-          alert('Došlo je do greške pri validaciji podataka. Proverite sva polja.');
-        }
-      } else {
-        alert('Greška: ' + (err.message || 'Došlo je do greške prilikom kreiranja knjige'));
-      }
+    if (!this.detailsCompleted || !this.specCompleted) {
+      return alert('Popunite sve prethodne forme pre slanja.');
     }
-  });
-}
+
+    console.log('Book Data before sending:', this.bookData);
+
+    // Kreiranje DTO-a
+   const dto: CreateBookDto = {
+  name: this.bookData.name || '',
+  description: this.bookData.description || '',
+  number_of_pages: Number(this.bookData.number_of_pages) || 0,
+  number_of_copies: Number(this.bookData.number_of_copies) || 0,
+  isbn: this.bookData.isbn || '',
+  language: this.bookData.language || '',
+  script: this.bookData.script || '',
+  binding: this.bookData.binding || '',
+  dimensions: this.bookData.dimensions || '',
+  authors: this.bookData.authors || [],
+  categories: this.bookData.categories || [],
+  genres: this.bookData.genres || [],
+  publishers: this.bookData.publishers || []
+
+};
+
+    console.log('DTO being sent to API:', dto);
+
+    // Validacija obaveznih polja
+    const requiredFields = ['name', 'number_of_pages', 'number_of_copies', 'isbn', 'language', 'script', 'binding', 'dimensions'];
+    const missingFields = requiredFields.filter(field => !dto[field as keyof CreateBookDto]);
+    if (missingFields.length > 0) {
+      return alert(`Popunite obavezna polja: ${missingFields.join(', ')}`);
+    }
+
+    if (dto.authors.length === 0) return alert('Odaberite bar jednog autora');
+    if (dto.categories.length === 0) return alert('Odaberite bar jednu kategoriju');
+    if (dto.genres.length === 0) return alert('Odaberite bar jedan žanr');
+    if (dto.publishers.length === 0) return alert('Odaberite bar jednog izdavača');
+
+
+    // Slanje na API
+    this.bookService.createBook(dto).subscribe({
+      next: (res) => {
+        console.log('Book created successfully:', res);
+        alert('Knjiga je uspešno kreirana!');
+        this.router.navigate(['/books']);
+      },
+      error: (err) => {
+        console.error('Full error:', err);
+        if (err.status === 422) {
+          const validationErrors = err.error?.errors || err.error?.data?.errors;
+          if (validationErrors) {
+            let errorMessage = 'Greška validacije:\n';
+            Object.keys(validationErrors).forEach(key => {
+              errorMessage += `${key}: ${validationErrors[key].join(', ')}\n`;
+            });
+            alert(errorMessage);
+          } else {
+            alert('Došlo je do greške pri validaciji podataka.');
+          }
+        } else {
+          alert('Greška: ' + (err.message || 'Došlo je do greške pri kreiranju knjige.'));
+        }
+      }
+    });
+  }
 }

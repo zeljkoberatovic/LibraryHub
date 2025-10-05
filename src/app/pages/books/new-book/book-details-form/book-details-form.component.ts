@@ -83,23 +83,32 @@ export class BookDetailsFormComponent {
     return p ? p.name : '';
   }
 
-  onSubmit() {
-    this.bookForm.markAllAsTouched();
+ onSubmit() {
+  this.bookForm.markAllAsTouched();
 
-    if (this.bookForm.valid &&
-        this.selectedAuthors.length &&
-        this.selectedCategories.length &&
-        this.selectedGenres.length &&
-        this.selectedPublishers.length) {
-      this.detailsSubmitted.emit({
-        ...this.bookForm.value,
-        authors: this.selectedAuthors,
-        categories: this.selectedCategories,
-        genres: this.selectedGenres,
-        publishers: this.selectedPublishers,
-      });
-    } else {
-      alert('Popunite sva obavezna polja i odaberite najmanje po jednu stavku iz svih lista.');
-    }
+  if (this.bookForm.valid &&
+      this.selectedAuthors.length &&
+      this.selectedCategories.length &&
+      this.selectedGenres.length &&
+      this.selectedPublishers.length) {
+
+    
+    this.detailsSubmitted.emit({
+      name: this.bookForm.value.name,
+      description: this.bookForm.value.description,
+      number_of_copies: this.bookForm.value.number_of_copies,
+      language: this.bookForm.value.language,
+      dimensions: this.bookForm.value.dimensions,
+      authors: this.selectedAuthors,
+      categories: this.selectedCategories,
+      genres: this.selectedGenres,
+      publishers: this.selectedPublishers
+
+    });
+
+  } else {
+    alert('Popunite sva obavezna polja i odaberite najmanje po jednu stavku iz svih lista.');
   }
+}
+
 }
