@@ -1,4 +1,4 @@
-import { Author } from './author.model';
+
 
 export interface Book {
   id: number;
@@ -18,11 +18,11 @@ export interface Book {
   authors: Author[];
   genres: Genre[];
 
+
   available?: number;
   reserved?: number;
   issued?: number;
   overdue?: number;
-
 }
 
 export interface Category {
@@ -57,13 +57,10 @@ export interface CreateBookDto {
   script: string;
   binding: string;
   dimensions: string;
-  images: string[];
+  images?: string[];
 
-  category_ids: number[];
-  publisher_ids: number[];
-  author_ids: number[];
-  genre_ids: number[];
+  authors: number[];
+  categories: number[];
+  genres: number[];
+  publishers: number[];
 }
-
-
- 

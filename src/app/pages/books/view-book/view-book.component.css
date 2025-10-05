@@ -1,4 +1,4 @@
-/* ==================== Glavni Book Card ==================== */
+
 .book-card {
   max-width: 100%;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -13,7 +13,9 @@
 
 
 
+
 /* ==================== Header ==================== */
+
 .header {
   display: flex;
   justify-content: space-between;
@@ -117,7 +119,6 @@
   color: #FFD700;
 }
 
-/* ==================== Navbar Wrapper ==================== */
 .navbar-wrapper {
   display: flex;
   justify-content: space-between;
@@ -165,7 +166,10 @@
 
 
 .navbar-extra {
-  width: 25%;
+
+  width: 30%;
+  height: 600px;
+
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -177,6 +181,7 @@
   height: 50vh;
 }
 
+ 
 
 /* ==================== Child Content ==================== */
 .book-content {
@@ -186,6 +191,7 @@
   background: #ffffff;
   box-shadow: 0 4px 12px rgba(0,0,0,0.05);
   min-height: 480px;
+
 }
 
 

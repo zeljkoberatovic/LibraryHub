@@ -1,32 +1,181 @@
-<div [formGroup]="bookForm" class="book-details-form">
+<form [formGroup]="bookForm" class="book-details-form">
 
-  <label for="name">Naziv knjige*</label>
-  <input id="name" formControlName="name" placeholder="Unesite naziv knjige">
+  <div class="form-group">
+    <label for="name">Naziv knjige*</label>
+    <input id="name" formControlName="name" placeholder="Unesite naziv knjige" class="form-control">
+    <div *ngIf="bookForm.get('name')?.touched && bookForm.get('name')?.invalid" class="error">
+      Polje je obavezno
+    </div>
+  </div>
 
-  <label for="description">Opis</label>
-  <textarea id="description" formControlName="description" placeholder="Opis knjige"></textarea>
+  <div class="form-group">
+    <label for="description">Opis</label>
+    <textarea id="description" formControlName="description" placeholder="Opis knjige" rows="4" class="form-control"></textarea>
+  </div>
 
-  <label for="authors">Autori*</label>
-  <select id="authors" formControlName="authors" multiple>
-    <option *ngFor="let a of authorsList" [value]="a.id">
-      {{ a.first_name }} {{ a.last_name }}
-    </option>
-  </select>
+  <div class="form-group">
+    <label for="number_of_copies">Broj primeraka*</label>
+    <input 
+      id="number_of_copies" 
+      type="number" 
+      formControlName="number_of_copies" 
+      placeholder="Unesite broj primeraka"
+      min="1"
+      class="form-control">
+    <div *ngIf="bookForm.get('number_of_copies')?.touched && bookForm.get('number_of_copies')?.invalid" class="error">
+      Polje je obavezno i mora biti veće od 0
+    </div>
+  </div>
 
-  <label for="categories">Kategorije*</label>
-  <select id="categories" formControlName="categories" multiple>
-    <option *ngFor="let c of categoriesList" [value]="c.id">{{ c.name }}</option>
-  </select>
+  <div class="form-group">
+    <label for="language">Jezik*</label>
+    <select id="language" formControlName="language" class="form-control">
+      <option value="" disabled>Izaberite jezik</option>
+      <option *ngFor="let lang of languages" [value]="lang.id">{{ lang.name }}</option>
+    </select>
+    <div *ngIf="bookForm.get('language')?.touched && bookForm.get('language')?.invalid" class="error">
+      Polje je obavezno
+    </div>
+  </div>
 
-  <label for="genres">Žanrovi*</label>
-  <select id="genres" formControlName="genres" multiple>
-    <option *ngFor="let g of genresList" [value]="g.id">{{ g.name }}</option>
-  </select>
+  <div class="form-group">
+    <label for="dimensions">Dimenzije*</label>
+    <input 
+      id="dimensions" 
+      formControlName="dimensions" 
+      placeholder="npr. 15cm x 21cm"
+      class="form-control">
+    <div *ngIf="bookForm.get('dimensions')?.touched && bookForm.get('dimensions')?.invalid" class="error">
+      Polje je obavezno
+    </div>
+  </div>
 
-  <label for="publishers">Izdavači*</label>
-  <select id="publishers" formControlName="publishers" multiple>
-    <option *ngFor="let p of publishersList" [value]="p.id">{{ p.name }}</option>
-  </select>
+  <!-- AUTORI - PADAJUĆI MENI -->
+  <div class="form-group">
+    <label>Autori*</label>
+    <div class="dropdown-select">
+      <button type="button" class="dropdown-toggle" (click)="showAuthors = !showAuthors">
+        Odabrani autori ({{selectedAuthors.length}})
+      </button>
+      <div class="dropdown-menu" *ngIf="showAuthors">
+        <div *ngFor="let author of authorsList" class="dropdown-item">
+          <label class="checkbox-label">
+            <input 
+              type="checkbox" 
+              [checked]="isAuthorSelected(author.id)"
+              (change)="toggleAuthor(author.id)">
+            {{ author.first_name }} {{ author.last_name }}
+          </label>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="selectedAuthors.length === 0 && bookForm.touched" class="error">
+      Odaberite bar jednog autora
+    </div>
+    <div class="selected-items" *ngIf="selectedAuthors.length > 0">
+      <strong>Odabrani autori:</strong>
+      <span *ngFor="let authorId of selectedAuthors" class="selected-tag">
+        {{ getAuthorName(authorId) }}
+        <button type="button" (click)="toggleAuthor(authorId)">×</button>
+      </span>
+    </div>
+  </div>
 
-  <button type="button" (click)="onSubmit()">Dalje</button>
-</div>
+  <!-- KATEGORIJE - PADAJUĆI MENI -->
+  <div class="form-group">
+    <label>Kategorije*</label>
+    <div class="dropdown-select">
+      <button type="button" class="dropdown-toggle" (click)="showCategories = !showCategories">
+        Odabrane kategorije ({{selectedCategories.length}})
+      </button>
+      <div class="dropdown-menu" *ngIf="showCategories">
+        <div *ngFor="let category of categoriesList" class="dropdown-item">
+          <label class="checkbox-label">
+            <input 
+              type="checkbox" 
+              [checked]="isCategorySelected(category.id)"
+              (change)="toggleCategory(category.id)">
+            {{ category.name }}
+          </label>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="selectedCategories.length === 0 && bookForm.touched" class="error">
+      Odaberite bar jednu kategoriju
+    </div>
+    <div class="selected-items" *ngIf="selectedCategories.length > 0">
+      <strong>Odabrane kategorije:</strong>
+      <span *ngFor="let categoryId of selectedCategories" class="selected-tag">
+        {{ getCategoryName(categoryId) }}
+        <button type="button" (click)="toggleCategory(categoryId)">×</button>
+      </span>
+    </div>
+  </div>
+
+  <!-- ŽANROVI - PADAJUĆI MENI -->
+  <div class="form-group">
+    <label>Žanrovi*</label>
+    <div class="dropdown-select">
+      <button type="button" class="dropdown-toggle" (click)="showGenres = !showGenres">
+        Odabrani žanrovi ({{selectedGenres.length}})
+      </button>
+      <div class="dropdown-menu" *ngIf="showGenres">
+        <div *ngFor="let genre of genresList" class="dropdown-item">
+          <label class="checkbox-label">
+            <input 
+              type="checkbox" 
+              [checked]="isGenreSelected(genre.id)"
+              (change)="toggleGenre(genre.id)">
+            {{ genre.name }}
+          </label>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="selectedGenres.length === 0 && bookForm.touched" class="error">
+      Odaberite bar jedan žanr
+    </div>
+    <div class="selected-items" *ngIf="selectedGenres.length > 0">
+      <strong>Odabrani žanrovi:</strong>
+      <span *ngFor="let genreId of selectedGenres" class="selected-tag">
+        {{ getGenreName(genreId) }}
+        <button type="button" (click)="toggleGenre(genreId)">×</button>
+      </span>
+    </div>
+  </div>
+
+  <!-- IZDAVAČI - PADAJUĆI MENI -->
+  <div class="form-group">
+    <label>Izdavači*</label>
+    <div class="dropdown-select">
+      <button type="button" class="dropdown-toggle" (click)="showPublishers = !showPublishers">
+        Odabrani izdavači ({{selectedPublishers.length}})
+      </button>
+      <div class="dropdown-menu" *ngIf="showPublishers">
+        <div *ngFor="let publisher of publishersList" class="dropdown-item">
+          <label class="checkbox-label">
+            <input 
+              type="checkbox" 
+              [checked]="isPublisherSelected(publisher.id)"
+              (change)="togglePublisher(publisher.id)">
+            {{ publisher.name }}
+          </label>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="selectedPublishers.length === 0 && bookForm.touched" class="error">
+      Odaberite bar jednog izdavača
+    </div>
+    <div class="selected-items" *ngIf="selectedPublishers.length > 0">
+      <strong>Odabrani izdavači:</strong>
+      <span *ngFor="let publisherId of selectedPublishers" class="selected-tag">
+        {{ getPublisherName(publisherId) }}
+        <button type="button" (click)="togglePublisher(publisherId)">×</button>
+      </span>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <button type="button" (click)="onSubmit()" class="btn btn-primary">Dalje</button>
+  </div>
+
+</form>

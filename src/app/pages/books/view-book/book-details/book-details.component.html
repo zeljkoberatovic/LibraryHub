@@ -1,3 +1,4 @@
+
 @if (book) {
   <div class="book-spec-container">
     <h2>{{ book.name }}</h2>
@@ -17,3 +18,9 @@
     <p><strong>ISBN:</strong> {{ book.isbn }}</p>
   </div>
 }
+
+
+<ng-template #notFound>
+  <p>Knjiga nije pronađena.</p>
+</ng-template>
+

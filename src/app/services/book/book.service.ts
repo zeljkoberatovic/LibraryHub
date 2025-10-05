@@ -6,6 +6,12 @@ import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class BookService {
+  getCategories() {
+    throw new Error('Method not implemented.');
+  }
+  getAuthors() {
+    throw new Error('Method not implemented.');
+  }
   private http = inject(HttpClient);
   private baseUrl = environment.apiUrl + '/books';
 
@@ -15,11 +21,7 @@ export class BookService {
       .pipe(map(res => res.data.data));
   }
 
-  // Vraća jednu knjigu iz response.data.data[0]
-  //getBook(id: number): Observable<Book> {
-   // return this.http.get<{ status: string; data: { meta: any; data: Book[] } }>(`${this.baseUrl}/${id}`)
-     // .pipe(map(res => res.data.data[0]));
-  //}
+ 
 
   getBook(id: number): Observable<Book> {
   return this.http.get<{ status: string; data: Book }>(`${this.baseUrl}/${id}`)
@@ -28,9 +30,10 @@ export class BookService {
 
 
   createBook(book: CreateBookDto): Observable<Book> {
-    return this.http.post<{ status: string; data: { data: Book[] } }>(this.baseUrl, book)
-      .pipe(map(res => res.data.data[0]));
-  }
+  return this.http.post<{ status: string; data: Book }>(this.baseUrl, book)
+    .pipe(map(res => res.data));
+}
+
 
   updateBook(id: number, book: Book): Observable<Book> {
     return this.http.put<{ status: string; data: { data: Book[] } }>(`${this.baseUrl}/${id}`, book)
