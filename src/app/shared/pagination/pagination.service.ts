@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 @Injectable({ providedIn: 'root' })
 export class PaginationService {
   currentPage = 1;
-  itemsPerPage = 6;
+  itemsPerPage = 8;
   totalPages = 1;
 
   reset() {

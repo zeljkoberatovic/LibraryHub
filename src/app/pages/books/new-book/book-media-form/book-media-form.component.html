@@ -1,13 +1,61 @@
-<div [formGroup]="mediaForm" class="book-media-form">
-
-  <div class="form-group">
-    <h3>Multimedija</h3>
-    <p class="info-text">Slike knjige možete dodati nakon kreiranja knjige.</p>
-    <p class="info-text">Kliknite na "Sačuvaj medije" da nastavite.</p>
+<form [formGroup]="mediaForm" class="book-media-form">
+  <div class="form-header">
+    <h3>Multimedija knjige</h3>
+    <p>Dodajte slike i dodatne materijale (opciono)</p>
   </div>
 
+  <div class="form-grid">
+    <!-- Info sekcija -->
+    <div class="form-group full-width">
+      <div class="info-card">
+        <div class="info-icon">📷</div>
+        <div class="info-content">
+          <h4>Slike knjige</h4>
+          <p>Slike knjige možete dodati nakon što se knjiga kreira. U sekciji za uređivanje knjige 
+             imaćete opciju za upload slika korice i dodatnih fotografija.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Placeholder za budući upload -->
+    <div class="form-group full-width">
+      <div class="upload-placeholder">
+        <div class="upload-icon">🖼️</div>
+        <h4>Upload slika će biti dostupan</h4>
+        <p>Nakon kreiranja knjige, moći ćete da dodate slike korice, unutrašnjosti i dodatne fotografije.</p>
+        <div class="feature-list">
+          <div class="feature-item">
+            <span class="check-icon">✓</span>
+            <span>Slika korice (prednja i zadnja strana)</span>
+          </div>
+          <div class="feature-item">
+            <span class="check-icon">✓</span>
+            <span>Fotografije unutrašnjosti knjige</span>
+          </div>
+          <div class="feature-item">
+            <span class="check-icon">✓</span>
+            <span>Dodatne ilustracije i materijali</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Trenutni status -->
+    <div class="form-group full-width">
+      <div class="status-card">
+        <div class="status-header">
+          <span class="status-icon">ℹ️</span>
+          <strong>Trenutni status:</strong>
+        </div>
+        <p>Nema uploadovanih slika. Možete nastaviti sa kreiranjem knjige i dodati slike kasnije.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Submit Button -->
   <div class="form-actions">
-    <button type="button" (click)="onSubmit()" class="btn btn-primary">Sačuvaj medije</button>
+    <button type="button" (click)="onSubmit()" class="btn btn-primary">
+      Završi kreiranje knjige
+    </button>
   </div>
-
-</div>
+</form>

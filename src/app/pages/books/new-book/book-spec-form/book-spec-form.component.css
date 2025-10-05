@@ -1,49 +1,159 @@
-.spec-container {
-  padding: 0;              /* uklopljeno ispod tabova */
+/* book-spec-form.component.css */
+.book-spec-form {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 24px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e1e5e9;
 }
 
-h3 {
-  color: #36454f;
+.form-header {
+  margin-bottom: 28px;
+  text-align: center;
+}
+
+.form-header h3 {
+  color: #1a365d;
+  font-size: 24px;
   font-weight: 600;
-  font-size: 22px;
-  margin: 0 0 16px 0;
-  border-bottom: 2px solid #ddd;
-  padding-bottom: 6px;
+  margin: 0 0 8px 0;
 }
 
-.grid {
+.form-header p {
+  color: #718096;
+  font-size: 14px;
+  margin: 0;
+}
+
+.form-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr; /* dva stuba */
-  gap: 16px 28px;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
 }
 
-label {
+.form-group {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  font-size: 13px;
-  color: #374151;
+  margin-bottom: 20px;
 }
 
-input, select {
-  padding: 6px 8px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 13px;
-  box-sizing: border-box;
+.form-group.full-width {
+  grid-column: 1 / -1;
 }
 
-input:focus, select:focus {
-  border-color: #49607a;
+.form-group label {
+  font-weight: 500;
+  color: #2d3748;
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+.form-group label.required::after {
+  content: " *";
+  color: #e53e3e;
+}
+
+.form-control {
+  padding: 10px 12px;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  background: #ffffff;
+}
+
+.form-control:focus {
   outline: none;
-  box-shadow: 0 0 4px rgba(73, 96, 122, 0.3);
+  border-color: #4299e1;
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
 }
 
-.span-2 {
-  grid-column: span 2; /* ISBN preko cele širine */
+.form-control.error {
+  border-color: #e53e3e;
 }
 
+select.form-control {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 8px center;
+  background-repeat: no-repeat;
+  background-size: 16px;
+  padding-right: 32px;
+}
+
+/* Error Messages */
+.error {
+  color: #e53e3e;
+  font-size: 12px;
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.error::before {
+  content: "⚠";
+  font-size: 10px;
+}
+
+/* Form Actions */
+.form-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.btn {
+  padding: 10px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-primary {
+  background: #4299e1;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #3182ce;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(66, 153, 225, 0.3);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+/* Hint Text */
 .hint {
   color: #6b7280;
   font-size: 12px;
+  margin-top: 4px;
+  font-style: italic;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .book-spec-form {
+    margin: 0 16px;
+    padding: 20px;
+  }
+  
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .form-group {
+    margin-bottom: 16px;
+  }
 }
