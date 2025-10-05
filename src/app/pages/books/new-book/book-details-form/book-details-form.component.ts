@@ -1,12 +1,12 @@
 import { Component, EventEmitter, HostListener, Input, Output, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+
 import { Author, Category, Genre, Publisher, BookDetailsPayload } from '@/app/models/book.model';
 
 @Component({
   selector: 'app-book-details-form',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule],
   templateUrl: './book-details-form.component.html',
   styleUrls: ['./book-details-form.component.css']
 })

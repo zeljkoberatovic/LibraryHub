@@ -1,1 +1,114 @@
-<p>edit-book works!</p>
+<div class="edit-book-container">
+  <nav class="breadcrumb">
+    <a routerLink="/books" class="breadcrumb-link"> Sve knjige</a>
+    <span class="breadcrumb-separator">/</span>
+    <span class="breadcrumb-current"> Izmjeni knjigu</span>
+  </nav>
+
+  <div class="page-header">
+    <div class="header-content">
+      <div class="header-title">
+        <h2>Izmjeni knjigu</h2>
+        <p class="page-description">Ažurirajte podatke o knjizi</p>
+      </div>
+
+    </div>
+  </div>
+
+  @if (isLoading) {
+    <div class="loading-state">
+      <div class="loading-spinner"></div>
+      <p>Učitavanje podataka knjige...</p>
+    </div>
+  }
+
+  @if (!isLoading) {
+    <form [formGroup]="bookForm" class="book-form">
+      <div class="form-grid">
+        <div class="form-group full-width">
+          <label for="name" class="required">Naziv knjige</label>
+          <input id="name" type="text" formControlName="name" class="form-control">
+        </div>
+        <div class="form-group full-width">
+          <label for="description">Opis knjige</label>
+          <textarea id="description" formControlName="description" rows="4" class="form-control"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="number_of_pages" class="required">Broj strana</label>
+          <input id="number_of_pages" type="number" formControlName="number_of_pages" class="form-control">
+        </div>
+        <div class="form-group">
+          <label for="number_of_copies" class="required">Broj primjeraka</label>
+          <input id="number_of_copies" type="number" formControlName="number_of_copies" class="form-control">
+        </div>
+        <div class="form-group">
+          <label for="isbn" class="required">ISBN broj</label>
+          <input id="isbn" type="text" formControlName="isbn" class="form-control">
+        </div>
+        <div class="form-group">
+          <label for="language" class="required">Jezik</label>
+          <input id="language" type="text" formControlName="language" class="form-control">
+        </div>
+        <div class="form-group">
+          <label for="script" class="required">Pismo</label>
+          <input id="script" type="text" formControlName="script" class="form-control">
+        </div>
+        <div class="form-group">
+          <label for="binding" class="required">Povez</label>
+          <input id="binding" type="text" formControlName="binding" class="form-control">
+        </div>
+        <div class="form-group">
+          <label for="dimensions" class="required">Dimenzije</label>
+          <input id="dimensions" type="text" formControlName="dimensions" class="form-control">
+        </div>
+        <!-- Dropdown meniji -->
+        <div class="form-group full-width">
+          <label for="authors">Autori</label>
+          <select id="authors" formControlName="authors" multiple class="form-control">
+            @for (author of authorsList; track author) {
+              <option [value]="author.id">
+                {{ author.first_name }} {{ author.last_name }}
+              </option>
+            }
+          </select>
+        </div>
+        <div class="form-group full-width">
+          <label for="categories">Kategorije</label>
+          <select id="categories" formControlName="categories" multiple class="form-control">
+            @for (category of categoriesList; track category) {
+              <option [value]="category.id">
+                {{ category.name }}
+              </option>
+            }
+          </select>
+        </div>
+        <div class="form-group full-width">
+          <label for="genres">Žanrovi</label>
+          <select id="genres" formControlName="genres" multiple class="form-control">
+            @for (genre of genresList; track genre) {
+              <option [value]="genre.id">
+                {{ genre.name }}
+              </option>
+            }
+          </select>
+        </div>
+        <div class="form-group full-width">
+          <label for="publishers">Izdavači</label>
+          <select id="publishers" formControlName="publishers" multiple class="form-control">
+            @for (publisher of publishersList; track publisher) {
+              <option [value]="publisher.id">
+                {{ publisher.name }}
+              </option>
+            }
+          </select>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn btn-secondary" (click)="onCancel()"> Otkaži</button>
+        <button type="button" class="btn btn-primary" (click)="onSubmit()" [disabled]="isSubmitting">
+          Sačuvaj
+        </button>
+      </div>
+    </form>
+  }
+</div>

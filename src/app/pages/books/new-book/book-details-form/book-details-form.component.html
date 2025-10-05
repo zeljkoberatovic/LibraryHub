@@ -8,225 +8,275 @@
     <!-- Naziv knjige -->
     <div class="form-group full-width">
       <label for="name" class="required">Naziv knjige</label>
-      <input 
-        id="name" 
-        type="text" 
-        formControlName="name" 
+      <input
+        id="name"
+        type="text"
+        formControlName="name"
         placeholder="Unesite naziv knjige"
         class="form-control"
         [class.error]="bookForm.get('name')?.touched && bookForm.get('name')?.invalid">
-      <div *ngIf="bookForm.get('name')?.touched && bookForm.get('name')?.invalid" class="error">
-        Naziv knjige je obavezan
+        @if (bookForm.get('name')?.touched && bookForm.get('name')?.invalid) {
+          <div class="error">
+            Naziv knjige je obavezan
+          </div>
+        }
       </div>
-    </div>
 
-    <!-- Opis -->
-    <div class="form-group full-width">
-      <label for="description">Opis knjige</label>
-      <textarea 
-        id="description" 
-        formControlName="description" 
-        placeholder="Opis sadržaja i karakteristika knjige..."
-        rows="4"
+      <!-- Opis -->
+      <div class="form-group full-width">
+        <label for="description">Opis knjige</label>
+        <textarea
+          id="description"
+          formControlName="description"
+          placeholder="Opis sadržaja i karakteristika knjige..."
+          rows="4"
         class="form-control"></textarea>
-    </div>
-
-    <!-- Broj primeraka -->
-    <div class="form-group">
-      <label for="number_of_copies" class="required">Broj primeraka</label>
-      <input 
-        id="number_of_copies" 
-        type="number" 
-        formControlName="number_of_copies" 
-        placeholder="0"
-        min="1"
-        class="form-control"
-        [class.error]="bookForm.get('number_of_copies')?.touched && bookForm.get('number_of_copies')?.invalid">
-      <div *ngIf="bookForm.get('number_of_copies')?.touched && bookForm.get('number_of_copies')?.invalid" class="error">
-        Broj primeraka je obavezan
       </div>
-    </div>
 
-    <!-- Jezik -->
-    <div class="form-group">
-      <label for="language" class="required">Jezik</label>
-      <select 
-        id="language" 
-        formControlName="language"
-        class="form-control"
-        [class.error]="bookForm.get('language')?.touched && bookForm.get('language')?.invalid">
-        <option value="" disabled selected>Izaberite jezik</option>
-        <option *ngFor="let lang of languages" [value]="lang.id">{{ lang.name }}</option>
-      </select>
-      <div *ngIf="bookForm.get('language')?.touched && bookForm.get('language')?.invalid" class="error">
-        Jezik je obavezan
-      </div>
-    </div>
+      <!-- Broj primeraka -->
+      <div class="form-group">
+        <label for="number_of_copies" class="required">Broj primeraka</label>
+        <input
+          id="number_of_copies"
+          type="number"
+          formControlName="number_of_copies"
+          placeholder="0"
+          min="1"
+          class="form-control"
+          [class.error]="bookForm.get('number_of_copies')?.touched && bookForm.get('number_of_copies')?.invalid">
+          @if (bookForm.get('number_of_copies')?.touched && bookForm.get('number_of_copies')?.invalid) {
+            <div class="error">
+              Broj primeraka je obavezan
+            </div>
+          }
+        </div>
 
-    <!-- Dimenzije -->
-    <div class="form-group full-width">
-      <label for="dimensions" class="required">Dimenzije</label>
-      <input 
-        id="dimensions" 
-        type="text" 
-        formControlName="dimensions" 
-        placeholder="npr. 15 × 21 × 2 cm"
-        class="form-control"
-        [class.error]="bookForm.get('dimensions')?.touched && bookForm.get('dimensions')?.invalid">
-      <div *ngIf="bookForm.get('dimensions')?.touched && bookForm.get('dimensions')?.invalid" class="error">
-        Dimenzije su obavezne
-      </div>
-    </div>
+        <!-- Jezik -->
+        <div class="form-group">
+          <label for="language" class="required">Jezik</label>
+          <select
+            id="language"
+            formControlName="language"
+            class="form-control"
+            [class.error]="bookForm.get('language')?.touched && bookForm.get('language')?.invalid">
+            <option value="" disabled selected>Izaberite jezik</option>
+            @for (lang of languages; track lang) {
+              <option [value]="lang.id">{{ lang.name }}</option>
+            }
+          </select>
+          @if (bookForm.get('language')?.touched && bookForm.get('language')?.invalid) {
+            <div class="error">
+              Jezik je obavezan
+            </div>
+          }
+        </div>
 
-    <!-- Autori -->
-    <div class="form-group full-width">
-      <label class="required">Autori</label>
-      <div class="dropdown-select">
-        <button 
-          type="button" 
-          class="dropdown-toggle"
-          [class.active]="showAuthors"
-          (click)="showAuthors = !showAuthors; $event.stopPropagation()">
-          <span>{{ selectedAuthors.length > 0 ? ('Odabrano: ' + selectedAuthors.length) : 'Izaberite autore...' }}</span>
-        </button>
-        <div class="dropdown-menu" *ngIf="showAuthors">
-          <div *ngFor="let author of authorsList" class="dropdown-item">
-            <label class="checkbox-label">
-              <input 
-                type="checkbox" 
-                [checked]="isAuthorSelected(author.id)"
-                (change)="toggleAuthor(author.id)">
-              {{ author.first_name }} {{ author.last_name }}
-            </label>
+        <!-- Dimenzije -->
+        <div class="form-group full-width">
+          <label for="dimensions" class="required">Dimenzije</label>
+          <input
+            id="dimensions"
+            type="text"
+            formControlName="dimensions"
+            placeholder="npr. 15 × 21 × 2 cm"
+            class="form-control"
+            [class.error]="bookForm.get('dimensions')?.touched && bookForm.get('dimensions')?.invalid">
+            @if (bookForm.get('dimensions')?.touched && bookForm.get('dimensions')?.invalid) {
+              <div class="error">
+                Dimenzije su obavezne
+              </div>
+            }
           </div>
-        </div>
-      </div>
-      <div *ngIf="selectedAuthors.length === 0 && bookForm.touched" class="error">
-        Odaberite bar jednog autora
-      </div>
-      <div class="selected-items" *ngIf="selectedAuthors.length > 0">
-        <div class="selected-tags">
-          <span *ngFor="let authorId of selectedAuthors" class="selected-tag">
-            {{ getAuthorName(authorId) }}
-            <button type="button" (click)="toggleAuthor(authorId)">×</button>
-          </span>
-        </div>
-      </div>
-    </div>
 
-    <!-- Kategorije -->
-    <div class="form-group full-width">
-      <label class="required">Kategorije</label>
-      <div class="dropdown-select">
-        <button 
-          type="button" 
-          class="dropdown-toggle"
-          [class.active]="showCategories"
-          (click)="showCategories = !showCategories; $event.stopPropagation()">
-          <span>{{ selectedCategories.length > 0 ? ('Odabrano: ' + selectedCategories.length) : 'Izaberite kategorije...' }}</span>
-        </button>
-        <div class="dropdown-menu" *ngIf="showCategories">
-          <div *ngFor="let category of categoriesList" class="dropdown-item">
-            <label class="checkbox-label">
-              <input 
-                type="checkbox" 
-                [checked]="isCategorySelected(category.id)"
-                (change)="toggleCategory(category.id)">
-              {{ category.name }}
-            </label>
-          </div>
-        </div>
-      </div>
-      <div *ngIf="selectedCategories.length === 0 && bookForm.touched" class="error">
-        Odaberite bar jednu kategoriju
-      </div>
-      <div class="selected-items" *ngIf="selectedCategories.length > 0">
-        <div class="selected-tags">
-          <span *ngFor="let categoryId of selectedCategories" class="selected-tag">
-            {{ getCategoryName(categoryId) }}
-            <button type="button" (click)="toggleCategory(categoryId)">×</button>
-          </span>
-        </div>
-      </div>
-    </div>
+          <!-- Autori -->
+          <div class="form-group full-width">
+            <label class="required">Autori</label>
+            <div class="dropdown-select">
+              <button
+                type="button"
+                class="dropdown-toggle"
+                [class.active]="showAuthors"
+                (click)="showAuthors = !showAuthors; $event.stopPropagation()">
+                <span>{{ selectedAuthors.length > 0 ? ('Odabrano: ' + selectedAuthors.length) : 'Izaberite autore...' }}</span>
+              </button>
+              @if (showAuthors) {
+                <div class="dropdown-menu">
+                  @for (author of authorsList; track author) {
+                    <div class="dropdown-item">
+                      <label class="checkbox-label">
+                        <input
+                          type="checkbox"
+                          [checked]="isAuthorSelected(author.id)"
+                          (change)="toggleAuthor(author.id)">
+                          {{ author.first_name }} {{ author.last_name }}
+                        </label>
+                      </div>
+                    }
+                  </div>
+                }
+              </div>
+              @if (selectedAuthors.length === 0 && bookForm.touched) {
+                <div class="error">
+                  Odaberite bar jednog autora
+                </div>
+              }
+              @if (selectedAuthors.length > 0) {
+                <div class="selected-items">
+                  <div class="selected-tags">
+                    @for (authorId of selectedAuthors; track authorId) {
+                      <span class="selected-tag">
+                        {{ getAuthorName(authorId) }}
+                        <button type="button" (click)="toggleAuthor(authorId)">×</button>
+                      </span>
+                    }
+                  </div>
+                </div>
+              }
+            </div>
 
-    <!-- Žanrovi -->
-    <div class="form-group full-width">
-      <label class="required">Žanrovi</label>
-      <div class="dropdown-select">
-        <button 
-          type="button" 
-          class="dropdown-toggle"
-          [class.active]="showGenres"
-          (click)="showGenres = !showGenres; $event.stopPropagation()">
-          <span>{{ selectedGenres.length > 0 ? ('Odabrano: ' + selectedGenres.length) : 'Izaberite žanrove...' }}</span>
-        </button>
-        <div class="dropdown-menu" *ngIf="showGenres">
-          <div *ngFor="let genre of genresList" class="dropdown-item">
-            <label class="checkbox-label">
-              <input 
-                type="checkbox" 
-                [checked]="isGenreSelected(genre.id)"
-                (change)="toggleGenre(genre.id)">
-              {{ genre.name }}
-            </label>
-          </div>
-        </div>
-      </div>
-      <div *ngIf="selectedGenres.length === 0 && bookForm.touched" class="error">
-        Odaberite bar jedan žanr
-      </div>
-      <div class="selected-items" *ngIf="selectedGenres.length > 0">
-        <div class="selected-tags">
-          <span *ngFor="let genreId of selectedGenres" class="selected-tag">
-            {{ getGenreName(genreId) }}
-            <button type="button" (click)="toggleGenre(genreId)">×</button>
-          </span>
-        </div>
-      </div>
-    </div>
+            <!-- Kategorije -->
+            <div class="form-group full-width">
+              <label class="required">Kategorije</label>
+              <div class="dropdown-select">
+                <button
+                  type="button"
+                  class="dropdown-toggle"
+                  [class.active]="showCategories"
+                  (click)="showCategories = !showCategories; $event.stopPropagation()">
+                  <span>{{ selectedCategories.length > 0 ? ('Odabrano: ' + selectedCategories.length) : 'Izaberite kategorije...' }}</span>
+                </button>
+                @if (showCategories) {
+                  <div class="dropdown-menu">
+                    @for (category of categoriesList; track category) {
+                      <div class="dropdown-item">
+                        <label class="checkbox-label">
+                          <input
+                            type="checkbox"
+                            [checked]="isCategorySelected(category.id)"
+                            (change)="toggleCategory(category.id)">
+                            {{ category.name }}
+                          </label>
+                        </div>
+                      }
+                    </div>
+                  }
+                </div>
+                @if (selectedCategories.length === 0 && bookForm.touched) {
+                  <div class="error">
+                    Odaberite bar jednu kategoriju
+                  </div>
+                }
+                @if (selectedCategories.length > 0) {
+                  <div class="selected-items">
+                    <div class="selected-tags">
+                      @for (categoryId of selectedCategories; track categoryId) {
+                        <span class="selected-tag">
+                          {{ getCategoryName(categoryId) }}
+                          <button type="button" (click)="toggleCategory(categoryId)">×</button>
+                        </span>
+                      }
+                    </div>
+                  </div>
+                }
+              </div>
 
-    <!-- Izdavači -->
-    <div class="form-group full-width">
-      <label class="required">Izdavači</label>
-      <div class="dropdown-select">
-        <button 
-          type="button" 
-          class="dropdown-toggle"
-          [class.active]="showPublishers"
-          (click)="showPublishers = !showPublishers; $event.stopPropagation()">
-          <span>{{ selectedPublishers.length > 0 ? ('Odabrano: ' + selectedPublishers.length) : 'Izaberite izdavače...' }}</span>
-        </button>
-        <div class="dropdown-menu" *ngIf="showPublishers">
-          <div *ngFor="let publisher of publishersList" class="dropdown-item">
-            <label class="checkbox-label">
-              <input 
-                type="checkbox" 
-                [checked]="isPublisherSelected(publisher.id)"
-                (change)="togglePublisher(publisher.id)">
-              {{ publisher.name }}
-            </label>
-          </div>
-        </div>
-      </div>
-      <div *ngIf="selectedPublishers.length === 0 && bookForm.touched" class="error">
-        Odaberite bar jednog izdavača
-      </div>
-      <div class="selected-items" *ngIf="selectedPublishers.length > 0">
-        <div class="selected-tags">
-          <span *ngFor="let publisherId of selectedPublishers" class="selected-tag">
-            {{ getPublisherName(publisherId) }}
-            <button type="button" (click)="togglePublisher(publisherId)">×</button>
-          </span>
-        </div>
-      </div>
-    </div>
+              <!-- Žanrovi -->
+              <div class="form-group full-width">
+                <label class="required">Žanrovi</label>
+                <div class="dropdown-select">
+                  <button
+                    type="button"
+                    class="dropdown-toggle"
+                    [class.active]="showGenres"
+                    (click)="showGenres = !showGenres; $event.stopPropagation()">
+                    <span>{{ selectedGenres.length > 0 ? ('Odabrano: ' + selectedGenres.length) : 'Izaberite žanrove...' }}</span>
+                  </button>
+                  @if (showGenres) {
+                    <div class="dropdown-menu">
+                      @for (genre of genresList; track genre) {
+                        <div class="dropdown-item">
+                          <label class="checkbox-label">
+                            <input
+                              type="checkbox"
+                              [checked]="isGenreSelected(genre.id)"
+                              (change)="toggleGenre(genre.id)">
+                              {{ genre.name }}
+                            </label>
+                          </div>
+                        }
+                      </div>
+                    }
+                  </div>
+                  @if (selectedGenres.length === 0 && bookForm.touched) {
+                    <div class="error">
+                      Odaberite bar jedan žanr
+                    </div>
+                  }
+                  @if (selectedGenres.length > 0) {
+                    <div class="selected-items">
+                      <div class="selected-tags">
+                        @for (genreId of selectedGenres; track genreId) {
+                          <span class="selected-tag">
+                            {{ getGenreName(genreId) }}
+                            <button type="button" (click)="toggleGenre(genreId)">×</button>
+                          </span>
+                        }
+                      </div>
+                    </div>
+                  }
+                </div>
 
-    <!-- Submit Button -->
-    <div class="form-actions">
-      <button type="button" (click)="onSubmit()" class="btn btn-primary">
-        Dalje → Specifikacije
-      </button>
-    </div>
-  </div>
-</form>
+                <!-- Izdavači -->
+                <div class="form-group full-width">
+                  <label class="required">Izdavači</label>
+                  <div class="dropdown-select">
+                    <button
+                      type="button"
+                      class="dropdown-toggle"
+                      [class.active]="showPublishers"
+                      (click)="showPublishers = !showPublishers; $event.stopPropagation()">
+                      <span>{{ selectedPublishers.length > 0 ? ('Odabrano: ' + selectedPublishers.length) : 'Izaberite izdavače...' }}</span>
+                    </button>
+                    @if (showPublishers) {
+                      <div class="dropdown-menu">
+                        @for (publisher of publishersList; track publisher) {
+                          <div class="dropdown-item">
+                            <label class="checkbox-label">
+                              <input
+                                type="checkbox"
+                                [checked]="isPublisherSelected(publisher.id)"
+                                (change)="togglePublisher(publisher.id)">
+                                {{ publisher.name }}
+                              </label>
+                            </div>
+                          }
+                        </div>
+                      }
+                    </div>
+                    @if (selectedPublishers.length === 0 && bookForm.touched) {
+                      <div class="error">
+                        Odaberite bar jednog izdavača
+                      </div>
+                    }
+                    @if (selectedPublishers.length > 0) {
+                      <div class="selected-items">
+                        <div class="selected-tags">
+                          @for (publisherId of selectedPublishers; track publisherId) {
+                            <span class="selected-tag">
+                              {{ getPublisherName(publisherId) }}
+                              <button type="button" (click)="togglePublisher(publisherId)">×</button>
+                            </span>
+                          }
+                        </div>
+                      </div>
+                    }
+                  </div>
+
+                  <!-- Submit Button -->
+                  <div class="form-actions">
+                    <button type="button" (click)="onSubmit()" class="btn btn-primary">
+                      Dalje → Specifikacije
+                    </button>
+                  </div>
+                </div>
+              </form>

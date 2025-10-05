@@ -15,25 +15,31 @@
   </nav>
 
   <!-- Details Form -->
-  <div *ngIf="activeTab === 'details'">
-    <app-book-details-form 
-      [authorsList]="authorsList" 
-      [categoriesList]="categoriesList"
-      [genresList]="genresList"
-      [publishersList]="publishersList"
-      (detailsSubmitted)="onDetailsSubmit($event)">
-    </app-book-details-form>
-  </div>
+  @if (activeTab === 'details') {
+    <div>
+      <app-book-details-form
+        [authorsList]="authorsList"
+        [categoriesList]="categoriesList"
+        [genresList]="genresList"
+        [publishersList]="publishersList"
+        (detailsSubmitted)="onDetailsSubmit($event)">
+      </app-book-details-form>
+    </div>
+  }
 
   <!-- Specification Form -->
-  <div *ngIf="activeTab === 'specification'">
-    <app-book-spec-form (specSubmitted)="onSpecSubmit($event)"></app-book-spec-form>
-  </div>
+  @if (activeTab === 'specification') {
+    <div>
+      <app-book-spec-form (specSubmitted)="onSpecSubmit($event)"></app-book-spec-form>
+    </div>
+  }
 
   <!-- Media Form -->
-  <div *ngIf="activeTab === 'media'">
-    <app-book-media-form (mediaSubmitted)="onMediaSubmit($event)"></app-book-media-form>
-  </div>
+  @if (activeTab === 'media') {
+    <div>
+      <app-book-media-form (mediaSubmitted)="onMediaSubmit($event)"></app-book-media-form>
+    </div>
+  }
 
   <!-- Save Button -->
   <div class="form-actions">

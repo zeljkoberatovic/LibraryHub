@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { Router, RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 
@@ -22,13 +22,12 @@ import { CreateBookDto } from '../../../models/book.model';
   templateUrl: './new-book.component.html',
   styleUrls: ['./new-book.component.css'],
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     BookDetailsFormComponent,
     BookSpecFormComponent,
     BookMediaFormComponent,
     RouterModule
-  ]
+]
 })
 export class NewBookComponent implements OnInit {
   private bookService = inject(BookService);
