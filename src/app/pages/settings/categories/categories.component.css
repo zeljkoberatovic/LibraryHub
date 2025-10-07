@@ -30,7 +30,7 @@ h2 {
 
 .add-button {
   background-color: #49607a;
-  color: #d4af37;
+  color: #fff;
   padding: 10px 20px;
   font-size: 14px;
   border: none;
@@ -41,10 +41,12 @@ h2 {
   font-weight: 400;
   letter-spacing: 0.05em;
 }
+
 .add-button:hover {
   background-color: #435971;
   box-shadow: 0 6px 12px rgba(67, 89, 113, 0.7);
 }
+
 .add-button:active {
   background-color: #3a4f62;
   box-shadow: 0 3px 6px rgba(58, 79, 98, 0.8);
@@ -65,35 +67,36 @@ th, td {
 
 .actions-cell {
   position: relative;
+  text-align: right;
 }
 
 .menu-icon {
   cursor: pointer;
   font-size: 22px;
-  user-select: none;
   padding: 4px 8px;
   border-radius: 50%;
   transition: background 0.2s;
 }
+
 .menu-icon:hover {
   background: #f0f0f0;
 }
 
-.menu {
+.actions-cell .menu {
   position: absolute;
   top: 28px;
   right: 0;
-  background: #2c3e50;
-  border: 1px solid #f1c40f;
+  background: #f7f7f7;
+  border: 1px solid #e2e8f0;
   border-radius: 6px;
-  box-shadow: 0 4px 12px rgba(241, 196, 15, 0.4);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
   display: flex;
   flex-direction: column;
   min-width: 200px;
   z-index: 1000;
 }
 
-.menu button {
+.actions-cell .menu button {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -103,25 +106,33 @@ th, td {
   text-align: left;
   cursor: pointer;
   font-size: 14px;
-  color: #f1c40f;
+  color: #4a5568;
   transition: background 0.3s, color 0.3s;
 }
 
-.menu button .material-icons {
-  font-size: 18px;
-  color: #f1c40f;
+.actions-cell .menu button .material-icons {
+  font-size: 16px;
+  color: #4a5568;
 }
 
-.menu button:hover {
-  background: #34495e;
-  color: #ffd700;
+.actions-cell .menu button:hover {
+  background: #e2e8f0;
+  color: #2d3748;
 }
 
-.menu button:hover .material-icons {
-  color: #ffd700;
+.actions-cell .menu button:hover .material-icons {
+  color: #2d3748;
 }
 
-/* Forma za edit/add */
+.actions-cell .menu button.delete {
+  color: #e53e3e;
+}
+
+.actions-cell .menu button.delete:hover {
+  background: #fed7d7;
+  color: #c53030;
+}
+
 .category-form {
   display: flex;
   gap: 10px;
