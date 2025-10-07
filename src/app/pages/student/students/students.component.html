@@ -1,66 +1,106 @@
-<div class="container">
-  <div class="header-with-search">
-    <h2>Studenti</h2>
-    <input
-      type="text"
-      placeholder="Pretraži..."
-      [(ngModel)]="searchTerm"
-      class="search-input"
-    />
+<div class="books-container">
+  <!-- Header sa pretragom -->
+  <div class="page-header">
+    <div class="header-content">
+      <div class="header-title">
+        <h2>Evidencija studenata</h2>
+        <p class="page-description">Pregled i upravljanje svim studentima u sistemu</p>
+      </div>
+      <div class="header-actions">
+        <div class="search-box">
+          <span class="search-icon"></span>
+          <input
+            type="text"
+            placeholder="Pretraži studente..."
+            [(ngModel)]="searchTerm"
+            class="search-input"
+          />
+        </div>
+        <button class="btn btn-primary" [routerLink]="['/students/new']">
+          <span class="btn-icon"></span>
+          Novi student
+        </button>
+      </div>
+    </div>
   </div>
 
-  <button class="add-button" [routerLink]="['/students/new']">+ Novi student</button>
+  <!-- Tabela -->
+  <div class="table-container">
+    <table class="books-table">
+      <thead>
+        <tr>
+          <th>Avatar</th>
+          <th (click)="sortByName()" class="sortable-header">
+            <div class="header-content">
+              Ime i prezime
+              <span [ngClass]="sortDirection === 'asc' ? 'sort-arrow asc' : 'sort-arrow desc'"></span>
+            </div>
+          </th>
+          <th>Email</th>
+          <th>Tip korisnika</th>
+          <th>Zadnji pristup</th>
+          <th class="actions-column"></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (student of pagedStudents; track student; let i = $index) {
+          <tr class="table-row">
+            <td>
+              <img [src]="getStudentImageUrl(student.profile_picture)" alt="Avatar" class="avatar"/>
+            </td>
+            <td class="book-name">{{ student.first_name }} {{ student.last_name }}</td>
+            <td>{{ student.email }}</td>
+            <td>Student</td>
+            <td>{{ student.last_login || 'Nikada' }}</td>
+            <td class="actions-cell">
+              <button class="menu-trigger" (click)="toggleMenu(i)">
+                <span class="menu-icon">⋮</span>
+              </button>
+              @if (openMenuIndex === i) {
+                <div class="dropdown-menu">
+                  <button class="menu-item" (click)="showDetails(student)">
+                    <span class="menu-icon">👁️</span>
+                    Detalji studenta
+                  </button>
+                  <button class="menu-item" (click)="editUser(student)">
+                    <span class="menu-icon">✏️</span>
+                    Izmijeni studenta
+                  </button>
+                  <div class="menu-divider"></div>
+                  <button class="menu-item delete" (click)="deleteUser(student)">
+                    <span class="menu-icon">❌</span>
+                    Izbriši studenta
+                  </button>
+                </div>
+              }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
 
-  <table>
-    <thead>
-      <tr>
-        <th></th>
-        <th (click)="sortByName()" style="cursor: pointer;">
-          Ime i prezime
-          <span [ngClass]="sortDirection === 'asc' ? 'arrow down' : 'arrow up'"></span>
-        </th>
-        <th>Email</th>
-        <th>Tip korisnika</th>
-        <th>Zadnji pristup</th>
-        <th></th>
-      </tr>
-    </thead>
+    <!-- Empty state -->
+    @if (pagedStudents.length === 0) {
+      <div class="empty-state">
+        <div class="empty-icon">🎓</div>
+        <h3>Nema pronađenih studenata</h3>
+        <p>Pokušajte da promijenite kriterijum pretrage ili dodajte novog studenta.</p>
+        <button class="btn btn-primary" [routerLink]="['/students/new']">
+          <span class="btn-icon">➕</span>
+          Dodaj studenta
+        </button>
+      </div>
+    }
+  </div>
 
-    <tbody>
-      <tr *ngFor="let student of pagedStudents; let i = index; trackBy: trackByFn">
-        <td>
-          <img
-            [src]="getStudentImageUrl(student.profile_picture)"
-            alt="Profilna slika"
-            class="avatar"
-          />
-        </td>
-        <td>{{ student.first_name }} {{ student.last_name }}</td>
-        <td>{{ student.email }}</td>
-        <td>Student</td>
-        <td>{{ student.last_login || 'Nikada' }}</td>
-        <td class="actions-cell" style="position: relative;">
-          <span class="menu-icon" (click)="toggleMenu(i)">⋮</span>
-
-          <div *ngIf="openMenuIndex === i" class="menu">
-            <button (click)="showDetails(student)">
-              <span class="material-icons" style="font-size:16px; vertical-align: middle;">info</span> Detalji korisnika
-            </button>
-            <button (click)="editUser(student)">
-              <span class="material-icons" style="font-size:16px; vertical-align: middle;">edit</span> Izmijeni korisnika
-            </button>
-            <button (click)="deleteUser(student)">
-              <span class="material-icons" style="font-size:16px; vertical-align: middle;">delete</span> Izbriši korisnika
-            </button>
-          </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-
-  <app-pagination
-    [totalPages]="pagination.totalPages"
-    [currentPage]="pagination.currentPage"
-    (pageChange)="onPageChange($event)"
-  ></app-pagination>
+  <!-- Paginacija -->
+  @if (pagedStudents.length > 0) {
+    <div class="pagination-container">
+      <app-pagination
+        [totalPages]="pagination.totalPages"
+        [currentPage]="pagination.currentPage"
+        (pageChange)="onPageChange($event)"
+      ></app-pagination>
+    </div>
+  }
 </div>

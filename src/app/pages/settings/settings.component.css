@@ -1,14 +1,42 @@
+.settings {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px 24px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.1);
+  border: 1px solid #e1e5e9;
+}
+
+.settings h2 {
+  font-size: 28px;
+  font-weight: 600;
+  color: #1a365d;
+  margin-bottom: 24px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
 .settings-nav {
   display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
   border-bottom: 1px solid #ddd;
-  margin-bottom: 1rem;
+  margin-bottom: 20px;
 }
+
 .settings-nav a {
   padding: 0.5rem 1rem;
   text-decoration: none;
   color: #444;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  border-bottom: 2px solid transparent;
 }
+
+.settings-nav a:hover {
+  color: #4558BE;
+}
+
 .settings-nav a.active {
   border-bottom: 2px solid #4558BE;
   color: #4558BE;

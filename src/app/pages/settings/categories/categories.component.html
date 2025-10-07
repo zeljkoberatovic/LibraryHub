@@ -7,67 +7,67 @@
       [(ngModel)]="searchTerm"
       (ngModelChange)="applyPagination()"
       class="search-input"
-      />
-    </div>
+    />
+  </div>
 
-    <!-- Forma za dodavanje / izmjene -->
-    @if (selectedCategory) {
-      <div>
-        <div class="category-form">
-          <input [(ngModel)]="selectedCategory.name" placeholder="Naziv" />
-          <input [(ngModel)]="selectedCategory.description" placeholder="Opis" />
-          <input [(ngModel)]="selectedCategory.icon" placeholder="Ikona" />
-          <div class="form-buttons">
-            <button (click)="saveCategory(selectedCategory)">Sačuvaj</button>
-            <button (click)="cancelEdit()">Otkaži</button>
-          </div>
+  <!-- Forma za dodavanje / izmjene -->
+  @if (selectedCategory) {
+    <div class="category-form-container">
+      <div class="category-form">
+        <input [(ngModel)]="selectedCategory.name" placeholder="Naziv" />
+        <input [(ngModel)]="selectedCategory.description" placeholder="Opis" />
+        <input [(ngModel)]="selectedCategory.icon" placeholder="Ikona" />
+        <div class="form-buttons">
+          <button (click)="saveCategory(selectedCategory)">Sačuvaj</button>
+          <button (click)="cancelEdit()">Otkaži</button>
         </div>
       </div>
-    }
+    </div>
+  }
 
-    <button class="add-button" (click)="selectCategory({ name: '', description: '', icon: '' })">
-      + Nova kategorija
-    </button>
+  <button class="add-button" (click)="selectCategory({ name: '', description: '', icon: '' })">
+    + Nova kategorija
+  </button>
 
-    <table>
-      <thead>
+  <table>
+    <thead>
+      <tr>
+        <th>Naziv</th>
+        <th>Opis</th>
+        <th>Ikona</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (cat of displayedCategories; track cat; let i = $index) {
         <tr>
-          <th>Naziv</th>
-          <th>Opis</th>
-          <th>Ikona</th>
-          <th></th>
+          <td>{{ cat.name }}</td>
+          <td>{{ cat.description }}</td>
+          <td>{{ cat.icon }}</td>
+          <td class="actions-cell">
+            <span class="menu-icon" (click)="toggleMenu(i)">⋮</span>
+            @if (openMenuIndex === i) {
+              <div class="menu">
+                <button (click)="editCategory(cat)">
+                  <span class="material-icons">edit</span>
+                  Izmjeni
+                </button>
+                <button (click)="deleteCategory(cat.id!)">
+                  <span class="material-icons">delete</span>
+                  Obriši
+                </button>
+              </div>
+            }
+          </td>
         </tr>
-      </thead>
-      <tbody>
-        @for (cat of displayedCategories; track cat; let i = $index) {
-          <tr>
-            <td>{{ cat.name }}</td>
-            <td>{{ cat.description }}</td>
-            <td>{{ cat.icon }}</td>
-            <td class="actions-cell">
-              <span class="menu-icon" (click)="toggleMenu(i)">⋮</span>
-              @if (openMenuIndex === i) {
-                <div class="menu">
-                  <button (click)="editCategory(cat)">
-                    <span class="material-icons">edit</span>
-                    Izmjeni
-                  </button>
-                  <button (click)="deleteCategory(cat.id!)">
-                    <span class="material-icons">delete</span>
-                    Obriši
-                  </button>
-                </div>
-              }
-            </td>
-          </tr>
-        }
-      </tbody>
-    </table>
+      }
+    </tbody>
+  </table>
 
-    <!-- Pagination -->
-    <app-pagination
-      [totalPages]="paginationService.totalPages"
-      [currentPage]="paginationService.currentPage"
-      (pageChange)="onPageChange($event)"
-    ></app-pagination>
-  </div>
+  <!-- Pagination -->
+  <app-pagination
+    [totalPages]="paginationService.totalPages"
+    [currentPage]="paginationService.currentPage"
+    (pageChange)="onPageChange($event)"
+  ></app-pagination>
+</div>
