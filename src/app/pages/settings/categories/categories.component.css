@@ -70,7 +70,6 @@ th, td {
 .menu-icon {
   cursor: pointer;
   font-size: 22px;
-  user-select: none;
   padding: 4px 8px;
   border-radius: 50%;
   transition: background 0.2s;
