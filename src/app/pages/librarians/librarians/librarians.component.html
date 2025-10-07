@@ -1,64 +1,106 @@
-<div class="container">
-  <div class="header-with-search">
-    <h2>Bibliotekari</h2>
-    <input type="text" placeholder="Pretraži..." [(ngModel)]="searchTerm" class="search-input" />
+<div class="librarians-container">
+  <!-- Header sa pretragom -->
+  <div class="page-header">
+    <div class="header-content">
+      <div class="header-title">
+        <h2>Bibliotekari</h2>
+        <p class="page-description">Pregled i upravljanje svim bibliotekarima u sistemu</p>
+      </div>
+      <div class="header-actions">
+        <div class="search-box">
+          <span class="search-icon"></span>
+          <input
+            type="text"
+            placeholder="Pretraži bibliotekare..."
+            [(ngModel)]="searchTerm"
+            class="search-input"
+          />
+        </div>
+        <button class="btn btn-primary" [routerLink]="['/librarians/new']">
+          <span class="btn-icon">➕</span>
+          Novi bibliotekar
+        </button>
+      </div>
+    </div>
   </div>
 
-  <button class="add-button" [routerLink]="['/librarians/new']">+ Novi bibliotekar</button>
-
-  <table>
-    <thead>
-      <tr>
-        <th></th>
-        <th (click)="sortByName()" style="cursor: pointer;">
-          Ime i prezime
-          <span [ngClass]="sortDirection === 'asc' ? 'arrow down' : 'arrow up'"></span>
-        </th>
-        <th>Email</th>
-        <th>Tip korisnika</th>
-        <th>Zadnji pristup</th>
-        <th></th>
-      </tr>
-    </thead>
-
-    <tbody>
-      @for (librarian of paged; track librarian; let i = $index) {
+  <!-- Tabela -->
+  <div class="table-container">
+    <table class="librarians-table">
+      <thead>
         <tr>
-          <td>
-            <img [src]="getLibrarianImageUrl(librarian.profile_picture)" alt="Profilna slika" class="avatar" />
-          </td>
-          <td>{{ librarian.first_name }} {{ librarian.last_name }}</td>
-          <td>{{ librarian.email }}</td>
-          <td>Bibliotekar</td>
-          <td>{{ librarian.last_login || 'Nikada' }}</td>
-          <td class="actions-cell" style="position: relative;">
-            <span class="menu-icon" (click)="toggleMenu(i)">⋮</span>
-
-            @if (openMenuIndex === i) {
-              <div class="menu">
-                <button (click)="showDetails(librarian)">
-                  <span class="material-icons" style="font-size:16px; vertical-align: middle;">info</span>
-                  Detalji korisnika
-                </button>
-                <button (click)="editUser(librarian)">
-                  <span class="material-icons" style="font-size:16px; vertical-align: middle;">edit</span>
-                  Izmjeni korisnika
-                </button>
-                <button (click)="deleteUser(librarian)">
-                  <span class="material-icons" style="font-size:16px; vertical-align: middle;">delete</span>
-                  Izbriši korisnika
-                </button>
-              </div>
-            }
-          </td>
+          <th>Avatar</th>
+          <th (click)="sortByName()" class="sortable-header">
+            <div class="header-content">
+              Ime i prezime
+              <span [ngClass]="sortDirection === 'asc' ? 'sort-arrow asc' : 'sort-arrow desc'"></span>
+            </div>
+          </th>
+          <th>Email</th>
+          <th>Tip korisnika</th>
+          <th>Zadnji pristup</th>
+          <th class="actions-column"></th>
         </tr>
-      }
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        @for (librarian of paged; track librarian; let i = $index) {
+          <tr class="table-row">
+            <td>
+              <img [src]="getLibrarianImageUrl(librarian.profile_picture)" alt="Profilna slika" class="avatar" />
+            </td>
+            <td class="book-name">{{ librarian.first_name }} {{ librarian.last_name }}</td>
+            <td>{{ librarian.email }}</td>
+            <td>Bibliotekar</td>
+            <td>{{ librarian.last_login || 'Nikada' }}</td>
+            <td class="actions-cell">
+              <button class="menu-trigger" (click)="toggleMenu(i)">
+                <span class="menu-icon">⋮</span>
+              </button>
+              @if (openMenuIndex === i) {
+                <div class="dropdown-menu">
+                  <button class="menu-item" (click)="showDetails(librarian)">
+                    <span class="menu-icon">👁️</span>
+                    Detalji korisnika
+                  </button>
+                  <button class="menu-item" (click)="editUser(librarian)">
+                    <span class="menu-icon">✏️</span>
+                    Izmjeni korisnika
+                  </button>
+                  <div class="menu-divider"></div>
+                  <button class="menu-item delete" (click)="deleteUser(librarian)">
+                    <span class="menu-icon">❌</span>
+                    Izbriši korisnika
+                  </button>
+                </div>
+              }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
 
-  <app-pagination
-    [totalPages]="pagination.totalPages"
-    [currentPage]="pagination.currentPage"
-    (pageChange)="onPageChange($event)"
-  ></app-pagination>
+    <!-- Empty state -->
+    @if (paged.length === 0) {
+      <div class="empty-state">
+        <div class="empty-icon">📚</div>
+        <h3>Nema pronađenih bibliotekara</h3>
+        <p>Pokušajte da promenite kriterijum pretrage ili dodajte novog bibliotekara.</p>
+        <button class="btn btn-primary" [routerLink]="['/librarians/new']">
+          <span class="btn-icon">➕</span>
+          Dodaj bibliotekara
+        </button>
+      </div>
+    }
+  </div>
+
+  <!-- Paginacija -->
+  @if (paged.length > 0) {
+    <div class="pagination-container">
+      <app-pagination
+        [totalPages]="pagination.totalPages"
+        [currentPage]="pagination.currentPage"
+        (pageChange)="onPageChange($event)"
+      ></app-pagination>
+    </div>
+  }
 </div>
