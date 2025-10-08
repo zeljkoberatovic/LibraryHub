@@ -51,7 +51,9 @@
       <tbody>
         @for (book of paged; track book; let i = $index) {
           <tr class="table-row">
-            <td class="book-name">{{ book.name }}</td>
+            <td class="book-name">
+                <a [routerLink]="['/books/view', book.id]">{{ book.name }}</a>
+            </td>
             <td>{{ getAuthorNames(book.authors) }}</td>
             <td>{{ getCategoryNames(book.categories) }}</td>
             <td>{{ getPublisherNames(book.publishers) }}</td>

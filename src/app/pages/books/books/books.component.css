@@ -332,3 +332,8 @@
 .btn-icon {
   font-size: 14px;
 }
+.book-name a {
+  text-decoration: none; 
+  color: #1a365d;       
+  font-weight: 600;  
+}
