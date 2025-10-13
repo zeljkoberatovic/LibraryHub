@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AuthService, LoginCredentials } from '../../services/auth.services';
 
+
+
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -20,7 +22,7 @@ export class Login implements OnInit {
   testUsers = [
     { email: 'marko@example.com', password: 'brp1kju.kjt', name: 'Marko Marković' },
     { email: 'ivana@example.com', password: 'ntc*bek4M', name: 'Ivana Ivanović' },
-    { email: 'petar@example.com', password: 'KF.wcn5rdx', name: 'Petar Petrović' },
+    { email: 'petar@example.com', password: 'KF.wcn5rdx', name: 'Zeljko Beratovic' },
     { email: 'jovan@example.com', password: 'dhm_tdx4M', name: 'Jovan Jovanović' },
     { email: 'ivan@example.com', password: 'EU*zmr4vqb', name: 'Ivan Ivanović' }
   ];
