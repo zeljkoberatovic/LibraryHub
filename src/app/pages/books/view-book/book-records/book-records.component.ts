@@ -1,11 +1,23 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ActivatedRoute, RouterModule } from '@angular/router';
+import { RentalService } from 'src/app/services/rental/rental.service';
 
 @Component({
   selector: 'app-book-records',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule, RouterModule],
   templateUrl: './book-records.component.html',
-  styleUrl: './book-records.component.css'
+  styleUrls: ['./book-records.component.css'],
 })
-export class BookRecords {
+export class BookRecords implements OnInit {
+  private route = inject(ActivatedRoute);
+  private rentalService = inject(RentalService);
 
+  bookId!: number;
+  summary: any;
+
+  ngOnInit(): void {
+   
+  }
 }

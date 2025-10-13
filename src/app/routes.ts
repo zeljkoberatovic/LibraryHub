@@ -228,9 +228,23 @@ export const routes: Route[] = [
     },
     {
       path: 'records',
-      loadComponent: () =>
-        import('../app/pages/books/view-book/book-records/book-records.component').then(m => m.BookRecords),
-      resolve: { book: bookResolver}
+      loadComponent: () => import('../app/pages/books/view-book/book-records/book-records.component').then(m => m.BookRecords),
+      children: [
+        { 
+          path: 'rented', 
+          loadComponent: () => import('../app/pages/books/view-book/book-records/records/rented/rented.component').then(m => m.RentedComponent) 
+        },
+        { 
+          path: 'returned', 
+          loadComponent: () => import('../app/pages/books/view-book/book-records/records/returned/returned.component').then(m => m.ReturnedComponent) 
+        },
+        { 
+          path: 'overdue', 
+          loadComponent: () => import('../app/pages/books/view-book/book-records/records/overdue/overdue.component').then(m => m.OverdueComponent) 
+        },
+        
+        { path: '', redirectTo: 'rented', pathMatch: 'full' }
+      ]
     },
     {
       path: 'media',
