@@ -1,12 +1,12 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { RentalService } from 'src/app/services/rental/rental.service';
 
 @Component({
   selector: 'app-book-records',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [RouterModule],
   templateUrl: './book-records.component.html',
   styleUrls: ['./book-records.component.css'],
 })

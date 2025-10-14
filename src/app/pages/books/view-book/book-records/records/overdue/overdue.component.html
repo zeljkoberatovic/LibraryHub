@@ -1,1 +1,41 @@
-<p>overdue works!</p>
+<div class="rented-container">
+  @if (overdueRentals.length > 0) {
+    <table class="rented-table">
+      <thead>
+        <tr>
+          <th>Izdato učeniku</th>
+          <th>Datum izdavanja</th>
+          <th>Prekoračenje u danima</th>
+          <th>Trenutno zadržavanje knjige</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (rental of overdueRentals; track rental) {
+          <tr>
+            <td>{{ rental.student }}</td>
+            <td>{{ rental.issueDate | date: 'dd.MM.yyyy' }}</td>
+            <td>{{ rental.overdueDays }} dana</td>
+            <td>{{ rental.daysHeld }} dana</td>
+            <td class="actions-cell">
+              <button class="dots" (click)="toggleMenu(rental.id)">⋮</button>
+              @if (openedMenuId === rental.id) {
+                <div class="dropdown">
+                  <button (click)="viewDetails(rental.id)">👁 Pogledaj detalje</button>
+                  <button (click)="rentBook(rental.id)">📖 Izdaj knjigu</button>
+                  <button (click)="returnBook(rental.id)">↩ Vrati knjigu</button>
+                  <button (click)="reserveBook(rental.id)">📝 Rezerviši knjigu</button>
+                  <button (click)="discardBook(rental.id)">❌ Otpiši knjigu</button>
+                  <button (click)="deleteBook(rental.id)">🗑 Izbriši knjigu</button>
+                </div>
+              }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  } @else {
+    <p class="no-data">Nema trenutno prekoračenih iznajmljivanja.</p>
+  }
+
+</div>

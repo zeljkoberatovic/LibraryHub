@@ -1,1 +1,38 @@
-<p>rented works!</p>
+<div class="rented-container">
+  @if (rentedCopies.length > 0) {
+    <table class="rented-table">
+      <thead>
+        <tr>
+          <th>Izdato učeniku</th>
+          <th>Datum izdavanja</th>
+          <th>Trenutno zadržavanje knjige</th>
+          <th>Knjigu izdao</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (copy of rentedCopies; track copy) {
+          <tr>
+            <td>{{ copy.student }}</td>
+            <td>{{ copy.issueDate | date: 'dd.MM.yyyy' }}</td>
+            <td>{{ copy.daysHeld }} dana</td>
+            <td>{{ copy.issuedBy }}</td>
+            <td class="actions-cell">
+              <button class="dots" (click)="toggleMenu(copy.id)">⋮</button>
+              @if (openedMenuId === copy.id) {
+                <div class="dropdown">
+                  <button (click)="viewDetails(copy.id)">👁 Pogledaj detalje</button>
+                  <button (click)="markAsLost(copy.id)">❌ Otpiši knjigu</button>
+                  <button (click)="returnBook(copy.id)">↩ Vrati knjigu</button>
+                </div>
+              }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  } @else {
+    <p class="no-data">Nema trenutno izdatih primeraka ove knjige.</p>
+  }
+
+</div>
