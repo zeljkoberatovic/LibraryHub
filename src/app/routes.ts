@@ -15,12 +15,8 @@ import { CategoryResolver } from './resolvers/settings/category/category-resolve
 import { BookSettingsComponent } from './pages/settings/book-settings/book-settings.component';
 
 
-
-
-
 export const routes: Route[] = [
-
-  {
+ {
   path: 'profile',
   canActivate: [authGuard],
   loadComponent: () => import('./pages/user-profile/user-profile.component').then(m => m.UserProfileComponent)
@@ -248,6 +244,14 @@ export const routes: Route[] = [
         { 
           path: 'overdue', 
           loadComponent: () => import('../app/pages/books/view-book/book-records/records/overdue/overdue.component').then(m => m.OverdueComponent) 
+        },
+        { 
+          path: 'active-res', 
+          loadComponent: () => import('./pages/books/view-book/book-records/records/active-res/active-res.component').then(m => m.ActiveResComponent) 
+        },
+        { 
+          path: 'archived-res', 
+          loadComponent: () => import('../app/pages/books/view-book/book-records/records/archived-res/archived-res').then(m => m.ArchivedResComponent) 
         },
         
         { path: '', redirectTo: 'rented', pathMatch: 'full' }

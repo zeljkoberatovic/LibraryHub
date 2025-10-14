@@ -49,3 +49,19 @@ export interface Rental {
   student?: Student;
   librarian?: Librarian;
 }
+
+export interface Reservation {
+  id: number;
+  reservationDate: string;
+  expiryDate: string;
+  submittedBy: string;
+  status?: 'reserved' | 'rejected' | null;
+}
+
+export interface ArchivedReservation {
+  id: number;
+  reservationDate: string;
+  expiryDate: string;
+  submittedBy: string;
+  status: 'book-issued' | 'expired';
+}
