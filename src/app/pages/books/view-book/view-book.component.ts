@@ -11,6 +11,7 @@ import { Book } from '../../../models/book.model';
   styleUrls: ['./view-book.component.css'],
 })
 export class ViewBook implements OnInit {
+  
   book: Book | null = null;
   dropdownOpen = false;
 

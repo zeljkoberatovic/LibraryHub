@@ -5,6 +5,22 @@
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
+.loading-text,
+.error-text,
+.no-data {
+  text-align: center;
+  margin: 20px 0;
+  font-style: italic;
+}
+
+.error-text {
+  color: #e53e3e;
+}
+
+.loading-text {
+  color: #64748b;
+}
+
 .rented-table {
   width: 100%;
   border-collapse: collapse;
@@ -37,7 +53,7 @@
 .dots {
   background: none;
   border: none;
-  font-size: 22px; 
+  font-size: 22px;
   cursor: pointer;
   color: #334155;
   padding: 4px 8px;
@@ -78,35 +94,14 @@
   transition: background-color 0.2s, color 0.2s, transform 0.1s;
 }
 
-
 .dropdown button:hover {
   background-color: #4299e1;
   color: #fff;
   transform: translateX(2px);
 }
 
-
-.dropdown button:nth-child(1) span.icon,
-.dropdown button:nth-child(3) span.icon {
-  font-size: 18px;
-  color: #4299e1;
-}
-
-.dropdown button:nth-child(2) span.icon {
-  font-size: 15px;
-  color: #334155;
-  opacity: 0.9;
-}
-
-.dropdown button:hover span.icon {
-  color: #fff;
-}
-
 .no-data {
-  text-align: center;
   color: #64748b;
-  font-style: italic;
-  margin-top: 20px;
 }
 
 @keyframes fadeIn {
