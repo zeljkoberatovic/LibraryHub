@@ -19,6 +19,13 @@ import { BookSettingsComponent } from './pages/settings/book-settings/book-setti
 
 
 export const routes: Route[] = [
+
+  {
+  path: 'profile',
+  canActivate: [authGuard],
+  loadComponent: () => import('./pages/user-profile/user-profile.component').then(m => m.UserProfileComponent)
+  },
+
   // Auth routes
   {
     path: 'login',
