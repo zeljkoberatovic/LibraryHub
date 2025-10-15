@@ -14,12 +14,11 @@ import { GenresResolver } from './resolvers/settings/genre/genre-resolver';
 import { CategoryResolver } from './resolvers/settings/category/category-resolver';
 import { BookSettingsComponent } from './pages/settings/book-settings/book-settings.component';
 
-
 export const routes: Route[] = [
- {
-  path: 'profile',
-  canActivate: [authGuard],
-  loadComponent: () => import('./pages/user-profile/user-profile.component').then(m => m.UserProfileComponent)
+  {
+    path: 'profile',
+    canActivate: [authGuard],
+    loadComponent: () => import('./pages/user-profile/user-profile.component').then(m => m.UserProfileComponent)
   },
 
   // Auth routes
@@ -111,68 +110,67 @@ export const routes: Route[] = [
   },
 
   // Settings routes (zaštićeno)
-{
-  path: 'settings',
-  component: SettingsComponent,
-  canActivate: [authGuard],
-  children: [
-    { path: '', redirectTo: 'categories', pathMatch: 'full' },
-    {
-      path: 'categories',
-      canActivate: [authGuard],
-      resolve: { categories: CategoryResolver },
-      loadComponent: () =>
-        import('./pages/settings/categories/categories.component').then(
-          (m) => m.CategoryComponent
-        ),
-    },
-    {
-      path: 'genres',
-      canActivate: [authGuard],
-      resolve: { genres: GenresResolver },
-      loadComponent: () =>
-        import('./pages/settings/genre/genres.component').then(
-          (m) => m.GenreComponent
-        ),
-    },
-    {
-      path: 'publishers',
-      canActivate: [authGuard],
-      resolve: { publishers: PublishersResolver },
-      loadComponent: () =>
-        import('./pages/settings/publishers/publishers.component').then(
-          (m) => m.PublishersComponent
-        ),
-    },
-    {
-      path: 'bindings',
-      canActivate: [authGuard],
-      loadComponent: () =>
-        import('./pages/settings/book-settings/book-settings.component').then(
-          (m) => m.BookSettingsComponent
-        ),
-    },
-    {
-      path: 'formats',
-      canActivate: [authGuard],
-      loadComponent: () =>
-        import('./pages/settings/book-settings/book-settings.component').then(
-          (m) => m.BookSettingsComponent
-        ),
-    },
-    {
-      path: 'languages',
-      canActivate: [authGuard],
-      loadComponent: () =>
-        import('./pages/settings/book-settings/book-settings.component').then(
-          (m) => m.BookSettingsComponent
-        ),
-    },
-  ],
-},
+  {
+    path: 'settings',
+    component: SettingsComponent,
+    canActivate: [authGuard],
+    children: [
+      { path: '', redirectTo: 'categories', pathMatch: 'full' },
+      {
+        path: 'categories',
+        canActivate: [authGuard],
+        resolve: { categories: CategoryResolver },
+        loadComponent: () =>
+          import('./pages/settings/categories/categories.component').then(
+            (m) => m.CategoryComponent
+          ),
+      },
+      {
+        path: 'genres',
+        canActivate: [authGuard],
+        resolve: { genres: GenresResolver },
+        loadComponent: () =>
+          import('./pages/settings/genre/genres.component').then(
+            (m) => m.GenreComponent
+          ),
+      },
+      {
+        path: 'publishers',
+        canActivate: [authGuard],
+        resolve: { publishers: PublishersResolver },
+        loadComponent: () =>
+          import('./pages/settings/publishers/publishers.component').then(
+            (m) => m.PublishersComponent
+          ),
+      },
+      {
+        path: 'bindings',
+        canActivate: [authGuard],
+        loadComponent: () =>
+          import('./pages/settings/book-settings/book-settings.component').then(
+            (m) => m.BookSettingsComponent
+          ),
+      },
+      {
+        path: 'formats',
+        canActivate: [authGuard],
+        loadComponent: () =>
+          import('./pages/settings/book-settings/book-settings.component').then(
+            (m) => m.BookSettingsComponent
+          ),
+      },
+      {
+        path: 'languages',
+        canActivate: [authGuard],
+        loadComponent: () =>
+          import('./pages/settings/book-settings/book-settings.component').then(
+            (m) => m.BookSettingsComponent
+          ),
+      },
+    ],
+  },
 
-    
- // Books routes (zaštićeno)
+  // Books routes (zaštićeno)
   {
     path: 'books',
     canActivate: [authGuard],
@@ -210,62 +208,73 @@ export const routes: Route[] = [
     }
   },
   {
-  path: 'books/view/:id',
-  canActivate: [authGuard],
-  loadComponent: () => import('./pages/books/view-book/view-book.component').then(m => m.ViewBook),
-  resolve: {
-    book: bookResolver
+    path: 'books/view/:id',
+    canActivate: [authGuard],
+    loadComponent: () => import('./pages/books/view-book/view-book.component').then(m => m.ViewBook),
+    resolve: {
+      book: bookResolver
+    },
+    children: [
+      {
+        path: 'details',
+        loadComponent: () =>
+          import('../app/pages/books/view-book/book-details/book-details.component').then(m => m.BookDetails),
+        resolve: { book: bookResolver }
+      },
+      {
+        path: 'specification',
+        loadComponent: () =>
+          import('../app/pages/books/view-book/book-spec/book-spec.component').then(m => m.BookSpec),
+        resolve: { book: bookResolver}
+      },
+      {
+        path: 'records',
+        loadComponent: () => import('../app/pages/books/view-book/book-records/book-records.component').then(m => m.BookRecords),
+        children: [
+          { 
+            path: 'rented', 
+            loadComponent: () => import('../app/pages/books/view-book/book-records/records/rented/rented.component').then(m => m.RentedComponent) 
+          },
+          { 
+            path: 'rented/:rentalId/details',
+            loadComponent: () => import('../app/pages/books/view-book/book-records/records/rented/view-details/view-details.component').then(m => m.ViewDetailsComponent)
+          },
+          { 
+            path: 'rented/:rentalId/lost',
+            loadComponent: () => import('../app/pages/books/view-book/book-records/records/rented/mark-as-lost/mark-as-lost.component').then(m => m.MarkAsLostComponent)
+          },
+          { 
+            path: 'rented/:rentalId/return',
+            loadComponent: () => import('../app/pages/books/view-book/book-records/records/rented/return-book/return-book.component').then(m => m.ReturnBookComponent)
+          },
+          { 
+            path: 'returned', 
+            loadComponent: () => import('../app/pages/books/view-book/book-records/records/returned/returned.component').then(m => m.ReturnedComponent) 
+          },
+          { 
+            path: 'overdue', 
+            loadComponent: () => import('../app/pages/books/view-book/book-records/records/overdue/overdue.component').then(m => m.OverdueComponent) 
+          },
+          { 
+            path: 'active-res', 
+            loadComponent: () => import('./pages/books/view-book/book-records/records/active-res/active-res.component').then(m => m.ActiveResComponent) 
+          },
+          { 
+            path: 'archived-res', 
+            loadComponent: () => import('../app/pages/books/view-book/book-records/records/archived-res/archived-res').then(m => m.ArchivedResComponent) 
+          },
+          { path: '', redirectTo: 'rented', pathMatch: 'full' }
+        ]
+      },
+      {
+        path: 'media',
+        loadComponent: () =>
+          import('../app/pages/books/view-book/book-media/book-media.component').then(m => m.BookMedia),
+        resolve: { book: bookResolver}
+      },
+      { path: '', redirectTo: 'details', pathMatch: 'full' }
+    ]
   },
-  children: [
-    {
-      path: 'details',
-      loadComponent: () =>
-        import('../app/pages/books/view-book/book-details/book-details.component').then(m => m.BookDetails),
-      resolve: { book: bookResolver }
-    },
-    {
-      path: 'specification',
-      loadComponent: () =>
-        import('../app/pages/books/view-book/book-spec/book-spec.component').then(m => m.BookSpec),
-      resolve: { book: bookResolver}
-    },
-    {
-      path: 'records',
-      loadComponent: () => import('../app/pages/books/view-book/book-records/book-records.component').then(m => m.BookRecords),
-      children: [
-        { 
-          path: 'rented', 
-          loadComponent: () => import('../app/pages/books/view-book/book-records/records/rented/rented.component').then(m => m.RentedComponent) 
-        },
-        { 
-          path: 'returned', 
-          loadComponent: () => import('../app/pages/books/view-book/book-records/records/returned/returned.component').then(m => m.ReturnedComponent) 
-        },
-        { 
-          path: 'overdue', 
-          loadComponent: () => import('../app/pages/books/view-book/book-records/records/overdue/overdue.component').then(m => m.OverdueComponent) 
-        },
-        { 
-          path: 'active-res', 
-          loadComponent: () => import('./pages/books/view-book/book-records/records/active-res/active-res.component').then(m => m.ActiveResComponent) 
-        },
-        { 
-          path: 'archived-res', 
-          loadComponent: () => import('../app/pages/books/view-book/book-records/records/archived-res/archived-res').then(m => m.ArchivedResComponent) 
-        },
-        
-        { path: '', redirectTo: 'rented', pathMatch: 'full' }
-      ]
-    },
-    {
-      path: 'media',
-      loadComponent: () =>
-        import('../app/pages/books/view-book/book-media/book-media.component').then(m => m.BookMedia),
-      resolve: { book: bookResolver}
-    },
-    { path: '', redirectTo: 'details', pathMatch: 'full' }
-  ]
-},
 
   // Catch-all (404)
   { path: '**', redirectTo: '/dashboard' }

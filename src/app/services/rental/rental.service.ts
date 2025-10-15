@@ -16,6 +16,12 @@ export class RentalService {
       .pipe(map(res => res.data.data));
   }
 
+        getRentalById(rentalId: number): Observable<Rental | undefined> {
+      return this.getRented().pipe(
+        map(rentals => rentals.find(r => r.id === rentalId))
+      );
+    }
+
   /** 🔹 Iznajmi knjigu */
   rentBook(bookId: number, studentId: number, librarianId: number): Observable<any> {
     const payload = { book_id: bookId, student_id: studentId, librarian_id: librarianId };

@@ -1,0 +1,47 @@
+<div class="transaction-details-container">
+  <div class="transaction-details-card">
+    @if (loading) {
+      <div class="loading">Učitavanje podataka...</div>
+    } @else if (errorMsg) {
+      <div class="error-msg">{{ errorMsg }}</div>
+    } @else {
+      <!-- Prikaz podataka o transakciji -->
+      <h2>Detalji transakcije</h2>
+      <div class="details-row">
+        <span class="label">Tip transakcije:</span>
+        <span class="value">Izdavanje knjige</span>
+      </div>
+      <div class="details-row">
+        <span class="label">Datum akcije:</span>
+        <span class="value">{{ actionDate | date:'dd.MM.yyyy HH:mm' }}</span>
+      </div>
+      <div class="details-row">
+        <span class="label">Trenutno zadržavanje knjige:</span>
+        <span class="value">{{ daysHeld }} dana</span>
+      </div>
+      <div class="details-row" [ngClass]="{'overdue': isOverdue}">
+        <span class="label">Prekoračenje:</span>
+        <span class="value">{{ isOverdue ? 'DA' : 'NE' }}</span>
+      </div>
+      <div class="details-row">
+        <span class="label">Bibliotekar:</span>
+        <span class="value">{{ librarianName }}</span>
+      </div>
+      <div class="details-row">
+        <span class="label">Učenik:</span>
+        <span class="value">{{ studentName }}</span>
+      </div>
+      <div class="actions-row">
+        <button class="action-btn lost">
+          <span class="icon-x">❌</span> Otpiši knjigu
+        </button>
+        <button class="action-btn return">
+          <span class="icon-strik">↩</span> Vrati knjigu
+        </button>
+        <button class="action-btn delete">
+          <span class="icon-del">🗑️</span> Izbriši zapis
+        </button>
+      </div>
+    }
+  </div>
+</div>

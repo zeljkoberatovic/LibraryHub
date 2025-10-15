@@ -1,10 +1,11 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, Inject, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { RentalService } from '@/app/services/rental/rental.service';
 import { StudentService } from '@/app/services/student/student.service';
 import { LibrarianService } from '@/app/services/librarian/librarian.service';
 import { Rental, Librarian, Student } from '@/app/models/rental.model';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -19,6 +20,7 @@ export class RentedComponent implements OnInit {
   studentService = inject(StudentService);
   librarianService = inject(LibrarianService);
   route = inject(ActivatedRoute);
+  router = inject(Router);
 
   rentedCopies: (Rental & { studentName: string; librarianName: string; daysHeld: number })[] = [];
   students: Student[] = [];
@@ -74,7 +76,18 @@ export class RentedComponent implements OnInit {
     this.openedMenuId = null;
   }
 
-  viewDetails(id: number): void { this.closeMenu(); }
-  markAsLost(id: number): void { this.closeMenu(); }
-  returnBook(id: number): void { this.closeMenu(); }
-}
+   viewDetails(id: number): void {
+    this.router.navigate(['books', 'view', this.bookId, 'records', 'rented', id, 'details']);
+    this.closeMenu();
+  }
+
+  markAsLost(id: number): void {
+    this.router.navigate(['books', 'view', this.bookId, 'records', 'rented', id, 'lost']);
+    this.closeMenu();
+  }
+
+  returnBook(id: number): void {
+    this.router.navigate(['books', 'view', this.bookId, 'records', 'rented', id, 'return']);
+    this.closeMenu();
+  }
+} 

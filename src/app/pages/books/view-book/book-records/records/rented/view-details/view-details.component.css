@@ -1,0 +1,113 @@
+.transaction-details-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 60vh;
+  background: linear-gradient(120deg, #f5f7fa 0%, #c3cfe2 100%);
+  padding: 40px 0;
+}
+
+.transaction-details-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  padding: 36px 44px;
+  max-width: 520px;
+  width: 100%;
+}
+
+.transaction-details-card h2 {
+  margin-bottom: 24px;
+  color: #2d3a4b;
+  font-size: 1.7rem;
+  font-weight: 700;
+}
+
+.details-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+  font-size: 1.08rem;
+}
+
+.label {
+  color: #7a8ca3;
+  font-weight: 500;
+  min-width: 170px;
+}
+
+.value {
+  color: #334155;
+  font-weight: 600;
+}
+
+.details-row.overdue .value {
+  color: #e53e3e;
+  font-weight: 700;
+}
+
+.actions-row {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: #eaf0fb;
+  color: #4f8cff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-size: 0.98rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.action-btn.lost {
+  color: #e53e3e;
+  background: #fdeaea;
+}
+
+.action-btn.return {
+  color: #2d9c4b;
+  background: #eafbe7;
+}
+
+.action-btn.delete {
+  color: #7a8ca3;
+  background: #f5f7fa;
+}
+
+.action-btn .icon-x,
+.action-btn .icon-strik,
+.action-btn .icon-del {
+  font-size: 1rem;
+  vertical-align: middle;
+}
+
+.action-btn:hover {
+  background: #dbeafe;
+  color: #356dc9;
+}
+
+.action-btn.lost:hover {
+  background: #fbd5d5;
+  color: #b91c1c;
+}
+
+.action-btn.return:hover {
+  background: #d1fadf;
+  color: #166534;
+}
+
+.action-btn.delete:hover {
+  background: #e2e8f0;
+  color: #334155;
+}
+
