@@ -1,5 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, Inject, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
+import { RentalService } from '@/app/services/rental/rental.service';
+import { StudentService } from '@/app/services/student/student.service';
+import { LibrarianService } from '@/app/services/librarian/librarian.service';
+import { Rental, Librarian, Student } from '@/app/models/rental.model';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-rented',
@@ -8,32 +15,58 @@ import { CommonModule } from '@angular/common';
   templateUrl: './rented.component.html',
   styleUrls: ['./rented.component.css']
 })
-export class RentedComponent {
-  rentedCopies = [
-    {
-      id: 1,
-      student: 'Marko Jovanović',
-      issueDate: new Date('2025-10-01'),
-      daysHeld: 13,
-      issuedBy: 'Ana Petrović'
-    },
-    {
-      id: 2,
-      student: 'Milica Ilić',
-      issueDate: new Date('2025-10-05'),
-      daysHeld: 9,
-      issuedBy: 'Petar Lukić'
-    },
-    {
-      id: 3,
-      student: 'Nikola Stojanov',
-      issueDate: new Date('2025-09-29'),
-      daysHeld: 15,
-      issuedBy: 'Jelena Marić'
-    }
-  ];
+export class RentedComponent implements OnInit {
+  rentalService = inject(RentalService);
+  studentService = inject(StudentService);
+  librarianService = inject(LibrarianService);
+  route = inject(ActivatedRoute);
+  router = inject(Router);
 
+  rentedCopies: (Rental & { studentName: string; librarianName: string; daysHeld: number })[] = [];
+  students: Student[] = [];
+  librarians: Librarian[] = [];
   openedMenuId: number | null = null;
+  bookId!: number;
+
+  ngOnInit(): void {
+    this.route.parent?.parent?.paramMap.subscribe(params => {
+    this.bookId = Number(params.get('id'));
+    this.loadData();
+  });
+  }
+
+  loadData(): void {
+    this.studentService.getAllStudents().subscribe((users: any[]) => {
+      this.students = users as Student[];
+      this.librarianService.getAllLibrarians().subscribe((users: any[]) => {
+        this.librarians = users as Librarian[];
+        this.rentalService.getRentedByBook(this.bookId).subscribe((data: Rental[]) => {
+          this.rentedCopies = data.map(rental => ({
+            ...rental,
+            studentName: this.getStudentName(rental.student_id),
+            librarianName: this.getLibrarianName(rental.librarian_id),
+            daysHeld: this.calculateDaysHeld(rental.rented_at)
+          }));
+        });
+      });
+    });
+  }
+
+  getStudentName(studentId: number): string {
+    const student = this.students.find(s => s.id === studentId);
+    return student ? `${student.first_name} ${student.last_name}` : 'Nepoznat učenik';
+  }
+
+  getLibrarianName(librarianId: number): string {
+    const librarian = this.librarians.find(l => l.id === librarianId);
+    return librarian ? `${librarian.first_name} ${librarian.last_name}` : 'Nepoznat bibliotekar';
+  }
+
+  calculateDaysHeld(rentedDate: string | Date): number {
+    const today = new Date();
+    const rented = new Date(rentedDate);
+    return Math.floor((today.getTime() - rented.getTime()) / (1000 * 60 * 60 * 24));
+  }
 
   toggleMenu(id: number): void {
     this.openedMenuId = this.openedMenuId === id ? null : id;
@@ -43,18 +76,18 @@ export class RentedComponent {
     this.openedMenuId = null;
   }
 
-  viewDetails(id: number): void {
-    console.log('Detalji za iznajmljivanje ID:', id);
+   viewDetails(id: number): void {
+    this.router.navigate(['books', 'view', this.bookId, 'records', 'rented', id, 'details']);
     this.closeMenu();
   }
 
   markAsLost(id: number): void {
-    console.log('Otpis knjige ID:', id);
+    this.router.navigate(['books', 'view', this.bookId, 'records', 'rented', id, 'lost']);
     this.closeMenu();
   }
 
   returnBook(id: number): void {
-    console.log('Vraćanje knjige ID:', id);
+    this.router.navigate(['books', 'view', this.bookId, 'records', 'rented', id, 'return']);
     this.closeMenu();
   }
-}
+} 

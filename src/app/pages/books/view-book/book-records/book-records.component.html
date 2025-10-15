@@ -3,13 +3,12 @@
   <nav class="records-nav">
     <a [routerLink]="['rented']" routerLinkActive="active">Izdate knjige</a>
     <a [routerLink]="['returned']" routerLinkActive="active">Vraćene knjige</a>
-    <a [routerLink]="['overdue']" routerLinkActive="active">Prekoračene knjige</a>
-   
+    <a [routerLink]="['overdue']" routerLinkActive="active">Knjige uprekoračenju</a>
+    <a [routerLink]="['active-res']" routerLinkActive="active">Aktivne rezervacije</a>
+    <a [routerLink]="['archived-res']" routerLinkActive="active">Arhivirane rezervacije</a>
   </nav>
 
- 
   <div class="records-content">
     <router-outlet></router-outlet>
   </div>
-
 </div>

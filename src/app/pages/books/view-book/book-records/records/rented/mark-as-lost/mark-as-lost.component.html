@@ -1,0 +1,35 @@
+<div class="mark-lost-container">
+  <h2>Otpiši knjigu</h2>
+  <table class="mark-lost-table">
+    <thead>
+      <tr>
+        <th>Strikiraj</th>
+        <th>Izdato učeniku</th>
+        <th>Datum izdavanja</th>
+        <th>Trenutno zadržavanje</th>
+        <th>Prekoračenje (dana)</th>
+        <th>Knjigu izdao</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (copy of rentedCopies; track copy) {
+        <tr>
+          <td>
+            <input type="checkbox" [(ngModel)]="copy.selected" />
+          </td>
+          <td>{{ copy.studentName }}</td>
+          <td>{{ copy.rented_at | date:'dd.MM.yyyy' }}</td>
+          <td>{{ calculateDaysHeld(copy.rented_at) }} dana</td>
+          <td>
+            {{ calculateDaysHeld(copy.rented_at) > 30 ? calculateDaysHeld(copy.rented_at) - 30 : 0 }}
+          </td>
+          <td>{{ copy.librarianName }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+  <div class="mark-lost-actions">
+    <button class="cancel-btn" (click)="cancel()">Poništi</button>
+    <button class="lost-btn" (click)="markAsLost()">Otpiši knjigu</button>
+  </div>
+</div>

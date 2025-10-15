@@ -5,22 +5,6 @@
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
-.loading-text,
-.error-text,
-.no-data {
-  text-align: center;
-  margin: 20px 0;
-  font-style: italic;
-}
-
-.error-text {
-  color: #e53e3e;
-}
-
-.loading-text {
-  color: #64748b;
-}
-
 .rented-table {
   width: 100%;
   border-collapse: collapse;
@@ -44,6 +28,53 @@
   background-color: #f8fafc;
 }
 
+.status-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.status-btn {
+  border: none;
+  border-radius: 6px;
+  padding: 5px 9px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.2s;
+}
+
+.status-btn.accept {
+  background-color: #22c55e;
+  color: #fff;
+  font-size: 8px;
+}
+
+.status-btn.reject {
+  background-color: #ef4444;
+  color: #fff;
+  font-size: 8px;
+}
+
+.status-btn:hover {
+  transform: scale(1.05);
+}
+
+.status-label {
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+.status-label.reserved {
+  background-color: #d1fae5;
+  color: #16a34a;
+}
+
+.status-label.rejected {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}
+
 .actions-cell {
   position: relative;
   width: 50px;
@@ -53,7 +84,7 @@
 .dots {
   background: none;
   border: none;
-  font-size: 22px;
+  font-size: 22px; 
   cursor: pointer;
   color: #334155;
   padding: 4px 8px;
@@ -101,7 +132,10 @@
 }
 
 .no-data {
+  text-align: center;
   color: #64748b;
+  font-style: italic;
+  margin-top: 20px;
 }
 
 @keyframes fadeIn {

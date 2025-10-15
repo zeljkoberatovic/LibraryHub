@@ -16,19 +16,22 @@ import { PaginationService } from '../../../shared/pagination/pagination.service
   templateUrl: './books.component.html',
   styleUrls: ['./books.component.css'],
 })
+
 export class Books implements OnInit {
-deleteUser(_t28: Book) {
-throw new Error('Method not implemented.');
-}
-editUser(_t28: Book) {
-throw new Error('Method not implemented.');
-}
-showDetails(_t28: Book) {
-throw new Error('Method not implemented.');
-}
-getLibrarianImageUrl(arg0: any) {
-throw new Error('Method not implemented.');
-}
+  
+  deleteUser(_t28: Book) {
+    throw new Error('Method not implemented.');
+  }
+  editUser(_t28: Book) {
+    throw new Error('Method not implemented.');
+  }
+  showDetails(_t28: Book) {
+    throw new Error('Method not implemented.');
+  }
+  getLibrarianImageUrl(arg0: any) {
+    throw new Error('Method not implemented.');
+  }
+
   private bookService = inject(BookService);
   public router = inject(Router);
   pagination = inject(PaginationService);
