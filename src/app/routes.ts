@@ -13,6 +13,7 @@ import { PublishersResolver } from './resolvers/settings/publishers/publisher-re
 import { GenresResolver } from './resolvers/settings/genre/genre-resolver';
 import { CategoryResolver } from './resolvers/settings/category/category-resolver';
 import { BookSettingsComponent } from './pages/settings/book-settings/book-settings.component';
+import { rentedCopiesResolver } from './resolvers/rented-copies.resolver';
 
 export const routes: Route[] = [
   {
@@ -233,7 +234,8 @@ export const routes: Route[] = [
         children: [
           { 
             path: 'rented', 
-            loadComponent: () => import('../app/pages/books/view-book/book-records/records/rented/rented.component').then(m => m.RentedComponent) 
+            loadComponent: () => import('../app/pages/books/view-book/book-records/records/rented/rented.component').then(m => m.RentedComponent),
+            resolve: { rentedCopies: rentedCopiesResolver }
           },
           { 
             path: 'rented/:rentalId/details',
