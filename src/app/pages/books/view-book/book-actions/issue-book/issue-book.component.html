@@ -1,0 +1,100 @@
+<form (ngSubmit)="submitForm()" #issueForm="ngForm" novalidate class="container mt-5">
+  <div class="row">
+    <!-- LEFT: Form -->
+    <div class="col-md-7 mb-5">
+      <h3 class="mb-4">Issue Book</h3>
+
+      <!-- Student -->
+      <div class="mb-3">
+        <label for="student" class="form-label">
+          Select student who will borrow the book <span class="text-danger">*</span>
+        </label>
+        <select
+          id="student"
+          name="student"
+          class="form-select"
+          [(ngModel)]="selectedStudent"
+          (ngModelChange)="clearError('student')"
+        >
+          <option [ngValue]="null" [selected]="!selectedStudent" disabled>-- Select student --</option>
+          <option *ngFor="let s of students" [ngValue]="s">{{ s.name }}</option>
+        </select>
+        <div class="text-danger mt-1" *ngIf="errors?.['student']">
+          {{ errors['student'] }}
+        </div>
+      </div>
+
+      <!-- Dates -->
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="issueDate" class="form-label">
+            Issue date <span class="text-danger">*</span>
+          </label>
+          <input
+            type="date"
+            id="issueDate"
+            name="issueDate"
+            class="form-control"
+            [(ngModel)]="issueDate"
+            (ngModelChange)="calculateReturnDate()"
+          />
+          <div class="text-danger mt-1" *ngIf="errors?.['issueDate']">
+            {{ errors['issueDate'] }}
+          </div>
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label for="returnDate" class="form-label">Return date</label>
+          <input
+            type="text"
+            id="returnDate"
+            class="form-control text-muted"
+            [value]="returnDate"
+            disabled
+          />
+          <small class="text-secondary">Return deadline: 20 days</small>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Counts -->
+    <div class="col-md-4 offset-md-1">
+      <div class="card shadow-sm border-0">
+        <div class="card-body">
+          <h5 class="card-title mb-4">COUNTS</h5>
+          <div class="d-flex justify-content-between text-secondary">
+            <div>
+              <p>Available:</p>
+              <p>Reserved:</p>
+              <p>Issued:</p>
+              <p>Overdue:</p>
+              <p>Total copies:</p>
+            </div>
+            <div class="text-end">
+              <p class="badge bg-success text-white p-2">
+                {{ available }} copies
+              </p>
+              <p class="badge bg-warning text-dark p-2">
+                {{ reserved }} copies
+              </p>
+              <p class="badge bg-primary text-white p-2">
+                {{ issued }} copies
+              </p>
+              <p class="badge bg-danger text-white p-2">
+                {{ overdue }} copies
+              </p>
+              <p class="badge bg-light text-success border p-2">
+                {{ total }} copies
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Submit -->
+  <div class="mt-4">
+    <button type="submit" class="btn btn-primary">Issue Book</button>
+  </div>
+</form>

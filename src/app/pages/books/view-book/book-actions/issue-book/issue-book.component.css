@@ -1,0 +1,113 @@
+/* ...existing code... */
+
+/* Layout */
+:host { display: block; }
+.container { max-width: 980px; padding: 1.5rem 1rem; }
+
+/* Heading */
+h3 { font-weight: 600; color: #1f2937; margin-bottom: 1rem; }
+
+/* Form controls */
+.form-label { font-size: 0.95rem; color: #374151; }
+.form-control,
+.form-select {
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+  box-shadow: none;
+  transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+.form-control:focus,
+.form-select:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 0.15rem rgba(37,99,235,0.12);
+  outline: none;
+}
+
+/* Counts card */
+.card {
+  border-radius: 8px;
+  overflow: hidden;
+}
+.card-body { padding: 1.25rem; }
+.card-title { font-size: 0.85rem; letter-spacing: 0.04em; color: #6b7280; margin-bottom: .75rem; }
+
+/* Badges in counts */
+.badge {
+  min-width: 90px;
+  display: inline-block;
+  font-weight: 600;
+  border-radius: 6px;
+  text-align: center;
+}
+
+/* Error text */
+.text-danger { font-size: 0.875rem; }
+
+/* Submit button */
+button[type="submit"].btn {
+  padding: 0.5rem 1.25rem;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+/* Responsive adjustments */
+@media (max-width: 767.98px) {
+  .col-md-7, .col-md-4, .offset-md-1 { width: 100%; max-width: 100%; }
+  .offset-md-1 { margin-left: 0; }
+  .container { padding: 1rem; }
+  .badge { min-width: 72px; font-size: 0.85rem; }
+}
+
+/* Heading */
+h3 { font-weight: 600; color: #1f2937; margin-bottom: 1rem; }
+
+/* Form controls */
+.form-label { font-size: 0.95rem; color: #374151; }
+.form-control,
+.form-select {
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+  box-shadow: none;
+  transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+.form-control:focus,
+.form-select:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 0.15rem rgba(37,99,235,0.12);
+  outline: none;
+}
+
+/* Counts card */
+.card {
+  border-radius: 8px;
+  overflow: hidden;
+}
+.card-body { padding: 1.25rem; }
+.card-title { font-size: 0.85rem; letter-spacing: 0.04em; color: #6b7280; margin-bottom: .75rem; }
+
+/* Badges in counts */
+.badge {
+  min-width: 90px;
+  display: inline-block;
+  font-weight: 600;
+  border-radius: 6px;
+  text-align: center;
+}
+
+/* Error text */
+.text-danger { font-size: 0.875rem; }
+
+/* Submit button */
+button[type="submit"].btn {
+  padding: 0.5rem 1.25rem;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+/* Responsive adjustments */
+@media (max-width: 767.98px) {
+  .col-md-7, .col-md-4, .offset-md-1 { width: 100%; max-width: 100%; }
+  .offset-md-1 { margin-left: 0; }
+  .container { padding: 1rem; }
+  .badge { min-width: 72px; font-size: 0.85rem; }
+}

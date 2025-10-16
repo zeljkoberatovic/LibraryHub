@@ -272,6 +272,22 @@ export const routes: Route[] = [
           import('../app/pages/books/view-book/book-media/book-media.component').then(m => m.BookMedia),
         resolve: { book: bookResolver}
       },
+
+      // ---- book action routes ----
+      {
+        path: 'issue',
+        canActivate: [authGuard],
+        loadComponent: () =>
+          import('../app/pages/books/view-book/book-actions/issue-book/issue-book.component').then(m => m.IssueBookComponent)
+      },
+      {
+        path: 'reserve',
+        canActivate: [authGuard],
+        loadComponent: () =>
+          import('../app/pages/books/view-book/book-actions/reserve-book/reserve-book.component').then(m => m.ReserveBookComponent)
+      },
+      // --------------------------------
+
       { path: '', redirectTo: 'details', pathMatch: 'full' }
     ]
   },
