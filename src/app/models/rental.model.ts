@@ -14,6 +14,7 @@ export interface Book {
 }
 
 export interface Student {
+name: any;
   id: number;
   first_name: string;
   last_name: string;

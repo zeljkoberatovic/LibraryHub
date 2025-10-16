@@ -1,113 +1,172 @@
-/* ...existing code... */
-
-/* Layout */
-:host { display: block; }
-.container { max-width: 980px; padding: 1.5rem 1rem; }
-
-/* Heading */
-h3 { font-weight: 600; color: #1f2937; margin-bottom: 1rem; }
-
-/* Form controls */
-.form-label { font-size: 0.95rem; color: #374151; }
-.form-control,
-.form-select {
-  border-radius: 6px;
-  border: 1px solid #e5e7eb;
-  box-shadow: none;
-  transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+.issue-container {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+  padding: 32px 24px;
+  margin-bottom: 32px;
+  border: 1px solid #e1e5e9;
 }
-.form-control:focus,
-.form-select:focus {
-  border-color: #2563eb;
-  box-shadow: 0 0 0 0.15rem rgba(37,99,235,0.12);
+
+
+.row.gx-4 {
+  display: flex;
+  gap: 32px;
+}
+
+.col-12.col-md-6 {
+  flex: 1 1 45%;
+  min-width: 320px;
+  max-width: 600px;
+}
+
+
+h3 {
+  color: #193c6c;
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 24px;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+
+.col-12.col-md-6 > div {
+  margin-bottom: 22px;
+}
+
+
+.form-label {
+  color: #2d3748;
+  font-size: 15px;
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+
+.form-select, .form-control {
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 14px;
+  padding: 10px 12px;
+  background: #fff;
+  color: #4a5568;
+  transition: border-color 0.2s;
+}
+
+.form-select:focus, .form-control:focus {
+  border-color: #4299e1;
+  box-shadow: 0 0 0 3px rgba(66,153,225,0.08);
   outline: none;
 }
 
-/* Counts card */
-.card {
+
+.text-danger {
+  color: #e53e3e;
+  font-size: 13px;
+  margin-top: 2px;
+}
+
+
+.form-control[disabled] {
+  background: #edf2f7;
+  color: #718096;
+}
+
+
+.text-secondary {
+  color: #718096;
+  font-size: 12px;
+}
+
+
+.d-flex.justify-content-end {
+  justify-content: flex-end !important;
+}
+
+.d-flex.gap-2 {
+  gap: 12px;
+}
+
+.btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border: none;
   border-radius: 8px;
-  overflow: hidden;
-}
-.card-body { padding: 1.25rem; }
-.card-title { font-size: 0.85rem; letter-spacing: 0.04em; color: #6b7280; margin-bottom: .75rem; }
-
-/* Badges in counts */
-.badge {
-  min-width: 90px;
-  display: inline-block;
-  font-weight: 600;
-  border-radius: 6px;
-  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
 }
 
-/* Error text */
-.text-danger { font-size: 0.875rem; }
-
-/* Submit button */
-button[type="submit"].btn {
-  padding: 0.5rem 1.25rem;
-  border-radius: 6px;
-  font-weight: 600;
+.btn-primary {
+  background: #4299e1;
+  color: white;
 }
 
-/* Responsive adjustments */
-@media (max-width: 767.98px) {
-  .col-md-7, .col-md-4, .offset-md-1 { width: 100%; max-width: 100%; }
-  .offset-md-1 { margin-left: 0; }
-  .container { padding: 1rem; }
-  .badge { min-width: 72px; font-size: 0.85rem; }
+.btn-primary:hover {
+  background: #3182ce;
+  box-shadow: 0 4px 12px rgba(66,153,225,0.15);
 }
 
-/* Heading */
-h3 { font-weight: 600; color: #1f2937; margin-bottom: 1rem; }
-
-/* Form controls */
-.form-label { font-size: 0.95rem; color: #374151; }
-.form-control,
-.form-select {
-  border-radius: 6px;
-  border: 1px solid #e5e7eb;
-  box-shadow: none;
-  transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
-}
-.form-control:focus,
-.form-select:focus {
-  border-color: #2563eb;
-  box-shadow: 0 0 0 0.15rem rgba(37,99,235,0.12);
-  outline: none;
+.btn-outline-secondary {
+  background: #f7fafc;
+  color: #2d3748;
+  border: 1px solid #e2e8f0;
 }
 
-/* Counts card */
-.card {
+.btn-outline-secondary:hover {
+  background: #e2e8f0;
+  color: #1a365d;
+}
+
+
+.alert-warning {
   border-radius: 8px;
-  overflow: hidden;
+  padding: 12px 16px;
+  font-size: 1rem;
+  background: #fffbea;
+  color: #b7791f;
+  border: 1px solid #f6e05e;
+  margin-bottom: 16px;
 }
-.card-body { padding: 1.25rem; }
-.card-title { font-size: 0.85rem; letter-spacing: 0.04em; color: #6b7280; margin-bottom: .75rem; }
 
-/* Badges in counts */
-.badge {
-  min-width: 90px;
-  display: inline-block;
-  font-weight: 600;
+
+.counts-row {
+  display: flex;
+  gap: 18px;
+  margin-top: 18px;
+  justify-content: flex-end;
+}
+
+.count-label {
+  color: #718096;
+  font-size: 14px;
+  margin-right: 4px;
+}
+
+.count-value {
+  font-weight: 700;
+  font-size: 16px;
+  padding: 2px 10px;
   border-radius: 6px;
+  min-width: 32px;
   text-align: center;
+  margin-right: 8px;
 }
 
-/* Error text */
-.text-danger { font-size: 0.875rem; }
+.count-available { background: #e6fffa; color: #38a169; }
+.count-issued    { background: #ebf8ff; color: #3182ce; }
+.count-overdue   { background: #fff5f5; color: #e53e3e; }
+.count-total     { background: #f7fafc; color: #2d3748; }
+.count-reserved  { background: #fffaf0; color: #d69e2e; }
 
-/* Submit button */
-button[type="submit"].btn {
-  padding: 0.5rem 1.25rem;
-  border-radius: 6px;
-  font-weight: 600;
+
+.actions-row {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 32px;
 }
 
-/* Responsive adjustments */
-@media (max-width: 767.98px) {
-  .col-md-7, .col-md-4, .offset-md-1 { width: 100%; max-width: 100%; }
-  .offset-md-1 { margin-left: 0; }
-  .container { padding: 1rem; }
-  .badge { min-width: 72px; font-size: 0.85rem; }
-}

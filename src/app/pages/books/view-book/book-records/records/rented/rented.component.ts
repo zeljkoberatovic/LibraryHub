@@ -30,9 +30,9 @@ export class RentedComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.parent?.parent?.paramMap.subscribe(params => {
-    this.bookId = Number(params.get('id'));
-    this.loadData();
-  });
+      this.bookId = Number(params.get('id'));
+      this.loadData();
+    });
   }
 
   loadData(): void {
@@ -76,7 +76,7 @@ export class RentedComponent implements OnInit {
     this.openedMenuId = null;
   }
 
-   viewDetails(id: number): void {
+  viewDetails(id: number): void {
     this.router.navigate(['books', 'view', this.bookId, 'records', 'rented', id, 'details']);
     this.closeMenu();
   }
@@ -90,4 +90,4 @@ export class RentedComponent implements OnInit {
     this.router.navigate(['books', 'view', this.bookId, 'records', 'rented', id, 'return']);
     this.closeMenu();
   }
-} 
+}
