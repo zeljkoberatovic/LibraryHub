@@ -59,14 +59,27 @@ export class ReturnBookComponent implements OnInit {
   }
 
   returnBook() {
-    const selectedIds = this.rentedCopies.filter(c => c.selected).map(c => c.id);
-    if (selectedIds.length === 0) {
-      alert('Niste odabrali nijednu knjigu za vraćanje.');
+    const selected = this.rentedCopies.find(c => c.selected);
+    if (!selected) {
+      alert('Niste odabrali knjigu za vraćanje.');
       return;
     }
-    // rentalService.returnBook(selectedIds).subscribe(...)
-    alert('Vraćanje knjiga je spremno za backend!');
+    this.rentalService.returnBook(
+      selected.id,
+      this.bookId!,
+      selected.librarian_id,
+      selected.student_id
+    ).subscribe({
+      next: () => {
+        alert('Knjiga je uspješno vraćena!');
+        this.ngOnInit();
+      },
+      error: () => {
+        alert('Greška prilikom vraćanja knjige.');
+      }
+    });
   }
+
   calculateDaysHeld(rentedDate?: string | Date): number {
     if (!rentedDate) return 0;
     const today = new Date();

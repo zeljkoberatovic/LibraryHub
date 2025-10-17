@@ -6,12 +6,14 @@ import { Rental } from '@/app/models/rental.model';
 
 @Injectable({ providedIn: 'root' })
 export class RentalService {
+
+  private http = inject(HttpClient);
+  private baseUrl = `${environment.apiUrl}/rentals`;
+
   /** Dohvati prekoracene knjige */
   getBook(foundId: number) {
     throw new Error('Method not implemented.');
   }
-  private http = inject(HttpClient);
-  private baseUrl = `${environment.apiUrl}/rentals`;
 
   /**Dohvati sva iznajmljivanja */
   getAllRentals(): Observable<Rental[]> {
@@ -33,8 +35,11 @@ export class RentalService {
   }
 
   /** Vrati knjigu */
-  returnBook(rentalId: number): Observable<any> {
-    return this.http.post(`${this.baseUrl}/return/${rentalId}`, {});
+  returnBook(rentalId: number, bookId: number, librarianId: number, studentId: number): Observable<any> {
+    return this.http.post(
+      `${this.baseUrl}/${rentalId}/return`,
+      { book_id: bookId, librarian_id: librarianId, student_id: studentId }
+    );
   }
 
   /** Dohvati trenutno iznajmljene knjige */
@@ -63,10 +68,7 @@ export class RentalService {
     return this.http.get(`${this.baseUrl}/summary`);
   }
 
-  /**
-   * Dohvati iznajmljene knjige za određenu knjigu (book_id)
-   * Filtrira na osnovu book_id i vraca samo aktivne (rented_at != null && returned_at == null)
-   */
+  /* Dohvati iznajmljene knjige za određenu knjigu (book_id) */
   getRentedByBook(bookId: number): Observable<Rental[]> {
     return this.http
       .get<{ status: string; data: { meta: any; data: Rental[] } }>(`${this.baseUrl}/rented`)
