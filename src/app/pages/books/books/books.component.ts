@@ -18,19 +18,6 @@ import { PaginationService } from '../../../shared/pagination/pagination.service
 })
 
 export class Books implements OnInit {
-  
-  deleteUser(_t28: Book) {
-    throw new Error('Method not implemented.');
-  }
-  editUser(_t28: Book) {
-    throw new Error('Method not implemented.');
-  }
-  showDetails(_t28: Book) {
-    throw new Error('Method not implemented.');
-  }
-  getLibrarianImageUrl(arg0: any) {
-    throw new Error('Method not implemented.');
-  }
 
   private bookService = inject(BookService);
   public router = inject(Router);
@@ -105,24 +92,6 @@ export class Books implements OnInit {
   }
 
   // --- akcije ---
-  
-
-  writeOffBook(book: Book) {
-    console.log('Otpiši knjigu:', book);
-  }
-
-  issueBook(book: Book) {
-    console.log('Izdaj knjigu:', book);
-  }
-
-  returnBook(book: Book) {
-    console.log('Vrati knjigu:', book);
-  }
-
-  reserveBook(book: Book) {
-    console.log('Rezerviši knjigu:', book);
-  }
-
   deleteBook(book: Book): void {
     if (book.id !== undefined && confirm(`Da li ste sigurni da želite da izbrišete knjigu "${book.name}"?`)) {
       this.bookService.deleteBook(book.id).subscribe(() => {

@@ -71,6 +71,7 @@
                 <span class="menu-icon">⋮</span>
               </button>
               @if (openMenuIndex === i) {
+                <!-- Primjer za dropdown meni -->
                 <div class="dropdown-menu">
                   <button class="menu-item" [routerLink]="['/books/view', book.id]">
                     <span class="menu-icon">👁️</span>
@@ -78,28 +79,27 @@
                   </button>
                   <button class="menu-item" [routerLink]="['/books/edit', book.id]">
                     <span class="menu-icon">✏️</span>
-                    Izmjeni knjigu
+                    Izmijeni knjigu
                   </button>
                   <div class="menu-divider"></div>
-                  <button class="menu-item" (click)="issueBook(book)">
-                    <span class="menu-icon">📤</span>
+                  <button class="menu-item" [routerLink]="['/books/view', book.id, 'issue']">
+                    <span class="menu-icon">📖</span>
                     Izdaj knjigu
                   </button>
-                  <button class="menu-item" (click)="returnBook(book)">
-                    <span class="menu-icon">📥</span>
-                    Vrati knjigu
-                  </button>
-                  <button class="menu-item" (click)="reserveBook(book)">
-                    <span class="menu-icon">🔖</span>
+                  <button class="menu-item" [routerLink]="['/books/view', book.id, 'reserve']">
+                    <span class="menu-icon">📝</span>
                     Rezerviši knjigu
                   </button>
-                  <div class="menu-divider"></div>
-                  <button class="menu-item" (click)="writeOffBook(book)">
-                    <span class="menu-icon">🗑️</span>
+                  <button class="menu-item" *ngIf="book.rentalId" [routerLink]="['/books/view', book.id, 'records', 'rented', book.rentalId, 'return']">
+                    <span class="menu-icon">↩</span>
+                    Vrati knjigu
+                  </button>
+                  <button class="menu-item" *ngIf="book.rentalId" [routerLink]="['/books/view', book.id, 'records', 'rented', book.rentalId, 'lost']">
+                    <span class="menu-icon">❌</span>
                     Otpiši knjigu
                   </button>
                   <button class="menu-item delete" (click)="deleteBook(book)">
-                    <span class="menu-icon">❌</span>
+                    <span class="menu-icon">🗑</span>
                     Izbriši knjigu
                   </button>
                 </div>
