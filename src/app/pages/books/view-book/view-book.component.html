@@ -7,8 +7,7 @@
 
     <div class="right-wrapper">
       <div class="actions">
-        <!-- Uklonjeno: Otpiši knjigu i Vrati knjigu -->
-        <a class="action-btn" routerLink="issue"><i class="fa-solid fa-book-open"></i> Izdaj knjigu</a>
+
         <a class="action-btn" routerLink="reserve"><i class="fa-solid fa-calendar-check"></i> Rezerviši knjigu</a>
       </div>
 
@@ -45,3 +44,13 @@
     </div>
   </div>
 </div>
+
+<!-- Primjer: rented.component.html -->
+<tr *ngFor="let rental of rentedCopies">
+  <td>{{ rental.user }}</td>
+  <td>{{ rental.date }}</td>
+  <td>
+    <a [routerLink]="['../', rental.id, 'lost']">Otpiši</a>
+    <a [routerLink]="['../', rental.id, 'return']">Vrati</a>
+  </td>
+</tr>

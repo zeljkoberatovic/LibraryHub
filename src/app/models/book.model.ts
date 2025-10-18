@@ -1,4 +1,5 @@
 export interface Book {
+rentalId: any;
   id: number;
   name: string;
   description?: string;

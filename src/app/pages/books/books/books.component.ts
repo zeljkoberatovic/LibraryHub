@@ -19,7 +19,7 @@ import { Rental } from '@/app/models/rental.model';
   styleUrls: ['./books.component.css'],
 })
 export class Books implements OnInit {
-  rentalService = inject(RentalService);
+
   private bookService = inject(BookService);
   public router = inject(Router);
   pagination = inject(PaginationService);
@@ -107,6 +107,7 @@ export class Books implements OnInit {
   toggleMenu(index: number): void {
     this.openMenuIndex = this.openMenuIndex === index ? null : index;
   }
+
 
   deleteBook(book: Book): void {
     if (book.id !== undefined && confirm(`Da li ste sigurni da želite da izbrišete knjigu "${book.name}"?`)) {

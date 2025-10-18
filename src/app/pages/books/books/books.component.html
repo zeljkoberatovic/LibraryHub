@@ -71,6 +71,7 @@
                 <span class="menu-icon">⋮</span>
               </button>
               @if (openMenuIndex === i) {
+                <!-- Primjer za dropdown meni -->
                 <div class="dropdown-menu">
                   <button class="menu-item" [routerLink]="['/books/view', book.id]">
                     <span class="menu-icon">👁️</span>
@@ -78,19 +79,13 @@
                   </button>
                   <button class="menu-item" [routerLink]="['/books/edit', book.id]">
                     <span class="menu-icon">✏️</span>
-                    Izmjeni knjigu
+                    Izmijeni knjigu
                   </button>
                   <div class="menu-divider"></div>
                   <button class="menu-item" [routerLink]="['/books/view', book.id, 'issue']">
-                    <span class="menu-icon">📤</span>
-                    Izdaj knjigu
-                  </button>
-                  <button class="menu-item" [routerLink]="['/books/view', book.id, 'reserve']">
-                    <span class="menu-icon">🔖</span>
-                    Rezerviši knjigu
-                  </button>
+
                   <button class="menu-item delete" (click)="deleteBook(book)">
-                    <span class="menu-icon">❌</span>
+                    <span class="menu-icon">🗑</span>
                     Izbriši knjigu
                   </button>
                 </div>
