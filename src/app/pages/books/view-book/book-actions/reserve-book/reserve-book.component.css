@@ -1,0 +1,72 @@
+.reserve-container {
+  max-width: 340px;
+  margin: 24px auto;
+  padding: 16px 18px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 18px;
+}
+
+label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.form-control {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 6px 8px;
+  border: 1px solid #d0d0d0;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  background: #fafbfc;
+  transition: border 0.2s;
+}
+
+.form-control:focus {
+  border-color: #1976d2;
+  outline: none;
+}
+
+.btn.btn-primary {
+  background: #1976d2;
+  color: #fff;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn.btn-primary:disabled {
+  background: #b0b0b0;
+  cursor: not-allowed;
+}
+
+.alert {
+  padding: 10px 16px;
+  border-radius: 4px;
+  margin-bottom: 18px;
+  font-size: 0.98rem;
+}
+
+.alert-success {
+  background: #e6f7e6;
+  color: #207520;
+  border: 1px solid #b7e0b7;
+}
+
+.alert-danger {
+  background: #fdeaea;
+  color: #a94442;
+  border: 1px solid #f5c6cb;
+}

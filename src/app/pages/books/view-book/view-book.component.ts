@@ -1,5 +1,4 @@
 import { Component, OnInit, inject } from '@angular/core';
-
 import { ActivatedRoute, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { Book } from '../../../models/book.model';
 
@@ -11,7 +10,6 @@ import { Book } from '../../../models/book.model';
   styleUrls: ['./view-book.component.css'],
 })
 export class ViewBook implements OnInit {
-  
   book: Book | null = null;
   dropdownOpen = false;
 

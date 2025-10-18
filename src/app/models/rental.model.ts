@@ -38,6 +38,7 @@ export interface Librarian {
 }
 
 export interface Rental {
+  status: string;
   id: number;
   book_id: number;
   student_id: number;

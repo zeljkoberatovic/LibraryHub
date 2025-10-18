@@ -34,6 +34,29 @@ export class RentalService {
     return this.http.post(`${this.baseUrl}/rent`, payload);
   }
 
+  /** Rezerviši knjigu (POST /reserve)
+   određeni datum.
+     @param bookId 
+     @param studentId 
+     @param librarianId 
+     @param reservationDate 
+     @returns 
+  */
+  reserveBook(
+    bookId: number,
+    studentId: number,
+    librarianId: number,
+    reservationDate: string
+  ): Observable<any> {
+    const payload = {
+      book_id: bookId,
+      student_id: studentId,
+      librarian_id: librarianId,
+      reservation_date: reservationDate
+    };
+    return this.http.post(`${this.baseUrl}/reserve`, payload);
+  }
+
   /** Vrati knjigu */
   returnBook(rentalId: number, bookId: number, librarianId: number, studentId: number): Observable<any> {
     return this.http.post(

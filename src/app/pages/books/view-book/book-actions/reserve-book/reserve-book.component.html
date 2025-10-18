@@ -1,1 +1,46 @@
-<p>reserve-book works!</p>
+@if (successMessage) {
+  <div class="alert alert-success">{{ successMessage }}</div>
+}
+@if (errorMessage) {
+  <div class="alert alert-danger">{{ errorMessage }}</div>
+}
+
+<form (ngSubmit)="reserve()" #reserveForm="ngForm" class="reserve-container">
+  <div class="form-group">
+    <label for="student">Izaberi studenta:</label>
+    <select
+      id="student"
+      name="student"
+      class="form-control"
+      required
+      [(ngModel)]="selectedStudentId"
+    >
+      <option [ngValue]="null" disabled selected>-- Izaberi --</option>
+      @for (student of students; track student.id) {
+        <option [ngValue]="student.id">
+          {{ student.first_name }} {{ student.last_name }}
+        </option>
+      }
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="reservationDate">Datum rezervacije:</label>
+    <input
+      id="reservationDate"
+      name="reservationDate"
+      type="date"
+      class="form-control"
+      required
+      [(ngModel)]="reservationDate"
+    />
+  </div>
+
+  <button
+    type="submit"
+    class="btn btn-primary"
+    [disabled]="!selectedStudentId || !reservationDate"
+  >
+    Rezerviši knjigu
+  </button>
+</form>

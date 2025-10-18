@@ -4,10 +4,12 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 
 import { BookService } from '../../../services/book/book.service';
+import { RentalService } from '../../../services/rental/rental.service';
 import { Book } from '../../../models/book.model';
 
 import { PaginationComponent } from '../../../shared/pagination/pagination.component';
 import { PaginationService } from '../../../shared/pagination/pagination.service';
+import { Rental } from '@/app/models/rental.model';
 
 @Component({
   selector: 'app-books',
@@ -16,22 +18,8 @@ import { PaginationService } from '../../../shared/pagination/pagination.service
   templateUrl: './books.component.html',
   styleUrls: ['./books.component.css'],
 })
-
 export class Books implements OnInit {
-  
-  deleteUser(_t28: Book) {
-    throw new Error('Method not implemented.');
-  }
-  editUser(_t28: Book) {
-    throw new Error('Method not implemented.');
-  }
-  showDetails(_t28: Book) {
-    throw new Error('Method not implemented.');
-  }
-  getLibrarianImageUrl(arg0: any) {
-    throw new Error('Method not implemented.');
-  }
-
+  rentalService = inject(RentalService);
   private bookService = inject(BookService);
   public router = inject(Router);
   pagination = inject(PaginationService);
@@ -50,9 +38,25 @@ export class Books implements OnInit {
   private loadBooks(): void {
     this.bookService.getAllBooks().subscribe({
       next: (books) => {
-        this.books = books;
-        this.pagination.reset();
-        this.loading = false;
+        this.rentalService.getAllRentals().subscribe((rentals) => {
+          this.rentalService.getOverdue().subscribe((overdueList) => {
+            this.books = books.map(book => {
+              const issued = rentals.filter(r => r.book_id === book.id && r.returned_at === null).length;
+              const reserved = rentals.filter(r => r.book_id === book.id && r.status === 'reserved').length;
+              const overdue = (overdueList || []).filter(r => r.book_id === book.id).length;
+              const available = book.number_of_copies - issued - reserved;
+              return {
+                ...book,
+                available,
+                reserved,
+                issued,
+                overdue
+              };
+            });
+            this.pagination.reset();
+            this.loading = false;
+          });
+        });
       },
       error: () => {
         this.loading = false;
@@ -104,25 +108,6 @@ export class Books implements OnInit {
     this.openMenuIndex = this.openMenuIndex === index ? null : index;
   }
 
-  // --- akcije ---
-  
-
-  writeOffBook(book: Book) {
-    console.log('Otpiši knjigu:', book);
-  }
-
-  issueBook(book: Book) {
-    console.log('Izdaj knjigu:', book);
-  }
-
-  returnBook(book: Book) {
-    console.log('Vrati knjigu:', book);
-  }
-
-  reserveBook(book: Book) {
-    console.log('Rezerviši knjigu:', book);
-  }
-
   deleteBook(book: Book): void {
     if (book.id !== undefined && confirm(`Da li ste sigurni da želite da izbrišete knjigu "${book.name}"?`)) {
       this.bookService.deleteBook(book.id).subscribe(() => {
@@ -132,7 +117,6 @@ export class Books implements OnInit {
     this.openMenuIndex = null;
   }
 
-  // --- helperi za prikaz ---
   getCategoryNames(categories: any[]): string {
     if (!categories || categories.length === 0) return '';
     return categories.map(c => c.name).join(', ');
