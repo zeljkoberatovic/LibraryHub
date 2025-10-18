@@ -5,6 +5,7 @@ import { StudentService } from '@/app/services/student/student.service';
 import { LibrarianService } from '@/app/services/librarian/librarian.service';
 import { Rental } from '@/app/models/rental.model';
 import { User } from '@/app/models/user.model';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-overdue',
@@ -21,8 +22,13 @@ export class OverdueComponent implements OnInit {
   private rentalService = inject(RentalService);
   private studentService = inject(StudentService);
   private librarianService = inject(LibrarianService);
+  private route = inject(ActivatedRoute);
+
+  bookId: number | null = null;
 
   ngOnInit(): void {
+    this.bookId = Number(this.route.parent?.parent?.snapshot.paramMap.get('id'));
+
     this.loadOverdueRentals();
     this.studentService.getAllStudents().subscribe(students => {
       this.students = students;
@@ -34,7 +40,9 @@ export class OverdueComponent implements OnInit {
 
   private loadOverdueRentals(): void {
     this.rentalService.getOverdue().subscribe(rentals => {
-      this.overdueRentals = rentals;
+      this.overdueRentals = this.bookId
+        ? rentals.filter(r => Number(r.book_id) === this.bookId)
+        : [];
     });
   }
 

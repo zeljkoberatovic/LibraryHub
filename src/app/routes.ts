@@ -13,7 +13,7 @@ import { PublishersResolver } from '@/app/resolvers/settings/publishers/publishe
 import { GenresResolver } from '@/app/resolvers/settings/genre/genre-resolver';
 import { CategoryResolver } from '@/app/resolvers/settings/category/category-resolver';
 import { BookSettingsComponent } from '@/app/pages/settings/book-settings/book-settings.component';
-import { rentedCopiesResolver } from '@/app/resolvers/rented-copies.resolver';
+import { rentedCopiesResolver } from '@/app/resolvers/renteds/rented-copies.resolver';
 
 export const routes: Route[] = [
   {
