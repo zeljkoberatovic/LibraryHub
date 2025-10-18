@@ -1,5 +1,4 @@
 import { Component, OnInit, inject } from '@angular/core';
-
 import { ActivatedRoute, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { Book } from '../../../models/book.model';
 import { CommonModule } from '@angular/common';
@@ -12,7 +11,6 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./view-book.component.css'],
 })
 export class ViewBook implements OnInit {
-  
   book: Book | null = null;
   dropdownOpen = false;
 

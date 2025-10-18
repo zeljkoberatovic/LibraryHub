@@ -1,16 +1,4 @@
 import { Route } from '@angular/router';
-import { DashboardComponent } from './pages/dashboard/dashboard.component';
-import { authGuard } from './core/guards/auth.guard';
-
-import {
-  booksRoutes,
-  studentsRoutes,
-  librariansRoutes,
-  authorsRoutes,
-  settingsRoutes,
-  authRoutes
-} from './routes/index';
-
 export const routes: Route[] = [
   ...authRoutes,
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },

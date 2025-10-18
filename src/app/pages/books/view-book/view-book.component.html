@@ -7,9 +7,7 @@
 
     <div class="right-wrapper">
       <div class="actions">
-        <a class="action-btn" [routerLink]="['records', 'rented', rentalId, 'lost']">Otpiši knjigu</a>
-        <a class="action-btn" routerLink="issue"><i class="fa-solid fa-book-open"></i> Izdaj knjigu</a>
-        <a class="action-btn" [routerLink]="['records', 'rented', rentalId, 'return']"><i class="fa-solid fa-rotate-left"></i> Vrati knjigu</a>
+
         <a class="action-btn" routerLink="reserve"><i class="fa-solid fa-calendar-check"></i> Rezerviši knjigu</a>
       </div>
 
@@ -34,16 +32,15 @@
         <a routerLink="media" routerLinkActive="active" class="nav-item">Multimedia</a>
       </nav>
 
-      <!-- Child content sada unutar book-navbar -->
       <div class="book-content">
         <router-outlet></router-outlet>
       </div>
     </div>
 
     <div class="navbar-extra">
-        <div class="actions-placeholder">
-    <p>Detalji knjige</p>
-  </div>
+      <div class="actions-placeholder">
+        <p>Detalji knjige</p>
+      </div>
     </div>
   </div>
 </div>

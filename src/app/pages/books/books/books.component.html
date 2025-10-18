@@ -62,10 +62,10 @@
               <span class="language-badge">{{ book.language }}</span>
             </td>
             <td class="number-cell">{{ book.number_of_copies }}</td>
-            <td class="number-cell available">{{ book.available ?? 0 }}</td>
-            <td class="number-cell reserved">{{ book.reserved ?? 0 }}</td>
-            <td class="number-cell issued">{{ book.issued ?? 0 }}</td>
-            <td class="number-cell overdue">{{ book.overdue ?? 0 }}</td>
+            <td class="number-cell available">{{ book.available }}</td>
+            <td class="number-cell reserved">{{ book.reserved }}</td>
+            <td class="number-cell issued">{{ book.issued }}</td>
+            <td class="number-cell overdue">{{ book.overdue }}</td>
             <td class="actions-cell">
               <button class="menu-trigger" (click)="toggleMenu(i)">
                 <span class="menu-icon">⋮</span>
@@ -83,21 +83,7 @@
                   </button>
                   <div class="menu-divider"></div>
                   <button class="menu-item" [routerLink]="['/books/view', book.id, 'issue']">
-                    <span class="menu-icon">📖</span>
-                    Izdaj knjigu
-                  </button>
-                  <button class="menu-item" [routerLink]="['/books/view', book.id, 'reserve']">
-                    <span class="menu-icon">📝</span>
-                    Rezerviši knjigu
-                  </button>
-                  <button class="menu-item" *ngIf="book.rentalId" [routerLink]="['/books/view', book.id, 'records', 'rented', book.rentalId, 'return']">
-                    <span class="menu-icon">↩</span>
-                    Vrati knjigu
-                  </button>
-                  <button class="menu-item" *ngIf="book.rentalId" [routerLink]="['/books/view', book.id, 'records', 'rented', book.rentalId, 'lost']">
-                    <span class="menu-icon">❌</span>
-                    Otpiši knjigu
-                  </button>
+
                   <button class="menu-item delete" (click)="deleteBook(book)">
                     <span class="menu-icon">🗑</span>
                     Izbriši knjigu

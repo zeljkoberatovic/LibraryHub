@@ -6,12 +6,14 @@ import { StudentService } from '@/app/services/student/student.service';
 import { LibrarianService } from '@/app/services/librarian/librarian.service';
 import { Rental, Librarian, Student } from '@/app/models/rental.model';
 import { Router } from '@angular/router';
+import { PaginationService } from '@/app/shared/pagination/pagination.service';
+import { PaginationComponent } from "@/app/shared/pagination/pagination.component";
 
 
 @Component({
   selector: 'app-rented',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, PaginationComponent],
   templateUrl: './rented.component.html',
   styleUrls: ['./rented.component.css']
 })
@@ -21,6 +23,7 @@ export class RentedComponent implements OnInit {
   librarianService = inject(LibrarianService);
   route = inject(ActivatedRoute);
   router = inject(Router);
+  pagination = inject(PaginationService);
 
   rentedCopies: (Rental & { studentName: string; librarianName: string; daysHeld: number })[] = [];
   students: Student[] = [];
@@ -47,6 +50,8 @@ export class RentedComponent implements OnInit {
             librarianName: this.getLibrarianName(rental.librarian_id),
             daysHeld: this.calculateDaysHeld(rental.rented_at)
           }));
+          this.pagination.reset();
+          this.pagination.updateTotal(this.rentedCopies.length);
         });
       });
     });
@@ -89,5 +94,9 @@ export class RentedComponent implements OnInit {
   returnBook(id: number): void {
     this.router.navigate(['books', 'view', this.bookId, 'records', 'rented', id, 'return']);
     this.closeMenu();
+  }
+
+  get pagedRentedCopies() {
+    return this.pagination.getPageSlice(this.rentedCopies);
   }
 }

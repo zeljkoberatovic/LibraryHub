@@ -1,9 +1,9 @@
-// src/app/components/header/header.component.ts
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { AuthService } from '../../auth/services/auth.services';
+import { AuthService } from '@/app/auth/services/auth.services';
 import { Subscription } from 'rxjs';
+import { User } from '@/app/models/user.model';
 
 @Component({
   selector: 'app-header',
@@ -14,8 +14,10 @@ import { Subscription } from 'rxjs';
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   isLoggedIn = false;
-  user: any = null;
+  user: User | null = null;
   private authSubscription!: Subscription;
+  plusMenuOpen = false;
+  userMenuOpen = false;
 
   constructor(private authService: AuthService) {}
 
@@ -52,5 +54,21 @@ export class HeaderComponent implements OnInit, OnDestroy {
         console.error('Logout error:', err);
       }
     });
+  }
+
+  togglePlusMenu() {
+    this.plusMenuOpen = !this.plusMenuOpen;
+  }
+
+  closePlusMenu() {
+    this.plusMenuOpen = false;
+  }
+
+  toggleUserMenu() {
+    this.userMenuOpen = !this.userMenuOpen;
+  }
+
+  closeUserMenu() {
+    this.userMenuOpen = false;
   }
 }
