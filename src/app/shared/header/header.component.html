@@ -1,38 +1,62 @@
 <!-- src/app/components/header/header.component.html -->
 <header class="app-header">
   <!-- Logo / naslov -->
-  <a routerLink="/" class="logo-font">Online Biblioteka
+  <a routerLink="/" class="logo-font">
     <i class="fas fa-book-open"></i>
+    Online Biblioteka
   </a>
 
   <!-- Login / Register na desnoj strani -->
-  <div class="auth-buttons" *ngIf="!isLoggedIn">
-    <a routerLink="/login" class="auth-btn">
-      <i class="fas fa-sign-in-alt"></i> Login
-    </a>
-    <a routerLink="/register" class="auth-btn">
-      <i class="far fa-user"></i> Register
-    </a>
-  </div>
-  
+  @if (!isLoggedIn) {
+    <nav class="auth-buttons">
+      <a routerLink="/login" class="auth-btn">
+        <i class="fas fa-sign-in-alt"></i> Prijava
+      </a>
+      <a routerLink="/register" class="auth-btn">
+        <i class="far fa-user"></i> Registracija
+      </a>
+    </nav>
+  }
+
   <!-- User menu za prijavljene korisnike -->
-  <div class="user-menu" *ngIf="isLoggedIn">
-    <div class="user-dropdown">
-      <button class="user-btn">
-        <i class="fas fa-user-circle"></i> {{ user?.name || 'Korisnik' }}
-        <i class="fas fa-caret-down"></i>
+  @if (isLoggedIn) {
+    <nav class="user-menu">
+      <!-- Zvonce za notifikacije -->
+      <button class="notif-btn" type="button" title="Notifikacije">
+        <i class="fas fa-bell"></i>
       </button>
-      <div class="dropdown-content">
-        <a routerLink="/profile">
-          <i class="fas fa-user"></i> Moj profil
-        </a>
-        <a routerLink="/settings">
-          <i class="fas fa-cog"></i> Postavke
-        </a>
-        <a (click)="logout()" class="logout-btn">
-          <i class="fas fa-sign-out-alt"></i> Odjava
-        </a>
+
+      <!-- Plus dugme sa padajućim menijem -->
+      <div class="plus-dropdown">
+        <button class="plus-btn" type="button" (click)="togglePlusMenu()" [attr.aria-expanded]="plusMenuOpen">
+          <i class="fas fa-plus"></i>
+        </button>
+        <div class="plus-dropdown-content" *ngIf="plusMenuOpen">
+          <a routerLink="/librarians/new" (click)="closePlusMenu()"><i class="fas fa-user-tie"></i> Bibliotekar</a>
+          <a routerLink="/students/new" (click)="closePlusMenu()"><i class="fas fa-user-graduate"></i> Učenik</a>
+          <a routerLink="/books/new" (click)="closePlusMenu()"><i class="fas fa-book"></i> Knjiga</a>
+          <a routerLink="/authors/new" (click)="closePlusMenu()"><i class="fas fa-pen-nib"></i> Autor</a>
+        </div>
       </div>
-    </div>
-  </div>
+
+      <div class="user-dropdown">
+        <button class="user-btn" type="button" (click)="toggleUserMenu()" [attr.aria-expanded]="userMenuOpen">
+          <i class="fas fa-user-circle"></i>
+          {{ user?.first_name }} {{ user?.last_name }}
+          <i class="fas fa-caret-down"></i>
+        </button>
+        <div class="dropdown-content" *ngIf="userMenuOpen">
+          <a routerLink="/profile" (click)="closeUserMenu()">
+            <i class="fas fa-user"></i> Moj profil
+          </a>
+          <a routerLink="/settings" (click)="closeUserMenu()">
+            <i class="fas fa-cog"></i> Postavke
+          </a>
+          <button (click)="logout(); closeUserMenu()" class="logout-btn" type="button">
+            <i class="fas fa-sign-out-alt"></i> Odjava
+          </button>
+        </div>
+      </div>
+    </nav>
+  }
 </header>
