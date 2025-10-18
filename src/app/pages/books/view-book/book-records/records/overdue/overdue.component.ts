@@ -1,5 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RentalService } from '@/app/services/rental/rental.service';
+import { StudentService } from '@/app/services/student/student.service';
+import { LibrarianService } from '@/app/services/librarian/librarian.service';
+import { Rental } from '@/app/models/rental.model';
+import { User } from '@/app/models/user.model';
 
 @Component({
   selector: 'app-overdue',
@@ -8,71 +13,60 @@ import { CommonModule } from '@angular/common';
   templateUrl: './overdue.component.html',
   styleUrls: ['./overdue.component.css']
 })
-export class OverdueComponent {
-  overdueRentals = [
-    {
-      id: 1,
-      student: 'Marko Jovanović',
-      issueDate: new Date('2025-09-01'),
-      overdueDays: 12,
-      daysHeld: 30,
-      issuedBy: 'Ana Petrović'
-    },
-    {
-      id: 2,
-      student: 'Milica Ilić',
-      issueDate: new Date('2025-08-25'),
-      overdueDays: 20,
-      daysHeld: 45,
-      issuedBy: 'Petar Lukić'
-    },
-    {
-      id: 3,
-      student: 'Nikola Stojanov',
-      issueDate: new Date('2025-09-10'),
-      overdueDays: 5,
-      daysHeld: 15,
-      issuedBy: 'Jelena Marić'
+export class OverdueComponent implements OnInit {
+  overdueRentals: Rental[] = [];
+  students: User[] = [];
+  librarians: User[] = [];
+
+  private rentalService = inject(RentalService);
+  private studentService = inject(StudentService);
+  private librarianService = inject(LibrarianService);
+
+  ngOnInit(): void {
+    this.loadOverdueRentals();
+    this.studentService.getAllStudents().subscribe(students => {
+      this.students = students;
+    });
+    this.librarianService.getAllLibrarians().subscribe(librarians => {
+      this.librarians = librarians;
+    });
+  }
+
+  private loadOverdueRentals(): void {
+    this.rentalService.getOverdue().subscribe(rentals => {
+      this.overdueRentals = rentals;
+    });
+  }
+
+  getStudentName(id: number): string {
+    const student = this.students.find(s => s.id === id);
+    return student ? `${student.first_name} ${student.last_name}` : id.toString();
+  }
+
+  getLibrarianName(id: number): string {
+    const librarian = this.librarians.find(l => l.id === id);
+    return librarian ? `${librarian.first_name} ${librarian.last_name}` : id.toString();
+  }
+
+  getDaysHeld(rental: Rental): number | string {
+    if (rental.rented_at) {
+      const start = new Date(rental.rented_at).getTime();
+      const end = rental.returned_at
+        ? new Date(rental.returned_at).getTime()
+        : Date.now();
+      return Math.floor((end - start) / (1000 * 60 * 60 * 24));
     }
-  ];
-
-  openedMenuId: number | null = null;
-
-  toggleMenu(id: number): void {
-    this.openedMenuId = this.openedMenuId === id ? null : id;
+    return '';
   }
 
-  closeMenu(): void {
-    this.openedMenuId = null;
-  }
-
-  viewDetails(id: number): void {
-    console.log('Detalji za iznajmljivanje ID:', id);
-    this.closeMenu();
-  }
-
-  rentBook(id: number): void {
-    console.log('Izdaj knjigu ID:', id);
-    this.closeMenu();
-  }
-
-  returnBook(id: number): void {
-    console.log('Vrati knjigu ID:', id);
-    this.closeMenu();
-  }
-
-  reserveBook(id: number): void {
-    console.log('Rezerviši knjigu ID:', id);
-    this.closeMenu();
-  }
-
-  discardBook(id: number): void {
-    console.log('Otpisi knjigu ID:', id);
-    this.closeMenu();
-  }
-
-  deleteBook(id: number): void {
-    console.log('Izbriši knjigu ID:', id);
-    this.closeMenu();
+  getOverdueDays(rental: Rental): number | string {
+    if (rental.rented_at) {
+      const start = new Date(rental.rented_at).getTime();
+      const now = Date.now();
+      const daysHeld = Math.floor((now - start) / (1000 * 60 * 60 * 24));
+      // Sve preko 30 dana je prekoracenje
+      return daysHeld > 30 ? daysHeld - 30 : 0;
+    }
+    return '';
   }
 }

@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { StudentService } from '@/app/services/student/student.service';
 import { LibrarianService } from '@/app/services/librarian/librarian.service';
 import { Rental } from '@/app/models/rental.model';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-return-book',
@@ -22,6 +23,7 @@ export class ReturnBookComponent implements OnInit {
   route = inject(ActivatedRoute);
   studentService = inject(StudentService);
   librarianService = inject(LibrarianService);
+  location = inject(Location);
 
   ngOnInit() {
     this.bookId = Number(this.route.parent?.parent?.snapshot.paramMap.get('id'));
@@ -55,7 +57,7 @@ export class ReturnBookComponent implements OnInit {
   }
 
   cancel() {
-    this.rentedCopies.forEach(copy => copy.selected = false);
+    this.location.back();
   }
 
   returnBook() {

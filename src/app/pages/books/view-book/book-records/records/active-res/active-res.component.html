@@ -1,48 +1,10 @@
 <div class="rented-container">
-  @if (activeReservations.length > 0) {
-    <table class="rented-table">
-      <thead>
-        <tr>
-          <th>Datum rezervacije</th>
-          <th>Rezervacija ističe</th>
-          <th>Rezervaciju podnio</th>
-          <th>Status</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        @for (res of activeReservations; track res) {
-          <tr>
-            <td>{{ res.reservationDate | date: 'dd.MM.yyyy' }}</td>
-            <td>{{ res.expiryDate | date: 'dd.MM.yyyy' }}</td>
-            <td>{{ res.submittedBy }}</td>
-            <td class="status-cell">
-              @if (!res.status) {
-                <button class="status-btn accept" (click)="setStatus(res.id, 'reserved')">✔</button>
-                <button class="status-btn reject" (click)="setStatus(res.id, 'rejected')">✖</button>
-              } @else if (res.status === 'reserved') {
-                <span class="status-label reserved">Rezervisano</span>
-              } @else {
-                <span class="status-label rejected">Odbijeno</span>
-              }
-            </td>
-            <td class="actions-cell">
-              @if (res.status) {
-                <button class="dots" (click)="toggleMenu(res.id)">⋮</button>
-                @if (openedMenuId === res.id) {
-                  <div class="dropdown">
-                    <button (click)="issueBook(res.id)">📖 Izdaj knjigu</button>
-                    <button (click)="cancelReservation(res.id)">❌ Otkaži rezervaciju</button>
-                  </div>
-                }
-              }
-            </td>
-          </tr>
-        }
-      </tbody>
-    </table>
-  } @else {
-    <p class="no-data">Nema aktivnih rezervacija.</p>
-  }
+  <div class="feature-unavailable">
+    <h2>Rezervacije trenutno nisu dostupne</h2>
+    <p>
+      Funkcionalnost upravljanja rezervacijama je u pripremi.<br>
+      Molimo vas za strpljenje dok radimo na unapređenju ovog dijela sistema.
+    </p>
+  </div>
 </div>
 

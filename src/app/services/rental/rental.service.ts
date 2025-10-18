@@ -6,6 +6,9 @@ import { Rental } from '@/app/models/rental.model';
 
 @Injectable({ providedIn: 'root' })
 export class RentalService {
+  getOverdueRentals() {
+    throw new Error('Method not implemented.');
+  }
 
   private http = inject(HttpClient);
   private baseUrl = `${environment.apiUrl}/rentals`;

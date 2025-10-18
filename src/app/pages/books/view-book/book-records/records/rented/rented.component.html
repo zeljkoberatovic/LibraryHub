@@ -11,7 +11,7 @@
         </tr>
       </thead>
       <tbody>
-        @for (copy of rentedCopies; track copy.id) {
+        @for (copy of pagedRentedCopies; track copy.id) {
           <tr>
             <td>{{ copy.studentName }}</td>
             <td>{{ copy.rented_at | date:'dd.MM.yyyy' }}</td>
@@ -33,5 +33,13 @@
     </table>
   } @else {
     <p class="no-data">Nema trenutno izdatih primeraka ove knjige.</p>
+  }
+
+  @if (pagination.totalPages > 1) {
+    <app-pagination
+      [totalPages]="pagination.totalPages"
+      [currentPage]="pagination.currentPage"
+      (pageChange)="pagination.currentPage = $event"
+    ></app-pagination>
   }
 </div>
