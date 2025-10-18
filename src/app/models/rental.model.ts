@@ -14,7 +14,6 @@ export interface Book {
 }
 
 export interface Student {
-name: any;
   id: number;
   first_name: string;
   last_name: string;
@@ -23,7 +22,6 @@ name: any;
   jmbg?: string;
   profile_picture?: string | null;
   created_at?: string;
-  
 }
 
 export interface Librarian {
@@ -34,7 +32,6 @@ export interface Librarian {
   email?: string;
   profile_picture?: string | null;
   created_at?: string;
-  
 }
 
 export interface Rental {
@@ -43,7 +40,7 @@ export interface Rental {
   book_id: number;
   student_id: number;
   librarian_id: number;
-  rented_at: string;   // "2025-08-06 13:34:29"
+  rented_at: string;
   returned_at: string | null;
   active_days_of_rental?: number;
 

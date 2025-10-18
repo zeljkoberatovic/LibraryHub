@@ -1,19 +1,19 @@
 import { Route } from '@angular/router';
-import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { DashboardComponent } from '@/app/pages/dashboard/dashboard.component';
 
-import { librarianResolver } from '../app/resolvers/librarian/librarian.resolver'; 
-import { studentResolver } from '../app/resolvers/student/student-resolver';
-import { bookResolver } from '../app/resolvers/book/book-resolver';
-import { authorResolver } from './resolvers/author/author-resolver';
+import { librarianResolver } from '@/app/resolvers/librarian/librarian.resolver'; 
+import { studentResolver } from '@/app/resolvers/student/student-resolver';
+import { bookResolver } from '@/app/resolvers/book/book-resolver';
+import { authorResolver } from '@/app/resolvers/author/author-resolver';
 
-import { authGuard } from './core/guards/auth.guard';
+import { authGuard } from '@/app/core/guards/auth.guard';
 
-import { SettingsComponent } from './pages/settings/settings.component';
-import { PublishersResolver } from './resolvers/settings/publishers/publisher-resolver';
-import { GenresResolver } from './resolvers/settings/genre/genre-resolver';
-import { CategoryResolver } from './resolvers/settings/category/category-resolver';
-import { BookSettingsComponent } from './pages/settings/book-settings/book-settings.component';
-import { rentedCopiesResolver } from './resolvers/rented-copies.resolver';
+import { SettingsComponent } from '@/app/pages/settings/settings.component';
+import { PublishersResolver } from '@/app/resolvers/settings/publishers/publisher-resolver';
+import { GenresResolver } from '@/app/resolvers/settings/genre/genre-resolver';
+import { CategoryResolver } from '@/app/resolvers/settings/category/category-resolver';
+import { BookSettingsComponent } from '@/app/pages/settings/book-settings/book-settings.component';
+import { rentedCopiesResolver } from '@/app/resolvers/rented-copies.resolver';
 
 export const routes: Route[] = [
   {
