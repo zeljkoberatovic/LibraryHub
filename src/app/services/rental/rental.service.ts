@@ -6,17 +6,8 @@ import { Rental } from '@/app/models/rental.model';
 
 @Injectable({ providedIn: 'root' })
 export class RentalService {
-  getOverdueRentals() {
-    throw new Error('Method not implemented.');
-  }
-
   private http = inject(HttpClient);
   private baseUrl = `${environment.apiUrl}/rentals`;
-
-  /** Dohvati prekoracene knjige */
-  getBook(foundId: number) {
-    throw new Error('Method not implemented.');
-  }
 
   /**Dohvati sva iznajmljivanja */
   getAllRentals(): Observable<Rental[]> {
@@ -103,5 +94,9 @@ export class RentalService {
           (res.data.data || []).filter(r => r.book_id === bookId && r.returned_at === null)
         )
       );
+  }
+
+  deleteRental(id: number) {
+    return this.http.delete(`/api/rentals/${id}`);
   }
 }

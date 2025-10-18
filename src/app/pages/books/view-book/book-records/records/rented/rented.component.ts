@@ -30,6 +30,7 @@ export class RentedComponent implements OnInit {
   librarians: Librarian[] = [];
   openedMenuId: number | null = null;
   bookId!: number;
+  loading = true;
 
   ngOnInit(): void {
     this.route.parent?.parent?.paramMap.subscribe(params => {
@@ -39,6 +40,7 @@ export class RentedComponent implements OnInit {
   }
 
   loadData(): void {
+    this.loading = true;
     this.studentService.getAllStudents().subscribe((users: any[]) => {
       this.students = users as Student[];
       this.librarianService.getAllLibrarians().subscribe((users: any[]) => {
@@ -52,6 +54,7 @@ export class RentedComponent implements OnInit {
           }));
           this.pagination.reset();
           this.pagination.updateTotal(this.rentedCopies.length);
+          this.loading = false;
         });
       });
     });

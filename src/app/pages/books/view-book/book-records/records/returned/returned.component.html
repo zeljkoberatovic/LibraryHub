@@ -1,5 +1,13 @@
 <div class="rented-container">
   @if (pagedRentals.length > 0) {
+    <div class="alert">
+      <i class="fa fa-exclamation-triangle"></i>
+      Prikaz broja dana zadržavanja knjige trenutno nije ispravan zbog greške na backend strani. Čekamo ispravku od programera backend-a.
+    </div>
+    <div class="alert" style="margin-bottom: 8px;">
+      <i class="fa fa-info-circle"></i>
+      Brisanje vraćenih iznajmljivanja trenutno nije moguće jer backend ne podržava ovu funkcionalnost.
+    </div>
     <table class="rented-table">
       <thead>
         <tr>
@@ -8,6 +16,7 @@
           <th>Datum vraćanja</th>
           <th>Zadržavanje knjige</th>
           <th>Knjigu primio</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -18,6 +27,11 @@
             <td>{{ rental.returned_at | date:'yyyy-MM-dd' }}</td>
             <td>{{ getDaysHeld(rental) }}</td>
             <td>{{ getLibrarianName(rental.librarian_id) }}</td>
+            <td>
+              <button class="delete-btn" (click)="deleteRental(rental)">
+                <i class="fa fa-trash"></i>
+              </button>
+            </td>
           </tr>
         }
       </tbody>
@@ -31,5 +45,6 @@
     <p class="no-data">Nema trenutno vraćenih iznajmljivanja.</p>
   }
 </div>
+
 
 

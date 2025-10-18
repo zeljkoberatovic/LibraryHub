@@ -1,6 +1,6 @@
 import { Route } from '@angular/router';
 import { bookResolver } from '@/app/resolvers/book/book-resolver';
-import { rentedCopiesResolver } from '@/app/resolvers/rented-copies.resolver';
+import { rentedCopiesResolver } from '../../resolvers/renteds/rented-copies.resolver';
 import { authGuard } from '@/app/core/guards/auth.guard';
 
 export const booksRoutes: Route[] = [

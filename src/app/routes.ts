@@ -1,4 +1,13 @@
 import { Route } from '@angular/router';
+import { authRoutes } from '@/app/auth/auth/auth.routes';
+import { DashboardComponent } from '@/app/pages/dashboard/dashboard.component';
+import { authGuard } from '@/app/core/guards/auth.guard';
+import { booksRoutes } from '@/app/routes/books/books.routes';
+import { studentsRoutes } from '@/app/routes/students/students.routes';
+import { librariansRoutes } from '@/app/routes/librarians/librarians.routes';
+import { authorsRoutes } from '@/app/routes/authors/authors.routes';
+import { settingsRoutes } from '@/app/routes/settings/settings.routes';
+
 export const routes: Route[] = [
   ...authRoutes,
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },

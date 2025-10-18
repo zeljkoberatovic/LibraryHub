@@ -83,6 +83,9 @@
                   </button>
                   <div class="menu-divider"></div>
                   <button class="menu-item" [routerLink]="['/books/view', book.id, 'issue']">
+                    <span class="menu-icon">📖</span>
+                    Izdaj knjigu
+                  </button>
 
                   <button class="menu-item delete" (click)="deleteBook(book)">
                     <span class="menu-icon">🗑</span>

@@ -7,7 +7,9 @@
 
     <div class="right-wrapper">
       <div class="actions">
-
+        <a class="action-btn" routerLink="issue">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i> Izdaj knjigu
+        </a>
         <a class="action-btn" routerLink="reserve"><i class="fa-solid fa-calendar-check"></i> Rezerviši knjigu</a>
       </div>
 
@@ -50,7 +52,7 @@
   <td>{{ rental.user }}</td>
   <td>{{ rental.date }}</td>
   <td>
-    <a [routerLink]="['../', rental.id, 'lost']">Otpiši</a>
-    <a [routerLink]="['../', rental.id, 'return']">Vrati</a>
+    <a [routerLink]="['../', rental.id, 'lost']">Otpiši knjigu</a>
+    <a [routerLink]="['../', rental.id, 'return']">Vrati knjigu</a>
   </td>
 </tr>

@@ -3,12 +3,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 
-import { BookService } from '../../../services/book/book.service';
-import { RentalService } from '../../../services/rental/rental.service';
-import { Book } from '../../../models/book.model';
+import { BookService } from '@/app/services/book/book.service';
+import { RentalService } from '@/app/services/rental/rental.service';
+import { Book } from '@/app/models/book.model';
 
-import { PaginationComponent } from '../../../shared/pagination/pagination.component';
-import { PaginationService } from '../../../shared/pagination/pagination.service';
+import { PaginationComponent } from '@/app/shared/pagination/pagination.component';
+import { PaginationService } from '@/app/shared/pagination/pagination.service';
 import { Rental } from '@/app/models/rental.model';
 
 @Component({
@@ -19,7 +19,7 @@ import { Rental } from '@/app/models/rental.model';
   styleUrls: ['./books.component.css'],
 })
 export class Books implements OnInit {
-
+  rentalService = inject(RentalService);
   private bookService = inject(BookService);
   public router = inject(Router);
   pagination = inject(PaginationService);
@@ -38,12 +38,12 @@ export class Books implements OnInit {
   private loadBooks(): void {
     this.bookService.getAllBooks().subscribe({
       next: (books) => {
-        this.rentalService.getAllRentals().subscribe((rentals) => {
-          this.rentalService.getOverdue().subscribe((overdueList) => {
+        this.rentalService.getAllRentals().subscribe((rentals: Rental[]) => {
+          this.rentalService.getOverdue().subscribe((overdueList: Rental[]) => {
             this.books = books.map(book => {
-              const issued = rentals.filter(r => r.book_id === book.id && r.returned_at === null).length;
-              const reserved = rentals.filter(r => r.book_id === book.id && r.status === 'reserved').length;
-              const overdue = (overdueList || []).filter(r => r.book_id === book.id).length;
+              const issued = rentals.filter((r: Rental) => r.book_id === book.id && r.returned_at === null).length;
+              const reserved = rentals.filter((r: Rental) => r.book_id === book.id && r.status === 'reserved').length;
+              const overdue = (overdueList || []).filter((r: Rental) => r.book_id === book.id).length;
               const available = book.number_of_copies - issued - reserved;
               return {
                 ...book,
@@ -107,7 +107,6 @@ export class Books implements OnInit {
   toggleMenu(index: number): void {
     this.openMenuIndex = this.openMenuIndex === index ? null : index;
   }
-
 
   deleteBook(book: Book): void {
     if (book.id !== undefined && confirm(`Da li ste sigurni da želite da izbrišete knjigu "${book.name}"?`)) {
