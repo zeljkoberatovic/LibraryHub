@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { BookService } from '../../../../services/book/book.service';
-import { Book } from '../../../../models/book.model';
+import { BookService } from '@/app/services/book/book.service';
+import { Book } from '@/app/models/book.model';
 
 @Component({
   selector: 'app-book-details',
@@ -12,13 +12,13 @@ import { Book } from '../../../../models/book.model';
 })
 export class BookDetails implements OnInit {
   book?: Book;
-publisherNames: any;
-year: any;
-authorNames: any;
-genreNames: any;
-categoryNames: any;
+  publisherNames: any;
+  year: any;
+  authorNames: any;
+  genreNames: any;
+  categoryNames: any;
 
-  constructor(private route: ActivatedRoute) {}
+  private route = inject(ActivatedRoute);
 
   ngOnInit(): void {
     this.book = this.route.parent?.snapshot.data['book'];

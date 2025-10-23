@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { Book } from '../../../models/book.model';
+import { Book } from '@/app/models/book.model';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -15,9 +15,9 @@ export class ViewBook implements OnInit {
   dropdownOpen = false;
 
   private route = inject(ActivatedRoute);
-  rentalId: any|string;
-currentRentalId: any|string;
-rentedCopies: any;
+  rentalId: string | null = null;
+  currentRentalId: string | null = null;
+  rentedCopies: any;
 
   ngOnInit(): void {
     this.route.data.subscribe(({ book }) => {
