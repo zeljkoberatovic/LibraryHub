@@ -7,6 +7,7 @@ import { studentsRoutes } from '@/app/routes/students/students.routes';
 import { librariansRoutes } from '@/app/routes/librarians/librarians.routes';
 import { authorsRoutes } from '@/app/routes/authors/authors.routes';
 import { settingsRoutes } from '@/app/routes/settings/settings.routes';
+import { issuingRoutes } from '@/app/routes/issuing/issuing.routes'; 
 
 export const routes: Route[] = [
   ...authRoutes,
@@ -17,6 +18,7 @@ export const routes: Route[] = [
   { path: 'librarians', canActivate: [authGuard], children: librariansRoutes },
   { path: 'authors', canActivate: [authGuard], children: authorsRoutes },
   { path: 'settings', canActivate: [authGuard], children: settingsRoutes },
+  { path: 'issuing', canActivate: [authGuard], children: issuingRoutes },
   { path: '**', redirectTo: '/dashboard' }
 ];
 
