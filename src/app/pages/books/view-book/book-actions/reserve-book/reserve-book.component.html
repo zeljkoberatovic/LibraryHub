@@ -7,7 +7,7 @@
 
 <form (ngSubmit)="reserve()" #reserveForm="ngForm" class="reserve-container">
   <div class="form-group">
-    <label for="student">Izaberi studenta:</label>
+    <label for="student">Izaberi učenika:</label>
     <select
       id="student"
       name="student"
@@ -15,12 +15,10 @@
       required
       [(ngModel)]="selectedStudentId"
     >
-      <option [ngValue]="null" disabled selected>-- Izaberi --</option>
-      @for (student of students; track student.id) {
-        <option [ngValue]="student.id">
-          {{ student.first_name }} {{ student.last_name }}
-        </option>
-      }
+      <option value="" disabled selected>-- Izaberi učenika --</option>
+      <option *ngFor="let student of students" [value]="student.id">
+        {{ student.first_name }} {{ student.last_name }}
+      </option>
     </select>
   </div>
 
@@ -44,3 +42,4 @@
     Rezerviši knjigu
   </button>
 </form>
+

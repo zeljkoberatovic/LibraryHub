@@ -9,7 +9,7 @@ export class RentalService {
   private http = inject(HttpClient);
   private baseUrl = `${environment.apiUrl}/rentals`;
 
-  /**Dohvati sva iznajmljivanja */
+  /** Dohvati sva iznajmljivanja */
   getAllRentals(): Observable<Rental[]> {
     return this.http
       .get<{ status: string; data: { meta: any; data: Rental[] } }>(this.baseUrl)
@@ -28,14 +28,7 @@ export class RentalService {
     return this.http.post(`${this.baseUrl}/rent`, payload);
   }
 
-  /** Rezerviši knjigu (POST /reserve)
-   određeni datum.
-     @param bookId 
-     @param studentId 
-     @param librarianId 
-     @param reservationDate 
-     @returns 
-  */
+  /** Rezerviši knjigu (POST /reserve) - endpoint čeka backend implementaciju */
   reserveBook(
     bookId: number,
     studentId: number,
@@ -48,6 +41,7 @@ export class RentalService {
       librarian_id: librarianId,
       reservation_date: reservationDate
     };
+    // Pravi endpoint za rezervaciju (čekam backend): /rentals/reserve
     return this.http.post(`${this.baseUrl}/reserve`, payload);
   }
 
@@ -97,6 +91,6 @@ export class RentalService {
   }
 
   deleteRental(id: number) {
-    return this.http.delete(`/api/rentals/${id}`);
+    return this.http.delete(`${this.baseUrl}/${id}`);
   }
 }
