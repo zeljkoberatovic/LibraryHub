@@ -8,25 +8,28 @@
             Upravljanje izdatim, vraćenim knjigama, prekoračenjima i rezervacijama
           </p>
         </div>
+        <div class="header-search">
+          <input type="text" class="search-input" placeholder="Pretrazi knjige" />
+        </div>
       </div>
     </div>
 
     <nav class="issuing-navbar-horizontal">
       <ul>
-        <li>
-          <a [routerLink]="['issued']" routerLinkActive="active">Izdate knjige</a>
+        <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          <a [routerLink]="['issued']">Izdate knjige</a>
         </li>
-        <li>
-          <a [routerLink]="['returned']" routerLinkActive="active">Vraćene knjige</a>
+        <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          <a [routerLink]="['returned']">Vraćene knjige</a>
         </li>
-        <li>
-          <a [routerLink]="['overdue']" routerLinkActive="active">Knjige u prekoračenju</a>
+        <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          <a [routerLink]="['overdue']">Knjige u prekoračenju</a>
         </li>
-        <li>
-          <a [routerLink]="['active-reservations']" routerLinkActive="active">Aktivne rezervacije</a>
+        <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          <a [routerLink]="['active-reservations']">Aktivne rezervacije</a>
         </li>
-        <li>
-          <a [routerLink]="['archived-reservations']" routerLinkActive="active">Arhivirane rezervacije</a>
+        <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          <a [routerLink]="['archived-reservations']">Arhivirane rezervacije</a>
         </li>
       </ul>
     </nav>

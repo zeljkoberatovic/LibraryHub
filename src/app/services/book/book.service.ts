@@ -21,23 +21,20 @@ export class BookService {
       .pipe(map(res => res.data.data));
   }
 
- 
-
   getBook(id: number): Observable<Book> {
-  return this.http.get<{ status: string; data: Book }>(`${this.baseUrl}/${id}`)
-    .pipe(map(res => res.data));
-}
-
+    return this.http.get<{ status: string; data: Book }>(`${this.baseUrl}/${id}`)
+      .pipe(map(res => res.data));
+  }
 
   createBook(book: CreateBookDto): Observable<Book> {
-  return this.http.post<{ status: string; data: Book }>(this.baseUrl, book)
-    .pipe(map(res => res.data));
-}
+    return this.http.post<{ status: string; data: Book }>(this.baseUrl, book)
+      .pipe(map(res => res.data));
+  }
 
- updateBook(id: number, book: CreateBookDto): Observable<Book> {
-  return this.http.put<{ status: string; data: Book }>(`${this.baseUrl}/${id}`, book)
-    .pipe(map(res => res.data)); 
-}
+  updateBook(id: number, book: CreateBookDto): Observable<Book> {
+    return this.http.put<{ status: string; data: Book }>(`${this.baseUrl}/${id}`, book)
+      .pipe(map(res => res.data));
+  }
 
   deleteBook(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
@@ -48,5 +45,10 @@ export class BookService {
       return 'assets/default-user.png';
     }
     return `${environment.imageBaseUrl}${picturePath}`;
+  }
+
+  getIssuedBooks() {
+    return this.http.get<{ status: string; data: { meta: any; data: any[] } }>('/api/rentals')
+      .pipe(map(res => res.data.data));
   }
 }
