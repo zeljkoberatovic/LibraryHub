@@ -8,6 +8,8 @@ import { User } from '@/app/models/user.model';
 import { PaginationService } from '@/app/shared/pagination/pagination.service';
 import { PaginationComponent } from "@/app/shared/pagination/pagination.component";
 import { ActivatedRoute } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '@/environments/environment';
 
 @Component({
   selector: 'app-returned',
@@ -20,32 +22,89 @@ export class ReturnedComponent implements OnInit {
   returnedRentals: Rental[] = [];
   students: User[] = [];
   librarians: User[] = [];
+  loading = true;
 
   rentalService = inject(RentalService);
   studentService = inject(StudentService);
   librarianService = inject(LibrarianService);
   pagination = inject(PaginationService);
   private route = inject(ActivatedRoute);
+  private http = inject(HttpClient);
 
   bookId: number | null = null;
 
   ngOnInit(): void {
     this.bookId = Number(this.route.parent?.parent?.snapshot.paramMap.get('id'));
+    this.loadAllData();
+  }
 
-    this.rentalService.getReturned().subscribe((rentals) => {
-      // Filtriraj samo za ovu knjigu
-      this.returnedRentals = this.bookId
-        ? rentals.filter(r => r.book_id === this.bookId)
-        : [];
-      this.pagination.updateTotal(this.returnedRentals.length);
-    });
-
+  private loadAllData(): void {
+    this.loading = true;
+    
+    // Učitaj studente i bibliotekare
     this.studentService.getAllStudents().subscribe(students => {
       this.students = students;
     });
 
     this.librarianService.getAllLibrarians().subscribe(librarians => {
       this.librarians = librarians;
+    });
+
+    // Učitaj vraćene rentals sa paginacijom
+    this.loadAllReturnedRentals();
+  }
+
+  private loadAllReturnedRentals(): void {
+    let allRentals: Rental[] = [];
+    let currentPage = 1;
+    const baseUrl = `${environment.apiUrl}/rentals`; 
+
+    const loadPage = (page: number) => {
+      // Filter za vraćene knjige za određenu knjigu
+      const url = `${baseUrl}?book_id=${this.bookId}&returned=1&page=${page}`;
+      
+      this.http.get<any>(url).subscribe({
+        next: (response: any) => {
+          if (response.status === 'success' && response.data) {
+            let rentals = response.data.data || response.data.rentals || response.data;
+            let meta = response.data.meta || response.data.pagination || response.meta;
+            
+            if (Array.isArray(rentals)) {
+              // Filtriraj samo vraćene rentals
+              const returnedRentals = rentals.filter(r => r.returned_at !== null);
+              allRentals = [...allRentals, ...returnedRentals];
+            }
+            
+            if (meta && meta.current_page < meta.last_page) {
+              loadPage(page + 1);
+            } else {
+              this.returnedRentals = allRentals;
+              this.pagination.updateTotal(this.returnedRentals.length);
+              this.loading = false;
+            }
+          } else {
+            this.returnedRentals = [];
+            this.pagination.updateTotal(0);
+            this.loading = false;
+          }
+        },
+        error: () => {
+          // Fallback na stari način
+          this.loadReturnedFallback();
+        }
+      });
+    };
+
+    loadPage(currentPage);
+  }
+
+  private loadReturnedFallback(): void {
+    this.rentalService.getReturned().subscribe((rentals) => {
+      this.returnedRentals = this.bookId
+        ? rentals.filter(r => r.book_id === this.bookId)
+        : [];
+      this.pagination.updateTotal(this.returnedRentals.length);
+      this.loading = false;
     });
   }
 
@@ -71,7 +130,6 @@ export class ReturnedComponent implements OnInit {
   }
 
   get pagedRentals(): Rental[] {
-    this.pagination.updateTotal(this.returnedRentals.length);
     return this.pagination.getPageSlice(this.returnedRentals);
   }
 

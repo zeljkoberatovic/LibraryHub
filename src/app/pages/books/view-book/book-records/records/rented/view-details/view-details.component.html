@@ -32,14 +32,8 @@
         <span class="value">{{ studentName }}</span>
       </div>
       <div class="actions-row">
-        <button class="action-btn lost">
-          <span class="icon-x">❌</span> Otpiši knjigu
-        </button>
-        <button class="action-btn return">
-          <span class="icon-strik">↩</span> Vrati knjigu
-        </button>
-        <button class="action-btn delete">
-          <span class="icon-del">🗑️</span> Izbriši zapis
+        <button class="action-btn back" (click)="goBack()">
+          <span class="icon-back">🔙</span> Vrati se nazad
         </button>
       </div>
     }

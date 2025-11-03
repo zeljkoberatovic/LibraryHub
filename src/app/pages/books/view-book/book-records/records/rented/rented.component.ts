@@ -1,14 +1,15 @@
-import { Component, Inject, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { RentalService } from '@/app/services/rental/rental.service';
 import { StudentService } from '@/app/services/student/student.service';
 import { LibrarianService } from '@/app/services/librarian/librarian.service';
 import { Rental, Librarian, Student } from '@/app/models/rental.model';
-import { Router } from '@angular/router';
 import { PaginationService } from '@/app/shared/pagination/pagination.service';
 import { PaginationComponent } from "@/app/shared/pagination/pagination.component";
-
+import { HttpClient } from '@angular/common/http';
+import { filter } from 'rxjs/operators';
+import { environment } from '@/environments/environment';
 
 @Component({
   selector: 'app-rented',
@@ -24,6 +25,7 @@ export class RentedComponent implements OnInit {
   route = inject(ActivatedRoute);
   router = inject(Router);
   pagination = inject(PaginationService);
+  http = inject(HttpClient);
 
   rentedCopies: (Rental & { studentName: string; librarianName: string; daysHeld: number })[] = [];
   students: Student[] = [];
@@ -37,6 +39,18 @@ export class RentedComponent implements OnInit {
       this.bookId = Number(params.get('id'));
       this.loadData();
     });
+
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe((event: NavigationEnd) => {
+      const currentUrl = event.url;
+      const rentedPagePattern = `/books/view/${this.bookId}/records/rented`;
+      if (currentUrl === rentedPagePattern) {
+        setTimeout(() => {
+          this.loadData();
+        }, 500);
+      }
+    });
   }
 
   loadData(): void {
@@ -45,19 +59,80 @@ export class RentedComponent implements OnInit {
       this.students = users as Student[];
       this.librarianService.getAllLibrarians().subscribe((users: any[]) => {
         this.librarians = users as Librarian[];
-        this.rentalService.getRentedByBook(this.bookId).subscribe((data: Rental[]) => {
-          this.rentedCopies = data.map(rental => ({
-            ...rental,
-            studentName: this.getStudentName(rental.student_id),
-            librarianName: this.getLibrarianName(rental.librarian_id),
-            daysHeld: this.calculateDaysHeld(rental.rented_at)
-          }));
-          this.pagination.reset();
-          this.pagination.updateTotal(this.rentedCopies.length);
-          this.loading = false;
-        });
+        this.loadAllRentedCopies();
       });
     });
+  }
+
+  private loadAllRentedCopies(): void {
+    let allRentals: Rental[] = [];
+    let currentPage = 1;
+    const baseUrl = `${environment.apiUrl}/rentals`;
+
+    const loadPage = (page: number) => {
+      const url = `${baseUrl}?book_id=${this.bookId}&page=${page}`;
+      this.http.get<any>(url).subscribe({
+        next: (response: any) => {
+          if (response.status === 'success' && response.data) {
+            let rentals = response.data.data || response.data.rentals || response.data;
+            let meta = response.data.meta || response.data.pagination || response.meta;
+
+            if (Array.isArray(rentals)) {
+              const activeRentals = rentals.filter(rental =>
+                rental.returned_at === null ||
+                rental.returned_at === undefined ||
+                rental.returned_at === '' ||
+                rental.returned_at === '0000-00-00 00:00:00'
+              );
+              allRentals = [...allRentals, ...activeRentals];
+            } else if (typeof response.data === 'object' && !Array.isArray(response.data)) {
+              for (const key of Object.keys(response.data)) {
+                if (Array.isArray(response.data[key])) {
+                  const activeRentals = response.data[key].filter(rental =>
+                    rental.returned_at === null ||
+                    rental.returned_at === undefined ||
+                    rental.returned_at === '' ||
+                    rental.returned_at === '0000-00-00 00:00:00'
+                  );
+                  allRentals = [...allRentals, ...activeRentals];
+                  break;
+                }
+              }
+            }
+
+            if (meta && meta.current_page < meta.last_page) {
+              loadPage(page + 1);
+            } else {
+              this.processRentals(allRentals);
+            }
+          } else {
+            this.processRentals([]);
+          }
+        },
+        error: () => {
+          if (page === 1) {
+            this.processRentals([]);
+          } else {
+            this.processRentals(allRentals);
+          }
+        }
+      });
+    };
+
+    loadPage(currentPage);
+  }
+
+  private processRentals(rentals: Rental[]): void {
+    this.rentedCopies = rentals.map(rental => ({
+      ...rental,
+      studentName: this.getStudentName(rental.student_id),
+      librarianName: this.getLibrarianName(rental.librarian_id),
+      daysHeld: this.calculateDaysHeld(rental.rented_at)
+    }));
+
+    this.pagination.reset();
+    this.pagination.updateTotal(this.rentedCopies.length);
+    this.loading = false;
   }
 
   getStudentName(studentId: number): string {

@@ -102,7 +102,7 @@ export class IssueBookComponent implements OnInit, OnChanges {
   // Osveži brojače iznajmljenih i prekoracenih za knjigu
   private refreshBookRentalCounts(bookId: number): void {
     this.rentalService.getRentedByBook(bookId).subscribe({
-      next: (rentals) => {
+      next: (rentals: string | any[]) => {
         this.issued = rentals.length;
         this.available = Math.max(0, this.total - this.issued);
       }
@@ -170,7 +170,7 @@ export class IssueBookComponent implements OnInit, OnChanges {
     this.loading = true;
     this.rentalService.rentBook(bookId, studentId, librarianId).subscribe({
       next: () => {
-        // Preusmjeri na listu izdatih primjeraka za ovu knjigu
+        alert('Knjiga je uspješno izdata!');
         this.router.navigate([`/books/view/${bookId}/records/rented`]);
       },
       error: (err) => {

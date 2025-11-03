@@ -17,8 +17,8 @@ export class RentalService {
   }
 
   getRentalById(rentalId: number): Observable<Rental | undefined> {
-    return this.getRented().pipe(
-      map(rentals => rentals.find(r => r.id === rentalId))
+    return this.http.get<any>(`${this.baseUrl}/${rentalId}`).pipe(
+      map(res => res.data || res)
     );
   }
 
@@ -41,7 +41,6 @@ export class RentalService {
       librarian_id: librarianId,
       reservation_date: reservationDate
     };
-    // Pravi endpoint za rezervaciju (čekam backend): /rentals/reserve
     return this.http.post(`${this.baseUrl}/reserve`, payload);
   }
 
@@ -79,18 +78,14 @@ export class RentalService {
     return this.http.get(`${this.baseUrl}/summary`);
   }
 
-  /* Dohvati iznajmljene knjige za određenu knjigu (book_id) */
-  getRentedByBook(bookId: number): Observable<Rental[]> {
-    return this.http
-      .get<{ status: string; data: { meta: any; data: Rental[] } }>(`${this.baseUrl}/rented`)
-      .pipe(
-        map(res =>
-          (res.data.data || []).filter(r => r.book_id === bookId && r.returned_at === null)
-        )
-      );
-  }
-
   deleteRental(id: number) {
     return this.http.delete(`${this.baseUrl}/${id}`);
+  }
+
+  /** Dohvati iznajmljivanja za određenu knjigu */
+  getRentedByBook(bookId: number): Observable<Rental[]> {
+    return this.http
+      .get<{ status: string; data: { meta: any; data: Rental[] } }>(`${this.baseUrl}?book_id=${bookId}`)
+      .pipe(map(res => res.data.data));
   }
 }
