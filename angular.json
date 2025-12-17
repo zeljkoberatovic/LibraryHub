@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "online-biblioteka": {
+    "libraryhub": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -50,8 +50,8 @@
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "4kB",
-                  "maximumError": "8kB"
+                  "maximumWarning": "6kB",
+                  "maximumError": "12kB"
                 }
               ],
               "outputHashing": "all"
@@ -68,10 +68,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "online-biblioteka:build:production"
+              "buildTarget": "libraryhub:build:production"
             },
             "development": {
-              "buildTarget": "online-biblioteka:build:development"
+              "buildTarget": "libraryhub:build:development"
             }
           },
           "defaultConfiguration": "development"
