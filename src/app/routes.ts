@@ -17,7 +17,10 @@ export const routes: Route[] = [
   { path: 'librarians', canActivate: [authGuard], children: librariansRoutes },
   { path: 'authors', canActivate: [authGuard], children: authorsRoutes },
   { path: 'settings', canActivate: [authGuard], children: settingsRoutes },
-  { path: '**', redirectTo: '/dashboard' }
+  {
+    path: '**',
+    loadComponent: () => import('./shared/not-found/not-found.component').then(m => m.NotFoundComponent)
+  }
 ];
 
 
