@@ -38,21 +38,17 @@
         <router-outlet></router-outlet>
       </div>
     </div>
-
-    <div class="navbar-extra">
-      <div class="actions-placeholder">
-        <p>Detalji knjige</p>
-      </div>
-    </div>
   </div>
 </div>
 
 <!-- Primjer: rented.component.html -->
-<tr *ngFor="let rental of rentedCopies">
-  <td>{{ rental.user }}</td>
-  <td>{{ rental.date }}</td>
-  <td>
-    <a [routerLink]="['../', rental.id, 'lost']">Otpiši knjigu</a>
-    <a [routerLink]="['../', rental.id, 'return']">Vrati knjigu</a>
-  </td>
-</tr>
+@for (rental of rentedCopies; track rental.id; let i = $index) {
+  <tr>
+    <td>{{ rental.user }}</td>
+    <td>{{ rental.date }}</td>
+    <td>
+      <a [routerLink]="['../', rental.id, 'lost']">Otpiši knjigu</a>
+      <a [routerLink]="['../', rental.id, 'return']">Vrati knjigu</a>
+    </td>
+  </tr>
+}
