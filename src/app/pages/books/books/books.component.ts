@@ -38,25 +38,31 @@ export class Books implements OnInit {
   private loadBooks(): void {
     this.bookService.getAllBooks().subscribe({
       next: (books) => {
-        this.rentalService.getAllRentals().subscribe((rentals: Rental[]) => {
-          this.rentalService.getOverdue().subscribe((overdueList: Rental[]) => {
-            this.books = books.map(book => {
-              const issued = rentals.filter((r: Rental) => r.book_id === book.id && r.returned_at === null).length;
-              const reserved = rentals.filter((r: Rental) => r.book_id === book.id && r.status === 'reserved').length;
-              const overdue = (overdueList || []).filter((r: Rental) => r.book_id === book.id).length;
-              const available = book.number_of_copies - issued - reserved;
-              return {
-                ...book,
-                available,
-                reserved,
-                issued,
-                overdue
-              };
+            const bookStatsPromises = books.map(book => {
+              return Promise.all([
+                this.rentalService.getRentedByBook(book.id).toPromise(),
+                this.rentalService.getOverdue().toPromise()
+              ]).then(([rentals, overdueList]) => {
+                // Broji samo iznajmljivanja koja NISU vraćena (returned_at == null)
+                const activeRentals = (rentals || []).filter((r: Rental) => !r.returned_at);
+                const issued = activeRentals.length;
+                const reserved = (rentals || []).filter((r: Rental) => r.status === 'reserved').length;
+                const overdue = (overdueList || []).filter((r: Rental) => r.book_id === book.id).length;
+                const available = Math.max(0, book.number_of_copies - issued);
+                return {
+                  ...book,
+                  available,
+                  reserved,
+                  issued,
+                  overdue
+                };
+              });
             });
-            this.pagination.reset();
-            this.loading = false;
-          });
-        });
+            Promise.all(bookStatsPromises).then((booksWithStats) => {
+              this.books = booksWithStats;
+              this.pagination.reset();
+              this.loading = false;
+            });
       },
       error: () => {
         this.loading = false;

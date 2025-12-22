@@ -96,14 +96,16 @@ export class IssueBookComponent implements OnInit, OnChanges {
   // Inicijalizuj brojače na osnovu knjige
   private initBookCounters(): void {
     this.total = this.book?.number_of_copies ?? 0;
-    this.available = this.total;
+    // available će biti izračunat u refreshBookRentalCounts
   }
 
   // Osveži brojače iznajmljenih i prekoracenih za knjigu
   private refreshBookRentalCounts(bookId: number): void {
     this.rentalService.getRentedByBook(bookId).subscribe({
-      next: (rentals: string | any[]) => {
-        this.issued = rentals.length;
+      next: (rentals: any[]) => {
+        // Broji samo iznajmljivanja koja NISU vraćena (returned_at == null)
+        const activeRentals = rentals.filter(r => !r.returned_at);
+        this.issued = activeRentals.length;
         this.available = Math.max(0, this.total - this.issued);
       }
     });
