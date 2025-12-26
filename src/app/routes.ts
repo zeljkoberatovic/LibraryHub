@@ -7,6 +7,7 @@ import { studentsRoutes } from '@/app/routes/students/students.routes';
 import { librariansRoutes } from '@/app/routes/librarians/librarians.routes';
 import { authorsRoutes } from '@/app/routes/authors/authors.routes';
 import { settingsRoutes } from '@/app/routes/settings/settings.routes';
+import { profileRoutes } from '@/app/routes/profile/profile.routes';
 
 export const routes: Route[] = [
   ...authRoutes,
@@ -17,6 +18,7 @@ export const routes: Route[] = [
   { path: 'librarians', canActivate: [authGuard], children: librariansRoutes },
   { path: 'authors', canActivate: [authGuard], children: authorsRoutes },
   { path: 'settings', canActivate: [authGuard], children: settingsRoutes },
+  { path: 'profile', canActivate: [authGuard], children: profileRoutes },
   {
     path: '**',
     loadComponent: () => import('./shared/not-found/not-found.component').then(m => m.NotFoundComponent)
