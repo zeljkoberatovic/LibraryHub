@@ -1,23 +1,34 @@
+
 <div class="profile-container">
   <div class="profile-card">
     <div class="profile-avatar">
-      <img src="" alt="Profilna slika" />
+      <img [src]="user?.profile_picture ? user?.profile_picture : 'assets/default-user.png'" alt="Profilna slika" />
     </div>
     <div class="profile-info">
-      <h2>Ime korisnika</h2>
+      <h2>{{ user?.first_name }} {{ user?.last_name }}</h2>
       <p class="profile-role">
         <i class="fas fa-user-tag"></i>
-        Korisnik
+        {{ user?.role_id === 2 ? 'Bibliotekar' : 'Korisnik' }}
       </p>
       <div class="profile-details">
         <div>
           <span class="label">Email:</span>
+          <span>{{ user?.email }}</span>
         </div>
         <div>
-          <span class="label">Ime Korisnika:</span>
+          <span class="label">Korisničko ime:</span>
+          <span>{{ user?.username }}</span>
+        </div>
+        <div *ngIf="user?.jmbg">
+          <span class="label">JMBG:</span>
+          <span>{{ user?.jmbg }}</span>
+        </div>
+        <div *ngIf="user?.last_login">
+          <span class="label">Posljednja prijava:</span>
+          <span>{{ user?.last_login | date:'dd.MM.yyyy HH:mm' }}</span>
         </div>
       </div>
-      <button class="edit-btn" disabled>
+      <button class="edit-btn" [disabled]="true">
         <i class="fas fa-edit"></i> Izmeni profil
       </button>
     </div>
