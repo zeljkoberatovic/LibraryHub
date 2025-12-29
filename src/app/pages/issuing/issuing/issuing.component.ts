@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'app-issuing',
   templateUrl: './issuing.component.html',
-  styleUrls: ['./issuing.component.css']
+  styleUrls: ['./issuing.component.css'],
+  standalone: true
 })
 export class IssuingComponent {}
