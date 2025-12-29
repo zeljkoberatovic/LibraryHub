@@ -1,2 +1,107 @@
-<h1>Izdavanje knjiga</h1>
-<p>Ova stranica je za izdavanje knjiga.</p>
+
+<div class="issuing-container">
+	<!-- Search bar -->
+	<div class="issuing-header">
+		<div class="search-box">
+			<span class="search-icon"></span>
+			<input
+				type="text"
+				placeholder="Pretraži..."
+				[(ngModel)]="searchTerm"
+				class="search-input"
+			/>
+		</div>
+	</div>
+
+	<div class="issuing-content">
+		<!-- Sidebar -->
+		<aside class="issuing-sidebar">
+			<ul>
+				<li [class.active]="activeTab === 'issued'" (click)="setTab('issued')">Izdate knjige</li>
+				<li [class.active]="activeTab === 'returned'" (click)="setTab('returned')">Vraćene knjige</li>
+				<li [class.active]="activeTab === 'overdue'" (click)="setTab('overdue')">Knjige u prekoracenju</li>
+				<li [class.active]="activeTab === 'active-res'" (click)="setTab('active-res')">Aktivne rezervacije</li>
+				<li [class.active]="activeTab === 'archived-res'" (click)="setTab('archived-res')">Arhivirane rezervacije</li>
+			</ul>
+		</aside>
+
+		<!-- Table area -->
+		<section class="issuing-table-area">
+			<!-- Ovdje ide tabela sa podacima, prikaz zavisi od activeTab -->
+			@switch (activeTab) {
+				@case ('issued') {
+					<div class="table-container">
+						<table class="books-table">
+							<thead>
+								<tr>
+									<th>Naziv knjige</th>
+									<th>Izdato učeniku</th>
+									<th>Datum izdavanja</th>
+									<th>Trenutno zadržavanje knjige</th>
+									<th>Knjigu izdao</th>
+								</tr>
+							</thead>
+							<tbody>
+								@for (rental of pagedIssuedRentals; track rental.id) {
+									<tr>
+										<td>
+											<a class="book-title" [routerLink]="['/books/view', rental.book?.id, 'details']">
+												{{ rental.book?.name }}
+											</a>
+										</td>
+										<td><b>{{ rental.student?.first_name }} {{ rental.student?.last_name }}</b></td>
+										<td><span class="date-cell">{{ rental.rented_at | date:'dd.MM.yyyy.' }}</span></td>
+										<td><span class="duration-cell">⏳ {{ rental.active_days_of_rental }} dana</span></td>
+										<td><b>{{ rental.librarian?.first_name }} {{ rental.librarian?.last_name }}</b></td>
+									</tr>
+								}
+							</tbody>
+						</table>
+						@if (filteredIssuedRentals.length === 0) {
+							<div class="empty-state">
+								<div class="empty-icon">📚</div>
+								<h3>Nema pronađenih izdatih knjiga</h3>
+								<p>Pokušajte promijeniti kriterijum pretrage.</p>
+							</div>
+						}
+						@if (filteredIssuedRentals.length > 0 && totalPages > 1) {
+							<app-pagination
+								[totalPages]="totalPages"
+								[currentPage]="page"
+								(pageChange)="onPageChange($event)"
+							></app-pagination>
+						}
+					</div>
+				}
+				@case ('returned') {
+					<!-- Tabela za vraćene knjige -->
+				}
+				@case ('overdue') {
+					<!-- Tabela za knjige u prekoracenju -->
+				}
+				@case ('active-res') {
+					<div class="centered-card">
+						<div class="info-card">
+							<div class="info-icon">ℹ️</div>
+							<div class="info-content">
+								<p class="info-title">Rezervacije trenutno nisu dostupne</p>
+								<p>Funkcionalnost upravljanja rezervacijama je u pripremi.<br>Molimo vas za strpljenje dok radimo na unapređenju ovog dijela sistema.</p>
+							</div>
+						</div>
+					</div>
+				}
+				@case ('archived-res') {
+					<div class="centered-card">
+						<div class="info-card">
+							<div class="info-icon">ℹ️</div>
+							<div class="info-content">
+								<p class="info-title">Rezervacije trenutno nisu dostupne</p>
+								<p>Funkcionalnost upravljanja rezervacijama je u pripremi.<br>Molimo vas za strpljenje dok radimo na unapređenju ovog dijela sistema.</p>
+							</div>
+						</div>
+					</div>
+				}
+			}
+		</section>
+	</div>
+</div>

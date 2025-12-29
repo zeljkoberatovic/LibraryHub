@@ -1,9 +1,11 @@
 .pagination {
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
   gap: 8px;
   margin-top: 22px;
+  margin-bottom: 5px;
+  margin-right: 3px;
   font-family: inherit;
 }
 
@@ -11,10 +13,10 @@
   background: #e0e7ef;
   color: #2563eb;
   border: 1.5px solid #bcd0ee;
-  padding: 7px 18px;
-  border-radius: 7px;
+  padding: 4px 10px;
+  border-radius: 4px;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 13px;
   font-weight: 600;
   transition: background 0.15s, color 0.15s, border 0.15s, box-shadow 0.15s;
   box-shadow: 0 2px 8px rgba(37, 99, 235, 0.06);
@@ -35,9 +37,9 @@
 }
 
 .pagination span {
-  font-size: 16px;
+  font-size: 13px;
   font-weight: 600;
   color: #2563eb;
-  padding: 0 8px;
-  letter-spacing: 0.4px;
+  padding: 0 4px;
+  letter-spacing: 0.2px;
 }
