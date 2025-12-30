@@ -1,22 +1,23 @@
-
 .app-container {
   display: block;          
 }
 
-main {
-  
+.app-container main {
   margin-top: 71px;
   margin-left: 250px;
-  transition: margin-left 0.3s;
   padding: 1rem;
+  transition: margin-left 0.3s;
 }
 
+/* Kada je login ruta aktivna, makni margin-left da login bude full width */
+body.login-page main,
+.login-full-bg main {
+  margin-left: 0 !important;
+}
 
 .app-container.collapsed-sidebar main {
   margin-left: 60px;
 }
-
-
 
 app-header {
   position: fixed;
@@ -26,7 +27,6 @@ app-header {
   height: 71px;
   z-index: 10;
 }
-
 
 .app-sidebar {
   position: fixed;
@@ -41,14 +41,4 @@ app-header {
 }
 
 
-.app-container main {
-  margin-top: 71px;       
-  margin-left: 250px;     
-  padding: 1rem;
-  transition: margin-left 0.3s;
-}
 
-
-.app-container.collapsed-sidebar main {
-  margin-left: 60px;
-}
