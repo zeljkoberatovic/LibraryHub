@@ -78,7 +78,7 @@
 							   <thead>
 								   <tr>
 									   <th>Naziv knjige</th>
-									   <th>Vraćeno učeniku</th>
+									   <th>Izdato učeniku</th>
 									   <th>Datum izdavanja</th>
 									   <th>Datum vraćanja</th>
 									   <th>Knjigu izdao</th>
@@ -121,9 +121,7 @@
 						   }
 					   </div>
 				   }
-				@case ('overdue') {
-					<!-- Tabela za knjige u prekoracenju -->
-				}
+				<!-- @case ('overdue') { ... } removed -->
 				@case ('active-res') {
 					<div class="centered-card">
 						<div class="info-card">
