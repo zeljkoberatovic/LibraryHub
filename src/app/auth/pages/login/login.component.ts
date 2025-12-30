@@ -18,13 +18,9 @@ export class Login implements OnInit {
   errorMessage = '';
   isLoading = false;
 
-  // Testni korisnici
+  // Testni korisnik
   testUsers = [
-    { email: 'marko@example.com', password: 'brp1kju.kjt', name: 'Marko Marković' },
-    { email: 'ivana@example.com', password: 'ntc*bek4M', name: 'Ivana Ivanović' },
-    { email: 'petar@example.com', password: 'KF.wcn5rdx', name: 'Zeljko Beratovic' },
-    { email: 'jovan@example.com', password: 'dhm_tdx4M', name: 'Jovan Jovanović' },
-    { email: 'ivan@example.com', password: 'EU*zmr4vqb', name: 'Ivan Ivanović' }
+    { email: 'petar@example.com', password: 'KF.wcn5rdx', name: 'Zeljko Beratovic' }
   ];
 
  
@@ -32,7 +28,7 @@ export class Login implements OnInit {
   private router = inject(Router);
 
   ngOnInit() {
-    this.authService.testEndpoint();
+    // this.authService.testEndpoint();
   }
 
   login() {
@@ -47,12 +43,12 @@ export class Login implements OnInit {
     this.authService.login(this.credentials).subscribe({
       next: (response) => {
         this.isLoading = false;
-        console.log('Login successful:', response);
+        //console.log('Login successful:', response);
         this.router.navigate(['/dashboard']);
       },
       error: (error) => {
         this.isLoading = false;
-        console.error('Login error:', error);
+        //console.error('Login error:', error);
 
         if (error.status === 401) {
           this.errorMessage = 'Pogrešni email ili lozinka';
@@ -74,7 +70,7 @@ export class Login implements OnInit {
         password: this.testUsers[userIndex].password
       };
       this.errorMessage = '';
-      console.log('Selected user:', this.testUsers[userIndex].name);
+      //console.log('Selected user:', this.testUsers[userIndex].name);
     }
   }
 }

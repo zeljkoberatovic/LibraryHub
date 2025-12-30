@@ -1,3 +1,40 @@
+/* Gornji desni ugao za login/register linkove */
+.login-top-links {
+  position: absolute;
+  top: 28px;
+  right: 40px;
+  z-index: 1100;
+  display: flex;
+  gap: 18px;
+  background: rgba(44, 62, 80, 0.85);
+  border-radius: 22px;
+  box-shadow: 0 2px 12px #2c3e5044;
+  padding: 6px 22px 6px 18px;
+  align-items: center;
+}
+
+.top-link {
+  color: #fff;
+  font-size: 1.08rem;
+  font-weight: 600;
+  text-decoration: none;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 12px;
+  border-radius: 16px;
+  transition: background 0.2s, color 0.2s;
+}
+.top-link i {
+  font-size: 1.13rem;
+  margin-right: 2px;
+}
+.top-link:hover {
+  background: #4558BE;
+  color: #fff;
+  text-decoration: none;
+}
 .login-container {
   display: flex;
   justify-content: center;
@@ -246,4 +283,3 @@
   color: #3a4ba8;
   text-decoration: underline;
 }
-
