@@ -1,6 +1,6 @@
 import { Route } from '@angular/router';
 import { authRoutes } from '@/app/auth/auth/auth.routes';
-import { DashboardComponent } from '@/app/pages/dashboard/dashboard.component';
+import { dashboardRoutes } from '@/app/routes/dashboard/dashboard.routes';
 import { authGuard } from '@/app/core/guards/auth.guard';
 import { booksRoutes } from '@/app/routes/books/books.routes';
 import { studentsRoutes } from '@/app/routes/students/students.routes';
@@ -13,7 +13,7 @@ import { issuingRoutes } from '@/app/routes/issuing/issuing.routes';
 export const routes: Route[] = [
   ...authRoutes,
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
-  { path: 'dashboard', component: DashboardComponent },
+  { path: 'dashboard', canActivate: [authGuard], children: dashboardRoutes },
   { path: 'books', canActivate: [authGuard], children: booksRoutes },
   { path: 'students', canActivate: [authGuard], children: studentsRoutes },
   { path: 'librarians', canActivate: [authGuard], children: librariansRoutes },
