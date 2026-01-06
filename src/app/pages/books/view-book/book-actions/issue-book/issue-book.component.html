@@ -6,7 +6,7 @@
       <!-- Ako knjiga još nije učitana prikaži poruku -->
       @if (!book) {
         <div class="alert alert-warning">
-          Učitavanje podataka o knjizi... 
+          Učitavanje podataka o knjizi...
         </div>
       }
 
@@ -22,7 +22,7 @@
           [(ngModel)]="selectedStudent"
           (ngModelChange)="clearError('student')"
           required
-        >
+          >
           <option [ngValue]="null" disabled>-- Izaberite učenika --</option>
           @for (s of students; track s.id) {
             <option [ngValue]="s">
@@ -49,65 +49,69 @@
           (ngModelChange)="calculateReturnDate()"
           (focus)="clearError('issueDate')"
           required
-        />
-        @if (errors['issueDate']) {
-          <div class="text-danger mt-1">
-            {{ errors['issueDate'] }}
-          </div>
-        }
-      </div>
+          />
+          @if (errors['issueDate']) {
+            <div class="text-danger mt-1">
+              {{ errors['issueDate'] }}
+            </div>
+          }
+        </div>
 
-      <div class="mb-2">
-        <label class="form-label">Datum vraćanja</label>
-        <input class="form-control text-muted" [value]="returnDate" disabled />
-        <small class="text-secondary">Rok vraćanja: 30 dana</small>
-      </div>
-    </div>
-
-    <div class="col-12 col-md-6">
-      <div class="card shadow-sm border-0 counts-card">
-        <div class="card-body">
-          <h5 class="card-title mb-3">KOLIČINE</h5>
-          <div class="counts-grid">
-
-            <div class="label">Ukupna kolicina:</div>
-            <div class="value">{{ total }}</div>
-
-            <div class="label">Izdato:</div>
-            <div class="value">{{ issued }}</div>
-
-            <div class="label">Rezervisano:</div>
-            <div class="value">{{ 0 }}</div>
-
-            <div class="label">Preko roka:</div>
-            <div class="value">{{ overdue }}</div>
-
-            <div class="label">Na raspolaganju:</div>
-            <div class="value">{{ available }}</div>
-            
-          </div>
+        <div class="mb-2">
+          <label class="form-label">Datum vraćanja</label>
+          <input class="form-control text-muted" [value]="returnDate" disabled />
+          <small class="text-secondary">Rok vraćanja: 30 dana</small>
         </div>
       </div>
 
-      <div class="counts-row">
-        <span class="count-label">Na raspolaganju:</span>
-        <span class="count-value count-available">{{ available }}</span>
-        <span class="count-label">Izdato:</span>
-        <span class="count-value count-issued">{{ issued }}</span>
-        <span class="count-label">Preko roka:</span>
-        <span class="count-value count-overdue">{{ overdue }}</span>
-        <span class="count-label">Ukupno:</span>
-        <span class="count-value count-total">{{ total }}</span>
+      <div class="col-12 col-md-6">
+        <div class="card shadow-sm border-0 counts-card">
+          <div class="card-body">
+            <h5 class="card-title mb-3">KOLIČINE</h5>
+            <div class="counts-grid">
+
+              <div class="label">Ukupna kolicina:</div>
+              <div class="value">{{ total }}</div>
+
+              <div class="label">Izdato:</div>
+              <div class="value">{{ issued }}</div>
+
+              <div class="label">Rezervisano:</div>
+              <div class="value">{{ 0 }}</div>
+
+              <div class="label">Preko roka:</div>
+              <div class="value">{{ overdue }}</div>
+
+              <div class="label">Na raspolaganju:</div>
+              <div class="value">{{ available }}</div>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="counts-row">
+          <span class="count-label">Na raspolaganju:</span>
+          <span class="count-value count-available">{{ available }}</span>
+          <span class="count-label">Izdato:</span>
+          <span class="count-value count-issued">{{ issued }}</span>
+          <span class="count-label">Preko roka:</span>
+          <span class="count-value count-overdue">{{ overdue }}</span>
+          <span class="count-label">Ukupno:</span>
+          <span class="count-value count-total">{{ total }}</span>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="actions-row">
-    <button type="button" class="btn btn-outline-secondary" (click)="issueForm.resetForm()" [disabled]="loading">Poništi</button>
-    <button type="submit" class="btn btn-primary" [disabled]="loading">
-      <span *ngIf="!loading">Izdaj knjigu</span>
-      <span *ngIf="loading">Slanje...</span>
-    </button>
-  </div>
-</form>
+    <div class="actions-row">
+      <button type="button" class="btn btn-outline-secondary" (click)="issueForm.resetForm()" [disabled]="loading">Poništi</button>
+      <button type="submit" class="btn btn-primary" [disabled]="loading">
+        @if (!loading) {
+          <span>Izdaj knjigu</span>
+        }
+        @if (loading) {
+          <span>Slanje...</span>
+        }
+      </button>
+    </div>
+  </form>
 

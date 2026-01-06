@@ -3,12 +3,12 @@ import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthorService } from '../../../services/author/author.service';
 import { Author } from '../../../models/author.model';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-edit-author',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule],
   templateUrl: './edit-author.component.html',
   styleUrls: ['./edit-author.component.css']
 })

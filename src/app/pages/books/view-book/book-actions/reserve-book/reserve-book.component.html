@@ -14,11 +14,13 @@
       class="form-control"
       required
       [(ngModel)]="selectedStudentId"
-    >
+      >
       <option value="" disabled selected>-- Izaberi učenika --</option>
-      <option *ngFor="let student of students" [value]="student.id">
-        {{ student.first_name }} {{ student.last_name }}
-      </option>
+      @for (student of students; track student) {
+        <option [value]="student.id">
+          {{ student.first_name }} {{ student.last_name }}
+        </option>
+      }
     </select>
   </div>
 
@@ -31,15 +33,15 @@
       class="form-control"
       required
       [(ngModel)]="reservationDate"
-    />
-  </div>
+      />
+    </div>
 
-  <button
-    type="submit"
-    class="btn btn-primary"
-    [disabled]="!selectedStudentId || !reservationDate"
-  >
-    Rezerviši knjigu
-  </button>
-</form>
+    <button
+      type="submit"
+      class="btn btn-primary"
+      [disabled]="!selectedStudentId || !reservationDate"
+      >
+      Rezerviši knjigu
+    </button>
+  </form>
 

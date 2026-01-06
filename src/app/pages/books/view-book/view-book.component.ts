@@ -1,12 +1,12 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { Book } from '@/app/models/book.model';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-view-book',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive, RouterOutlet, CommonModule],
+  imports: [RouterLink, RouterLinkActive, RouterOutlet],
   templateUrl: './view-book.component.html',
   styleUrls: ['./view-book.component.css'],
 })

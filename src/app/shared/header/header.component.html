@@ -2,7 +2,7 @@
   <!-- Logo / naslov -->
   <a routerLink="/" class="logo-font">
     <i class="fas fa-book-open"></i>
-    Online Biblioteka
+    Digitalna biblioteka
   </a>
 
   <!-- Login / Register na desnoj strani -->
@@ -30,12 +30,14 @@
         <button class="plus-btn" type="button" (click)="togglePlusMenu()" [attr.aria-expanded]="plusMenuOpen">
           <i class="fas fa-plus"></i>
         </button>
-        <div class="plus-dropdown-content" *ngIf="plusMenuOpen">
-          <a routerLink="/librarians/new" (click)="closePlusMenu()"><i class="fas fa-user-tie"></i> Bibliotekar</a>
-          <a routerLink="/students/new" (click)="closePlusMenu()"><i class="fas fa-user-graduate"></i> Učenik</a>
-          <a routerLink="/books/new" (click)="closePlusMenu()"><i class="fas fa-book"></i> Knjiga</a>
-          <a routerLink="/authors/new" (click)="closePlusMenu()"><i class="fas fa-pen-nib"></i> Autor</a>
-        </div>
+        @if (plusMenuOpen) {
+          <div class="plus-dropdown-content">
+            <a routerLink="/librarians/new" (click)="closePlusMenu()"><i class="fas fa-user-tie"></i> Bibliotekar</a>
+            <a routerLink="/students/new" (click)="closePlusMenu()"><i class="fas fa-user-graduate"></i> Učenik</a>
+            <a routerLink="/books/new" (click)="closePlusMenu()"><i class="fas fa-book"></i> Knjiga</a>
+            <a routerLink="/authors/new" (click)="closePlusMenu()"><i class="fas fa-pen-nib"></i> Autor</a>
+          </div>
+        }
       </div>
 
       <div class="user-dropdown">
@@ -44,17 +46,19 @@
           {{ user?.first_name }} {{ user?.last_name }}
           <i class="fas fa-caret-down"></i>
         </button>
-        <div class="dropdown-content" *ngIf="userMenuOpen">
-          <a routerLink="/profile" (click)="closeUserMenu()">
-            <i class="fas fa-user"></i> Moj profil
-          </a>
-          <a routerLink="/settings" (click)="closeUserMenu()">
-            <i class="fas fa-cog"></i> Postavke
-          </a>
-          <button (click)="logout(); closeUserMenu()" class="logout-btn" type="button">
-            <i class="fas fa-sign-out-alt"></i> Odjava
-          </button>
-        </div>
+        @if (userMenuOpen) {
+          <div class="dropdown-content">
+            <a routerLink="/profile" (click)="closeUserMenu()">
+              <i class="fas fa-user"></i> Moj profil
+            </a>
+            <a routerLink="/settings" (click)="closeUserMenu()">
+              <i class="fas fa-cog"></i> Postavke
+            </a>
+            <button (click)="logout(); closeUserMenu()" class="logout-btn" type="button">
+              <i class="fas fa-sign-out-alt"></i> Odjava
+            </button>
+          </div>
+        }
       </div>
     </nav>
   }

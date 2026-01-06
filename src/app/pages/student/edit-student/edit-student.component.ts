@@ -4,13 +4,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { StudentService } from '../../../services/student/student.service';
 import { User } from '../../../models/user.model';
 import { switchMap, of } from 'rxjs';
-import { CommonModule } from '@angular/common';
+
 import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-edit-student',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, FormsModule],
+  imports: [ReactiveFormsModule, FormsModule],
   templateUrl: './edit-student.component.html',
   styleUrls: ['./edit-student.component.css']
 })

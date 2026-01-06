@@ -2,12 +2,12 @@ import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthorService } from '../../../services/author/author.service';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-new-author',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterLink, FormsModule, CommonModule],
+  imports: [ReactiveFormsModule, RouterLink, FormsModule],
   templateUrl: './new-author.component.html',
   styleUrls: ['./new-author.component.css']
 })

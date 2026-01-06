@@ -23,7 +23,6 @@ export class UserProfileComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Prvo povuci podatke o korisniku iz AuthService
     this.authService.getCurrentUserData().subscribe({
       next: (data: UserData) => {
         this.user = {
@@ -33,7 +32,6 @@ export class UserProfileComponent implements OnInit {
           last_name: data.name?.split(' ')[1] || '',
           role_id: data.role === 'bibliotekar' ? 2 : 1,
         };
-        // Ako treba više podataka, povuci iz baze
         if (this.user.id) {
           this.librarianService.getLibrarian(this.user.id).subscribe({
             next: (dbUser) => this.user = { ...dbUser, ...this.user },

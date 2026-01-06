@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Student as RentalStudent, Book as RentalBook } from '@/app/models/rental.model';
@@ -10,7 +10,7 @@ import { BookService } from '@/app/services/book/book.service';
 @Component({
   selector: 'app-issue-book',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [FormsModule],
   templateUrl: './issue-book.component.html',
   styleUrls: ['./issue-book.component.css']
 })

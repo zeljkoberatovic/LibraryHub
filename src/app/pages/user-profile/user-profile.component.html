@@ -19,14 +19,18 @@
           <span class="label">Korisničko ime:</span>
           <span>{{ user?.username }}</span>
         </div>
-        <div *ngIf="user?.jmbg">
-          <span class="label">JMBG:</span>
-          <span>{{ user?.jmbg }}</span>
-        </div>
-        <div *ngIf="user?.last_login">
-          <span class="label">Posljednja prijava:</span>
-          <span>{{ user?.last_login | date:'dd.MM.yyyy HH:mm' }}</span>
-        </div>
+        @if (user?.jmbg) {
+          <div>
+            <span class="label">JMBG:</span>
+            <span>{{ user?.jmbg }}</span>
+          </div>
+        }
+        @if (user?.last_login) {
+          <div>
+            <span class="label">Posljednja prijava:</span>
+            <span>{{ user?.last_login | date:'dd.MM.yyyy HH:mm' }}</span>
+          </div>
+        }
       </div>
       <button class="edit-btn" [disabled]="true">
         <i class="fas fa-edit"></i> Izmeni profil

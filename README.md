@@ -1,10 +1,10 @@
-# Library Hub
+# Digitalna biblioteka
 
 Aplikacija za upravljanje bibliotekama knjiga, omogućava praćenje izdavanja knjiga, upravljanje korisnicima i postavkama biblioteke.
 
 ## Funkcionalnosti
 
-### Dashboard
+### Kontrolna tabla
 - Pregled trenutnog stanja biblioteke.
 - Prikaz statusa knjiga: izdane, rezervisane, vraćene.
 - Statistika po kategorijama, žanrovima i izdavačima.
@@ -14,7 +14,7 @@ Aplikacija za upravljanje bibliotekama knjiga, omogućava praćenje izdavanja kn
 - Admin panel za bibliotekare koji upravljaju bibliotekom.
 - Različiti nivoi pristupa: student vs. bibliotekar.
 
-### Books
+### Knjige
 - CRUD operacije nad knjigama.
 - Povezivanje knjiga sa:
   - Kategorijama
@@ -22,11 +22,11 @@ Aplikacija za upravljanje bibliotekama knjiga, omogućava praćenje izdavanja kn
   - Izdavačima
   - Autorima
 
-### Settings
+### Podesavanja
 - **Kategorije** – pregled, dodavanje, izmjena i brisanje kategorija.
 - **Žanrovi** – pregled, dodavanje, izmjena i brisanje žanrova.
 - **Izdavači** – pregled, dodavanje, izmjena i brisanje izdavača.
-- **Book Settings** – pregled opcija za:
+- **Knjige Podesavanja** – pregled opcija za:
   - **Povez** – vrste poveza (hardcover, softcover, itd.)
   - **Format** – formati knjiga (A4, A5, itd.)
   - **Pismo** – dostupna pisma (Cirilica / Latinica)

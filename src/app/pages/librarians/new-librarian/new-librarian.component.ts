@@ -3,12 +3,12 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } 
 import { Router, RouterLink } from '@angular/router';
 import { LibrarianService } from '../../../services/librarian/librarian.service';
 import { User } from '../../../models/user.model';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-new-librarian',
   standalone: true,
-  imports: [ReactiveFormsModule, FormsModule, RouterLink, CommonModule],
+  imports: [ReactiveFormsModule, FormsModule, RouterLink],
   templateUrl: './new-librarian.component.html',
   styleUrls: ['./new-librarian.component.css']
 })

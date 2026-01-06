@@ -3,14 +3,14 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { StudentService } from '../../../services/student/student.service';
 import { User } from '../../../models/user.model';
-import { CommonModule } from '@angular/common';
+
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-new-student',
   standalone: true,
-  imports: [ReactiveFormsModule, FormsModule, RouterLink, CommonModule],
+  imports: [ReactiveFormsModule, FormsModule, RouterLink],
   templateUrl: './new-student.component.html',
   styleUrls: ['./new-student.component.css']
 })

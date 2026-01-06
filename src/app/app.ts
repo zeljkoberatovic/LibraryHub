@@ -5,13 +5,13 @@ import { Observable } from 'rxjs';
 import { HeaderComponent } from './shared/header/header.component';
 import { SidebarComponent } from './shared/sidebar/sidebar.component';
 import { RouterOutlet } from '@angular/router';
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.html',
   styleUrls: ['./app.css'],
-  imports: [HeaderComponent, SidebarComponent, RouterOutlet, AsyncPipe, NgIf],
+  imports: [HeaderComponent, SidebarComponent, RouterOutlet, AsyncPipe],
 })
 export class App {
   isSidebarCollapsed = false;

@@ -4,12 +4,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { LibrarianService } from '../../../services/librarian/librarian.service';
 import { User } from '../../../models/user.model';
 import { switchMap, of } from 'rxjs';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-edit-librarian',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, FormsModule],
+  imports: [ReactiveFormsModule, FormsModule],
   templateUrl: './edit-librarian.component.html',
   styleUrls: ['./edit-librarian.component.css']
 })

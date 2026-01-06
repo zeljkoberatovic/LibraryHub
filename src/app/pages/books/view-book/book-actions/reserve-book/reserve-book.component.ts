@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StudentService } from '@/app/services/student/student.service';
@@ -9,7 +9,7 @@ import { BookService } from '@/app/services/book/book.service';
 @Component({
   selector: 'app-reserve-book',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [FormsModule],
   templateUrl: './reserve-book.component.html',
   styleUrls: ['./reserve-book.component.css']
 })

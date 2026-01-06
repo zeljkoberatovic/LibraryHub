@@ -1,10 +1,11 @@
 <div class="app-container" [class.collapsed-sidebar]="isSidebarCollapsed">
   <app-header></app-header>
-  <app-sidebar
-    *ngIf="isLoggedIn$ | async"
-    [collapsed]="isSidebarCollapsed"
-    (toggle)="isSidebarCollapsed = !isSidebarCollapsed">
-  </app-sidebar>
+  @if (isLoggedIn$ | async) {
+    <app-sidebar
+      [collapsed]="isSidebarCollapsed"
+      (toggle)="isSidebarCollapsed = !isSidebarCollapsed">
+    </app-sidebar>
+  }
 
   <main>
     <router-outlet></router-outlet>
