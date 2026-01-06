@@ -1,1 +1,48 @@
-<p>register works!</p>
+<div class="register-container">
+	<div class="register-card">
+		<div class="register-header">
+			<div class="logo">
+				<i class="fas fa-user-plus"></i>
+				<h1>Kreiraj nalog</h1>
+			</div>
+			<h2>Registracija</h2>
+			<p>Unesite podatke za novi nalog</p>
+		</div>
+		<form class="register-form">
+			<div class="form-group">
+				<label for="name">Ime i prezime</label>
+				<div class="input-with-icon">
+					<i class="fas fa-user"></i>
+					<input type="text" id="name" name="name" class="form-control" placeholder="Unesite ime i prezime" required>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="email">Email adresa</label>
+				<div class="input-with-icon">
+					<i class="fas fa-envelope"></i>
+					<input type="email" id="email" name="email" class="form-control" placeholder="Unesite email" required>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="password">Lozinka</label>
+				<div class="input-with-icon">
+					<i class="fas fa-lock"></i>
+					<input type="password" id="password" name="password" class="form-control" placeholder="Unesite lozinku" required>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="confirmPassword">Potvrdi lozinku</label>
+				<div class="input-with-icon">
+					<i class="fas fa-lock"></i>
+					<input type="password" id="confirmPassword" name="confirmPassword" class="form-control" placeholder="Potvrdite lozinku" required>
+				</div>
+			</div>
+			<button type="submit" class="register-btn">
+				<i class="fas fa-user-plus"></i> Registruj se
+			</button>
+		</form>
+		<div class="register-footer">
+			<p>Već imate nalog? <a routerLink="/login" class="login-link">Prijavite se</a></p>
+		</div>
+	</div>
+</div>
