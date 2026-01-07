@@ -1,6 +1,70 @@
 <section class="dashboard">
-  <h1>Dashboard</h1>
-  <p>Dobrodošli u Digitalnu biblioteku!</p>
-  <!-- later: activity feed, stats, reservations widgets… -->
-</section>
+  <h1>Digitalna biblioteka – Kontrolna tabla</h1>
 
+  <div class="dashboard-main">
+    <!-- Aktivnosti -->
+    <div class="dashboard-activities">
+      <h2>Aktivnosti</h2>
+      <!-- Ovde će ići aktivnosti -->
+    </div>
+
+    <!-- Rezervacije knjiga -->
+    <div class="dashboard-reservations">
+      <h2>Rezervacije knjiga</h2>
+      <table>
+        <tr>
+          <th>Korisnik</th>
+          <th>Knjiga</th>
+          <th>Datum</th>
+        </tr>
+        <!-- Ovde će ići rezervacije -->
+      </table>
+      <a href="#" class="show-all-link">Prikaži sve</a>
+    </div>
+  </div>
+
+  <!-- Statistika -->
+  <div class="dashboard-stats">
+    <div class="stat-card">
+      <h3>Izdate knjige</h3>
+      <!-- Ovde ide broj izdatih knjiga -->
+    </div>
+    <div class="stat-card">
+      <h3>Rezervisane knjige</h3>
+      <!-- Ovde ide broj rezervisanih knjiga -->
+    </div>
+    <div class="stat-card">
+      <h3>Knjige u prekoračenju</h3>
+      <!-- Ovde ide broj knjiga u prekoračenju -->
+    </div>
+  </div>
+
+  <!-- Dijagram placeholder -->
+  <div class="dashboard-chart">
+    <h2>Vizuelni prikaz knjiga</h2>
+    <div class="dashboard-chart-row">
+      <div class="dashboard-chart-card">
+        <h3>Pie Chart</h3>
+        <div style="display: flex; justify-content: center; align-items: center; width: 100%;">
+          <ngx-charts-pie-chart
+            [results]="chartData"
+            [view]="[500,320]" 
+            [legend]="true"
+            [labels]="true"
+            [doughnut]="false"
+            [explodeSlices]="false"
+            [gradient]="false">
+          </ngx-charts-pie-chart>
+        </div>
+      </div>
+     
+      <div class="dashboard-chart-card">
+        <h3>Advanced Pie Chart</h3>
+        <ngx-charts-advanced-pie-chart
+          [results]="chartData"
+          [view]="[500,320]">
+        </ngx-charts-advanced-pie-chart>
+      </div>
+    </div>
+  </div>
+</section>

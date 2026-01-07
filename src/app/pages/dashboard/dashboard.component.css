@@ -1,0 +1,146 @@
+.dashboard {
+  padding: 2rem;
+  background: #f7f8fa;
+  min-height: 100vh;
+}
+
+.dashboard h1 {
+  margin-bottom: 2rem;
+  color: #2d3a4b;
+}
+
+.dashboard-main {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 2.5rem;
+  flex-wrap: wrap;
+}
+
+.dashboard-activities, .dashboard-reservations {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(44, 62, 80, 0.08);
+  padding: 1.5rem;
+  flex: 1 1 350px;
+  min-width: 320px;
+}
+
+.dashboard-activities h2, .dashboard-reservations h2 {
+  margin-bottom: 1rem;
+  color: #007bff;
+}
+
+.activity {
+  border-bottom: 1px solid #eee;
+  padding: 0.7rem 0;
+}
+
+.activity:last-child {
+  border-bottom: none;
+}
+
+.activity-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.95rem;
+  color: #888;
+}
+
+.activity-type {
+  font-weight: bold;
+  color: #007bff;
+}
+
+.activity-link {
+  color: #007bff;
+  font-size: 0.95rem;
+  text-decoration: none;
+}
+
+.dashboard-reservations table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 0.5rem;
+}
+
+.dashboard-reservations th, .dashboard-reservations td {
+  padding: 0.5rem;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+}
+
+.show-all-link {
+  display: inline-block;
+  margin-top: 0.5rem;
+  color: #007bff;
+  text-decoration: none;
+}
+
+.dashboard-stats {
+  display: flex;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.stat-card {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(44, 62, 80, 0.08);
+  padding: 1.5rem 2rem;
+  flex: 1;
+  text-align: center;
+}
+
+.stat-card h3 {
+  margin-bottom: 0.5rem;
+  color: #2d3a4b;
+}
+
+.stat-number {
+  font-size: 2.2rem;
+  color: #007bff;
+  margin: 0;
+}
+
+.dashboard-chart-row {
+  display: flex;
+  gap: 80px;
+  justify-content: center;
+  margin-top: 32px;
+}
+
+.dashboard-chart-card {
+  padding: 32px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  border: 2px solid #e0e0e0;
+  min-width: 640px; 
+  max-width: 700px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.dashboard-chart-card h3 {
+  margin-bottom: 16px;
+  color: #2d3a4a;
+  font-weight: 700;
+  font-size: 2rem;
+  text-align: center;
+}
+
+.dashboard-chart-card:first-child h3 {
+  font-size: 2.5rem;
+  letter-spacing: 1px;
+}
+
+.dashboard-chart-card:first-child {
+  justify-content: center;
+}
+
+.dashboard-chart-card:first-child ngx-charts-pie-chart {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
