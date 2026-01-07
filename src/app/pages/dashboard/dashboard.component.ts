@@ -21,6 +21,8 @@ export class DashboardComponent implements OnInit {
     { name: 'Prekoračenja', value: 2 }
   ];
 
+  showReservationMessage = false;
+
   constructor(
     private rentalService: RentalService,
     private studentService: StudentService,
@@ -55,5 +57,12 @@ export class DashboardComponent implements OnInit {
     // Formatiraj datum u "dd.MM.yyyy"
     // ...implementacija...
     return '';
+  }
+
+  onShowAllReservations() {
+    this.showReservationMessage = true;
+    setTimeout(() => {
+      this.showReservationMessage = false;
+    }, 5000);
   }
 }

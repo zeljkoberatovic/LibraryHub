@@ -17,9 +17,34 @@
           <th>Knjiga</th>
           <th>Datum</th>
         </tr>
-        <!-- Ovde će ići rezervacije -->
+        <tr>
+          <td>Pero Perovic</td>
+          <td>Anđeli i Demoni</td>
+          <td>05.11.2025</td>
+        </tr>
+        <tr>
+          <td>Jovan Jovanovic</td>
+          <td>Da Vinčijev kod</td>
+          <td>31.04.2025</td>
+        </tr>
+        <tr>
+          <td>Marko Markovic</td>
+          <td>Avanture Haklberi Fina</td>
+          <td>05.11.2025</td>
+        </tr>
+        <tr>
+          <td>Nikola Petrovic</td>
+          <td>Deset malih crnaca</td>
+          <td>31.02.2025</td>
+        </tr>
       </table>
-      <a href="#" class="show-all-link">Prikaži sve</a>
+      <a href="javascript:void(0);" class="show-all-link" (click)="onShowAllReservations()">Prikaži sve</a>
+      @if (showReservationMessage) {
+        <div class="reservation-message">
+          Rezervacije knjiga trenutno nisu dostupne.<br>
+          Ova funkcionalnost će biti omogućena kada backend dio aplikacije bude završen.
+        </div>
+      }
     </div>
   </div>
 
