@@ -5,7 +5,7 @@ import { BookService } from '@/app/services/book/book.service';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { LibrarianService } from '@/app/services/librarian/librarian.service';
 import { Rental } from '@/app/models/rental.model';
-import { forkJoin, map, of } from 'rxjs';
+
 
 @Component({
   selector: 'app-dashboard',
@@ -20,7 +20,6 @@ export class DashboardComponent implements OnInit {
     librarianName: string;
     rented_at: string;
   }[] = [];
-  rezervacije: any[] = [];
   statistika = { izdate: 0, rezervisane: 0, prekoracene: 0 };
 
   chartData = [
@@ -30,7 +29,10 @@ export class DashboardComponent implements OnInit {
   ];
 
   showReservationMessage = false;
-  aktivnostiLoading: any;
+
+  aktivnostiLoading = false; 
+  aktivnostiPerPage = 6;
+  prikazaneAktivnosti = 6;
 
   private rentalService = inject(RentalService);
   private studentService = inject(StudentService);
@@ -38,7 +40,7 @@ export class DashboardComponent implements OnInit {
   private librarianService = inject(LibrarianService);
 
   ngOnInit(): void {
-    // Povuci sve učenike i bibliotekare, pa mapiraj aktivnosti
+    this.aktivnostiLoading = true; // start loading
     this.rentalService.getRented().subscribe(rentals => {
       this.studentService.getAllStudents().subscribe(students => {
         this.librarianService.getAllLibrarians().subscribe(librarians => {
@@ -64,6 +66,7 @@ export class DashboardComponent implements OnInit {
               : 'Nepoznat bibliotekar',
             rented_at: r.rented_at
           }));
+          this.aktivnostiLoading = false; // end loading
         });
       });
     });
@@ -73,19 +76,13 @@ export class DashboardComponent implements OnInit {
       this.statistika.izdate = summary.issuedCount;
       this.statistika.rezervisane = summary.reservedCount;
       this.statistika.prekoracene = summary.overdueCount;
+      // ažuriraj chartData ako želiš da bude dinamičan
+      this.chartData = [
+        { name: 'Izdate knjige', value: summary.issuedCount },
+        { name: 'Rezervisane knjige', value: summary.reservedCount },
+        { name: 'Prekoračenja', value: summary.overdueCount }
+      ];
     });
-  }
-
-  getTimeAgo(date: string): string {
-    // Vrati string tipa "prije 4 dana" ili "prije 2 mjeseca"
-    // ...implementacija...
-    return '';
-  }
-
-  formatDate(date: string): string {
-    // Formatiraj datum u "dd.MM.yyyy"
-    // ...implementacija...
-    return '';
   }
 
   onShowAllReservations() {
@@ -93,5 +90,9 @@ export class DashboardComponent implements OnInit {
     setTimeout(() => {
       this.showReservationMessage = false;
     }, 5000);
+  }
+
+  showMoreAktivnosti() {
+    this.prikazaneAktivnosti += this.aktivnostiPerPage;
   }
 }

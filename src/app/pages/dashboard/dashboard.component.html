@@ -5,34 +5,40 @@
     <!-- Aktivnosti -->
     <div class="dashboard-activities">
       <h2>Aktivnosti</h2>
-        @if (aktivnostiLoading) {
-          <div class="loading-spinner">Učitavanje aktivnosti...</div>
-        } @else {
-          @if (aktivnosti.length > 0) {
-            <table>
-              <thead>
+      @if (aktivnostiLoading) {
+        <div class="loading-spinner">Učitavanje aktivnosti...</div>
+      } @else {
+        @if (aktivnosti.length > 0) {
+          <table class="activities-table">
+            <thead>
+              <tr>
+                <th>Knjiga</th>
+                <th>Izdato učeniku</th>
+                <th>Knjigu izdao</th>
+                <th>Datum izdavanja</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (aktivnost of aktivnosti | slice:0:prikazaneAktivnosti; track aktivnost.rented_at) {
                 <tr>
-                  <th>Knjiga</th>
-                  <th>Izdato učeniku</th>
-                  <th>Knjigu izdao</th>
-                  <th>Datum izdavanja</th>
+                  <td>{{ aktivnost.bookName }}</td>
+                  <td>{{ aktivnost.studentName }}</td>
+                  <td>{{ aktivnost.librarianName }}</td>
+                  <td>{{ aktivnost.rented_at | date:'dd.MM.yyyy' }}</td>
                 </tr>
-              </thead>
-              <tbody>
-                @for (aktivnost of aktivnosti; track aktivnost.rented_at) {
-                  <tr>
-                    <td>{{ aktivnost.bookName }}</td>
-                    <td>{{ aktivnost.studentName }}</td>
-                    <td>{{ aktivnost.librarianName }}</td>
-                    <td>{{ aktivnost.rented_at | date:'dd.MM.yyyy' }}</td>
-                  </tr>
-                }
-              </tbody>
-            </table>
-          } @else {
-            <div class="no-data">Nema aktivnosti za prikaz.</div>
+              }
+            </tbody>
+          </table>
+          @if (prikazaneAktivnosti < aktivnosti.length) {
+            <button class="show-more-btn" (click)="showMoreAktivnosti()">Prikaži još</button>
+             <div class="backend-limit-msg">
+        * Backend strana dozvoljava prikaz najviše 20 aktivnosti.
+      </div>
           }
+        } @else {
+          <div class="no-data">Nema aktivnosti za prikaz.</div>
         }
+      }
     </div>
 
     <!-- Rezervacije knjiga -->
@@ -65,7 +71,7 @@
           <td>31.02.2025</td>
         </tr>
       </table>
-      <a href="javascript:void(0);" class="show-all-link" (click)="onShowAllReservations()">Prikaži sve</a>
+      <a href="javascript:void(0);" class="show-more-btn" (click)="onShowAllReservations()">Prikaži jos</a>
       @if (showReservationMessage) {
         <div class="reservation-message">
           Rezervacije knjiga trenutno nisu dostupne.<br>
