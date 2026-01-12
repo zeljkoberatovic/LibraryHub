@@ -5,7 +5,34 @@
     <!-- Aktivnosti -->
     <div class="dashboard-activities">
       <h2>Aktivnosti</h2>
-      <!-- Ovde će ići aktivnosti -->
+        @if (aktivnostiLoading) {
+          <div class="loading-spinner">Učitavanje aktivnosti...</div>
+        } @else {
+          @if (aktivnosti.length > 0) {
+            <table>
+              <thead>
+                <tr>
+                  <th>Knjiga</th>
+                  <th>Izdato učeniku</th>
+                  <th>Knjigu izdao</th>
+                  <th>Datum izdavanja</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (aktivnost of aktivnosti; track aktivnost.rented_at) {
+                  <tr>
+                    <td>{{ aktivnost.bookName }}</td>
+                    <td>{{ aktivnost.studentName }}</td>
+                    <td>{{ aktivnost.librarianName }}</td>
+                    <td>{{ aktivnost.rented_at | date:'dd.MM.yyyy' }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          } @else {
+            <div class="no-data">Nema aktivnosti za prikaz.</div>
+          }
+        }
     </div>
 
     <!-- Rezervacije knjiga -->
@@ -55,8 +82,8 @@
       <!-- Ovde ide broj izdatih knjiga -->
     </div>
     <div class="stat-card">
-      <h3>Rezervisane knjige</h3>
-      <!-- Ovde ide broj rezervisanih knjiga -->
+      <h3>Vracene knjige</h3>
+      <!-- Ovde ide broj vraćenih knjiga -->
     </div>
     <div class="stat-card">
       <h3>Knjige u prekoračenju</h3>
@@ -66,10 +93,10 @@
 
   <!-- Dijagram placeholder -->
   <div class="dashboard-chart">
-    <h2>Vizuelni prikaz knjiga</h2>
+    <h2>Statistika</h2>
     <div class="dashboard-chart-row">
       <div class="dashboard-chart-card">
-        <h3>Pie Chart</h3>
+        <h3>Kruzni diagram</h3>
         <div style="display: flex; justify-content: center; align-items: center; width: 100%;">
           <ngx-charts-pie-chart
             [results]="chartData"
@@ -84,7 +111,7 @@
       </div>
      
       <div class="dashboard-chart-card">
-        <h3>Advanced Pie Chart</h3>
+        <h3>Detaljni kruzni diagram</h3>
         <ngx-charts-advanced-pie-chart
           [results]="chartData"
           [view]="[500,320]">

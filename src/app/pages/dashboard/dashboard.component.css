@@ -96,14 +96,22 @@
   font-family: 'Segoe UI', system-ui, sans-serif;
 }
 
+.dashboard-stats {
+  display: flex;
+  gap: 32px;
+  margin-bottom: 2rem;
+  justify-content: center;
+}
+
 .stat-card {
   background: #fff;
   border-radius: 10px;
   box-shadow: 0 2px 8px rgba(44, 62, 80, 0.08);
   padding: 1.5rem 2rem;
-  flex: 1;
+  flex: 1 1 120px;
   text-align: center;
   border: 1px solid #e2e8f0;
+  min-width: 120px;
 }
 
 .stat-card h3 {
@@ -119,26 +127,28 @@
   color: #4299e1;
   margin: 0;
   font-family: 'Courier New', monospace;
+  font-weight: bold;
+}
+
+.dashboard-chart {
+  width: 100%;
+  overflow-x: auto;
+  padding-bottom: 16px;
 }
 
 .dashboard-chart-row {
   display: flex;
-  gap: 80px;
+  gap: 40px;
   justify-content: center;
   margin-top: 32px;
+  flex-wrap: wrap;
 }
 
 .dashboard-chart-card {
-  padding: 32px;
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
-  border: 2px solid #e0e0e0;
-  min-width: 640px;
-  max-width: 700px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  min-width: 320px;
+  max-width: 420px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .dashboard-chart-card h3 {

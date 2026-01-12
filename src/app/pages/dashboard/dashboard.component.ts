@@ -1,8 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { RentalService } from '@/app/services/rental/rental.service';
 import { StudentService } from '@/app/services/student/student.service';
 import { BookService } from '@/app/services/book/book.service';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { LibrarianService } from '@/app/services/librarian/librarian.service';
+import { Rental } from '@/app/models/rental.model';
+import { forkJoin, map, of } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,7 +14,12 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
   imports: [NgxChartsModule]
 })
 export class DashboardComponent implements OnInit {
-  aktivnosti: any[] = [];
+  aktivnosti: {
+    bookName: string;
+    studentName: string;
+    librarianName: string;
+    rented_at: string;
+  }[] = [];
   rezervacije: any[] = [];
   statistika = { izdate: 0, rezervisane: 0, prekoracene: 0 };
 
@@ -22,21 +30,42 @@ export class DashboardComponent implements OnInit {
   ];
 
   showReservationMessage = false;
+  aktivnostiLoading: any;
 
-  constructor(
-    private rentalService: RentalService,
-    private studentService: StudentService,
-    private bookService: BookService
-  ) {}
+  private rentalService = inject(RentalService);
+  private studentService = inject(StudentService);
+  private bookService = inject(BookService);
+  private librarianService = inject(LibrarianService);
 
   ngOnInit(): void {
-    // Aktivnosti (izdavanja)
+    // Povuci sve učenike i bibliotekare, pa mapiraj aktivnosti
     this.rentalService.getRented().subscribe(rentals => {
-      this.aktivnosti = rentals.slice(0, 5).map(r => ({
-        tip: 'Izdavanje knjige',
-        vrijeme: this.getTimeAgo(r.rented_at),
-        opis: `${r.librarian?.first_name} ${r.librarian?.last_name} je izdala knjigu <b>${r.book?.name}</b> ${r.student?.first_name} ${r.student?.last_name} dana ${this.formatDate(r.rented_at)}.`
-      }));
+      this.studentService.getAllStudents().subscribe(students => {
+        this.librarianService.getAllLibrarians().subscribe(librarians => {
+          const studentMap = new Map<number, any>();
+          students.forEach(s => {
+            if (typeof s.id === 'number') {
+              studentMap.set(s.id, s);
+            }
+          });
+          const librarianMap = new Map<number, any>();
+          librarians.forEach(l => {
+            if (typeof l.id === 'number') {
+              librarianMap.set(l.id, l);
+            }
+          });
+          this.aktivnosti = rentals.map((r: Rental) => ({
+            bookName: r.book?.name || 'Nepoznata knjiga',
+            studentName: studentMap.has(r.student_id)
+              ? `${studentMap.get(r.student_id).first_name} ${studentMap.get(r.student_id).last_name}`
+              : 'Nepoznat učenik',
+            librarianName: librarianMap.has(r.librarian_id)
+              ? `${librarianMap.get(r.librarian_id).first_name} ${librarianMap.get(r.librarian_id).last_name}`
+              : 'Nepoznat bibliotekar',
+            rented_at: r.rented_at
+          }));
+        });
+      });
     });
 
     // Statistika
