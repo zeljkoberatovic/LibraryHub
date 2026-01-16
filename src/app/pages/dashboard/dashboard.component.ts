@@ -6,7 +6,6 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { LibrarianService } from '@/app/services/librarian/librarian.service';
 import { Rental } from '@/app/models/rental.model';
 
-
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -20,17 +19,17 @@ export class DashboardComponent implements OnInit {
     librarianName: string;
     rented_at: string;
   }[] = [];
-  statistika = { izdate: 0, rezervisane: 0, prekoracene: 0 };
+  statistics = { issued: 18, returned: 17, overdue: 3 };
 
   chartData = [
-    { name: 'Izdate knjige', value: 10 },
-    { name: 'Rezervisane knjige', value: 5 },
-    { name: 'Prekoračenja', value: 2 }
+    { name: 'Izdate knjige', value: 18 },
+    { name: 'Vraćene knjige', value: 17 },
+    { name: 'Prekoračene knjige', value: 3 }
   ];
 
   showReservationMessage = false;
 
-  aktivnostiLoading = false; 
+  aktivnostiLoading = false;
   aktivnostiPerPage = 6;
   prikazaneAktivnosti = 6;
 
@@ -71,18 +70,12 @@ export class DashboardComponent implements OnInit {
       });
     });
 
-    // Statistika
-    this.rentalService.getRentalSummary().subscribe(summary => {
-      this.statistika.izdate = summary.issuedCount;
-      this.statistika.rezervisane = summary.reservedCount;
-      this.statistika.prekoracene = summary.overdueCount;
-      // ažuriraj chartData ako želiš da bude dinamičan
-      this.chartData = [
-        { name: 'Izdate knjige', value: summary.issuedCount },
-        { name: 'Rezervisane knjige', value: summary.reservedCount },
-        { name: 'Prekoračenja', value: summary.overdueCount }
-      ];
-    });
+    // Statistika - prikazuj fiksne vrijednosti
+    // (Ako želiš dinamički, vrati kod iz servisa, ali sada je po zahtjevu fiksno)
+  }
+
+  trackByRentedAt(index: number, item: any): string {
+    return item.rented_at;
   }
 
   onShowAllReservations() {

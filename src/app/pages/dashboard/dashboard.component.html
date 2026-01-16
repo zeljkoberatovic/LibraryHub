@@ -7,7 +7,8 @@
       <h2>Aktivnosti</h2>
       @if (aktivnostiLoading) {
         <div class="loading-spinner">Učitavanje aktivnosti...</div>
-      } @else {
+      }
+      @if (!aktivnostiLoading) {
         @if (aktivnosti.length > 0) {
           <table class="activities-table">
             <thead>
@@ -19,7 +20,7 @@
               </tr>
             </thead>
             <tbody>
-              @for (aktivnost of aktivnosti | slice:0:prikazaneAktivnosti; track aktivnost.rented_at) {
+              @for (aktivnost of aktivnosti | slice:0:prikazaneAktivnosti; track trackByRentedAt($index, aktivnost)) {
                 <tr>
                   <td>{{ aktivnost.bookName }}</td>
                   <td>{{ aktivnost.studentName }}</td>
@@ -30,10 +31,12 @@
             </tbody>
           </table>
           @if (prikazaneAktivnosti < aktivnosti.length) {
-            <button class="show-more-btn" (click)="showMoreAktivnosti()">Prikaži još</button>
-             <div class="backend-limit-msg">
-        * Backend strana dozvoljava prikaz najviše 20 aktivnosti.
-      </div>
+            <div>
+              <button class="show-more-btn" (click)="showMoreAktivnosti()">Prikaži još</button>
+              <div class="backend-limit-msg">
+                * Backend strana dozvoljava prikaz najviše 20 aktivnosti.
+              </div>
+            </div>
           }
         } @else {
           <div class="no-data">Nema aktivnosti za prikaz.</div>
@@ -85,28 +88,27 @@
   <div class="dashboard-stats">
     <div class="stat-card">
       <h3>Izdate knjige</h3>
-      <!-- Ovde ide broj izdatih knjiga -->
+      <div class="stat-value">{{ statistics.issued }}</div>
     </div>
     <div class="stat-card">
-      <h3>Vracene knjige</h3>
-      <!-- Ovde ide broj vraćenih knjiga -->
+      <h3>Vraćene knjige</h3>
+      <div class="stat-value">{{ statistics.returned }}</div>
     </div>
     <div class="stat-card">
-      <h3>Knjige u prekoračenju</h3>
-      <!-- Ovde ide broj knjiga u prekoračenju -->
+      <h3>Prekoračene knjige</h3>
+      <div class="stat-value">{{ statistics.overdue }}</div>
     </div>
   </div>
 
-  <!-- Dijagram placeholder -->
   <div class="dashboard-chart">
     <h2>Statistika</h2>
     <div class="dashboard-chart-row">
       <div class="dashboard-chart-card">
-        <h3>Kruzni diagram</h3>
+        <h3>Kruzni dijagram</h3>
         <div style="display: flex; justify-content: center; align-items: center; width: 100%;">
           <ngx-charts-pie-chart
             [results]="chartData"
-            [view]="[500,320]" 
+            [view]="[500,320]"
             [legend]="true"
             [labels]="true"
             [doughnut]="false"
@@ -115,9 +117,9 @@
           </ngx-charts-pie-chart>
         </div>
       </div>
-     
+
       <div class="dashboard-chart-card">
-        <h3>Detaljni kruzni diagram</h3>
+        <h3>Detaljni kružni dijagram</h3>
         <ngx-charts-advanced-pie-chart
           [results]="chartData"
           [view]="[500,320]">
