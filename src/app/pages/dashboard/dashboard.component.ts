@@ -5,6 +5,8 @@ import { BookService } from '@/app/services/book/book.service';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { LibrarianService } from '@/app/services/librarian/librarian.service';
 import { Rental } from '@/app/models/rental.model';
+import { ActivatedRoute } from '@angular/router';
+import { DashboardData } from '@/app/resolvers/dashboard/dashboard.resolver';
 
 @Component({
   selector: 'app-dashboard',
@@ -19,13 +21,14 @@ export class DashboardComponent implements OnInit {
     librarianName: string;
     rented_at: string;
   }[] = [];
-  statistics = { issued: 18, returned: 17, overdue: 3 };
 
+  statistics = { issued: 0, returned: 0, overdue: 0 };
   chartData = [
-    { name: 'Izdate knjige', value: 18 },
-    { name: 'Vraćene knjige', value: 17 },
-    { name: 'Prekoračene knjige', value: 3 }
+    { name: 'Izdate knjige', value: 0 },
+    { name: 'Vraćene knjige', value: 0 },
+    { name: 'Prekoračene knjige', value: 0 }
   ];
+  notifications: Array<{ message: string; date: Date }> = [];
 
   showReservationMessage = false;
 
@@ -37,9 +40,28 @@ export class DashboardComponent implements OnInit {
   private studentService = inject(StudentService);
   private bookService = inject(BookService);
   private librarianService = inject(LibrarianService);
+  private route = inject(ActivatedRoute);
 
   ngOnInit(): void {
-    this.aktivnostiLoading = true; // start loading
+    // Preuzima podatke iz resolvera
+    const data = this.route.snapshot.data['data'] as DashboardData | null;
+    if (data) {
+      this.statistics = {
+        issued: data.stats.rentals,
+        returned: data.stats.rentals, 
+        overdue: 0 
+      };
+      this.chartData = [
+        { name: 'Izdate knjige', value: data.stats.rentals },
+        { name: 'Vraćene knjige', value: data.stats.rentals }, 
+        { name: 'Prekoračene knjige', value: 0 } 
+      ];
+      this.notifications = data.notifications;
+      
+     // console.log('STATISTICS from resolver:', this.statistics);
+      //console.log('NOTIFICATIONS from resolver:', this.notifications);
+    }
+    this.aktivnostiLoading = true;
     this.rentalService.getRented().subscribe(rentals => {
       this.studentService.getAllStudents().subscribe(students => {
         this.librarianService.getAllLibrarians().subscribe(librarians => {
@@ -65,13 +87,10 @@ export class DashboardComponent implements OnInit {
               : 'Nepoznat bibliotekar',
             rented_at: r.rented_at
           }));
-          this.aktivnostiLoading = false; // end loading
+          this.aktivnostiLoading = false;
         });
       });
     });
-
-    // Statistika - prikazuj fiksne vrijednosti
-    // (Ako želiš dinamički, vrati kod iz servisa, ali sada je po zahtjevu fiksno)
   }
 
   trackByRentedAt(index: number, item: any): string {
